@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ChillJS - Hello World!</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="../../chill.css" />
+	<style>
+		div {
+			width: 320px;
+			height: 240px;
+			margin: 15px;
+			display: inline-block;
+			border: 1px solid #000;
+		}
+	</style>
+</head>
+<body>
+	<div id="wrapper"></div>
+	
+	<script src="../../chill.js"></script>
+	<script>
+		Chill.createClass('80x60', { width: 40, height: 30 });
+		Chill.createAbstractElement('box', 'Rectangle', { flow: 'horizontal', addClass: ['80x60'] });
+		
+		var app = new Chill.App({
+			insertLayer: [{
+				width: 320,
+				height: 240,
+				background: '#abcdef',
+				body: {
+					x: Math.random() * 200,
+					y: Math.random() * 200,
+					background: 'orange'
+				},
+				insert: [
+					['#box', { background: '#ff0000' }],
+					['#box', { background: '#00ff00' }],
+					['#box', { background: '#0000ff' }]
+				]
+			}],
+			start: []
+		});
+		
+		Chill.out(app, 'wrapper');
+		Chill.out(app, document.body.appendChild(document.createElement('div')));
+	</script>
+</body>
+</html>

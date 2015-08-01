@@ -1,0 +1,29 @@
+{
+	"name": "chillJS",
+	
+	"version": "0.0.1",
+	
+	"description": "JavaScript 2D library",
+	
+	"main": "chill.js",
+	
+	"keywords": ["chill", "chillJS", "chill.js", "2d"],
+	
+	"homepage": "",
+	
+	"license": "MIT",
+	
+	"author": {
+		"name": "Gábor Bokodi"
+	},
+	
+	"scripts": {
+		"build": "node builder/build.js"
+	},
+	
+	"dependencies": {
+		"argparse": "1.0.2",
+		"uglify-js": "2.4.23",
+		"watch": "0.16.0"
+	}
+}

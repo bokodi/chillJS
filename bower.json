@@ -1,0 +1,27 @@
+{
+	"name": "chillJS",
+	
+	"version": "0.0.1",
+	
+	"description": "JavaScript 2D library",
+	
+	"main": "chill.js",
+	
+	"keywords": ["chill", "chillJS", "chill.js", "2d"],
+	
+	"homepage": "",
+	
+	"license": "MIT",
+	
+	"ignore": [
+		"**/.*",
+		"*.md",
+		"docs",
+		"editor",
+		"examples/*",
+		"src",
+		"tests",
+		"tools",
+		"LICENSE"
+	]
+}
