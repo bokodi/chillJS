@@ -3,7 +3,7 @@
 #### JavaScript 2D library ####
 
 
-chillJS is a 2D HTML5 canvas library, designed to write graphical applications easily and fast. For more information, see the documentation or check out some of the examples.
+chillJS is a 2D HTML5 canvas library, designed to write graphical applications easily and fast. For more information, <a href="http://bokodi.github.io/chillJS/docs/" target="_blank">see the documentation</a> or <a href="http://bokodi.github.io/chillJS/examples/" target="_blank">check out some of the examples</a>
 
 ##### status #####
 chillJS is not production ready.
