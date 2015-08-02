@@ -1,0 +1,112 @@
+{ "include": [
+	{
+		"screen": {
+			"width": 320,
+			"height": 480
+		},
+		
+		"set": [["score", 0]],
+		
+		"preload": [["./", {
+			"Image": ["@images/sheet.png as sheet"],
+			"Audio": [
+				"@audios/wing.ogg as wing",
+				"@audios/point.ogg as point",
+				"@audios/hit.ogg as hit",
+				"@audios/die.ogg as die"
+			]
+		}]],
+		
+		"createAbstractElement": [
+			["bg", "Image", {
+				"src": "#sheet",
+				"y": "100%",
+				"offsetY": "-100%",
+				"width": 276,
+				"height": 228,
+				"sourceWidth": 276,
+				"sourceHeight": 228
+			}],
+			["fg", "Image", {
+				"src": "#sheet",
+				"y": "100%",
+				"offsetY": "-100%",
+				"width": 224,
+				"height": 112,
+				"vX": -2,
+				"sourceX": 276,
+				"sourceWidth": 224,
+				"sourceHeight": 112
+			}],
+			["pipe", "Image", {
+				"src": "#sheet",
+				"width": 52,
+				"height": 200,
+				"x": 320,
+				"vX": -2,
+				"sourceWidth": 52,
+				"sourceHeight": 400
+			}]
+		]
+	},
+	
+	{
+		"insertLayer": [{
+			"id": "main",
+			
+			"background": "#70C5CF",
+			
+			"insert": [
+				["#bg"],
+				["#bg", { "x": 276 }],
+				
+				["Container", "pipes"],
+				
+				["#fg", {
+					"id": "fg1",
+					"minX": -14,
+					"maxX": 0
+				}],
+				
+				["#fg", {
+					"x": 224,
+					"minX": 210,
+					"maxX": 224
+				}],
+				
+				["SpriteSheet", {
+					"id": "bird",
+					"src": "#sheet",
+					"x": 50,
+					"y": 200,
+					"vY": -5,
+					"angle": -15,
+					"sourceX": 312,
+					"sourceY": 230,
+					"frameWidth": 34,
+					"frameHeight": 24,
+					"frameRate": 14,
+					"frames": [{ "x": 312, "y": 230 }, { "x": 312, "y": 256 }, { "x": 312, "y": 282 }],
+					"addAnimation": [["default", { "frames": [0, 1, 2] } ]],
+					"set": [
+						["gravity", 0.25],
+						["jumpSpeed", 4.6]
+					]
+				}],
+				
+				["Text", { "id": "score", "text": "score: 0" }],
+				
+				["Text", {
+					"text": "Press space to restart!",
+					"width": "100%",
+					"y": "100%",
+					"offsetY": "-100%",
+					"fontSize": 16,
+					"lineHeight": "200%",
+					"textAlign": "center",
+					"background": "#dedede"
+				}]
+			]
+		}]
+	}
+]}

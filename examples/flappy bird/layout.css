@@ -1,0 +1,11 @@
+#wrapper {
+	width: 320px;
+	height: 480px;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	border: 1px solid #000;
+}

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ChillJS - Hello World!</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="../../chill.css" />
+	<style>#wrapper { background: #abcdef; }</style>
+</head>
+<body>
+	<div id="wrapper"></div>
+	
+	<script src="../../chill.js"></script>
+	<script>
+		Chill.out(new Chill.App(), 'wrapper', function(scene) {
+			scene.resize(120, 80).insertLayer().insert('Text', { text: 'Hello World!' });
+		}).start();
+	</script>
+</body>
+</html>
