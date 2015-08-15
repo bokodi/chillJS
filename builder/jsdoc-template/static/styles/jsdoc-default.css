@@ -27,7 +27,7 @@
 html
 {
     overflow: auto;
-    background-color: #FFFAF0;
+    background-color: #ddddee;
     font-size: 14px;
 }
 
@@ -35,12 +35,12 @@ body
 {
     font-family: 'Open Sans', sans-serif;
     line-height: 1.5;
-    color: #4d4e53;
-    background-color: #FFFAF0;
+    color: #222222;
+    background-color: #ddddee;
 }
 
 a, a:visited, a:active {
-    color: #0095dd;
+    color: #009BDA;
     text-decoration: none;
 }
 
@@ -82,7 +82,7 @@ section
 {
     display: block;
     padding: 12px 24px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #bbb;
     margin-right: 30px;
 }
 
@@ -92,7 +92,7 @@ section
 
 .signature-attributes {
     font-size: 60%;
-    color: #aaa;
+    color: #eee;
     font-style: italic;
     font-weight: lighter;
 }
@@ -104,9 +104,8 @@ nav
     margin-top: 28px;
     width: 30%;
     box-sizing: border-box;
-    border: 1px solid #333;
-    background: #FFFA99;
-    padding-left: 16px;
+    background: #ffffff;
+    padding: 5px 0px 14px 14px;
 }
 
 nav ul {
@@ -150,7 +149,13 @@ h1
     font-family: 'Open Sans Light', sans-serif;
     font-size: 48px;
     letter-spacing: -2px;
-    margin: 12px 24px 20px;
+    margin: 28px 24px 20px;
+	padding: 20px;
+	background: #374456 url('../../chillJS-logo.png');
+	background-position: 99.5% 50%;
+	background-repeat: no-repeat;
+	background-size: auto 90%;
+	color: #ffffff;
 }
 
 h2, h3
@@ -166,7 +171,7 @@ h4
     font-size: 18px;
     letter-spacing: -0.33px;
     margin-bottom: 12px;
-    color: #4d4e53;
+    color: #444;
 }
 
 h5, .container-overview .subsection-title
@@ -216,14 +221,14 @@ table {
 }
 
 .type-signature {
-    color: #aaa;
+    color: #eee;
 }
 
 .name, .signature {
     font-family: Consolas, Monaco, 'Andale Mono', monospace;
 }
 
-.details { margin-top: 14px; border-left: 2px solid #DDD; }
+.details { margin-top: 14px; border-left: 2px solid #7B7BA7; }
 .details dt { width: 120px; float: left; padding-left: 10px;  padding-top: 6px; }
 .details dd { margin-left: 70px; }
 .details ul { margin: 0; }
@@ -236,7 +241,7 @@ table {
 .methods-odd dl.details,
 .members-even dl.details,
 .members-odd dl.details
-{ background-color: #FFFAF0; box-shadow: 1px 0px 3px 0px #000; padding: 4px 0 10px 0; }
+{ background-color: #f5f2f0; padding: 4px 0 10px 0; }
 
 .description {
     margin-bottom: 1em;
@@ -268,7 +273,7 @@ table {
     display: block;
     padding: 4px 12px;
     margin: 0;
-    background-color: #fff;
+    background-color: #f5f2f0;
     color: #4D4E53;
 }
 
@@ -335,7 +340,7 @@ table {
 
 .params thead tr, .props thead tr
 {
-    background-color: #ddd;
+    background-color: #bbb;
     font-weight: bold;
 }
 
@@ -369,18 +374,17 @@ table {
 .members-odd, .members-even,
 .methods-odd, .methods-even {
 	padding: 15px;
-	border: 1px solid #333;
 }
 
 .members-odd, .methods-odd {
-	background-color: #F5F5DC;
+	border-top: 2px dashed #7B7BA7;
 }
 .members-even, .methods-even {
-	background-color: #F0E68C;
+	
 }
 
 h4.name {
 	padding: 5px 10px;
-	box-shadow: 1px -1px 3px 0px #333;
-	background-color: #80FF5B;
+	border: 1px solid #7B7BA7;
+	background-color: #abcdef;
 }

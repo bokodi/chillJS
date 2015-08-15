@@ -232,7 +232,7 @@ Chill.createElementType = function(type, createData) {
 		constructor = function CustomElement() {
 			var args = getArgs(arguments);
 			
-			parent.call(this, args);
+			parent.apply(this, args);
 			createData.constructor.apply(this, args);
 		};
 		
