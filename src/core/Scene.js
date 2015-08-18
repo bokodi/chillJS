@@ -955,8 +955,8 @@ sceneProto.reflow = (function() {
 			x = l;
 			y = b;
 		} else {
-			x = parseValue(element.x, parentWidth);
-			y = parseValue(element.y, parentHeight);
+			x = parseValue(element.x, parentWidth) + parentX;
+			y = parseValue(element.y, parentHeight) + parentY;
 		}
 		
 		x += marginLeft;
