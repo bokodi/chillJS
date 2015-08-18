@@ -884,17 +884,26 @@ sceneProto.addPlugin = function(pluginID, pluginConfig) {
 /**
  * Creates an AbstractElement
  *
- * @param {String} elementID
+ * @method
+ * @name Scene#createAbstractElement
+ * @param {String} elemID
  * @param {String} elementType
  * @param {Object} [elementUse]
  * @param {Array} [args]
  * @returns {Scene} this
 **/
-sceneProto.createAbstractElement = function(elemID, elementType, elementUse, args) {
-	$abstracts.set(elemID, new AbstractElement(elementType, elementUse, args));
-	
-	return this;
-};
+sceneProto.createAbstractElement = $methods.createAbstractElement;
+
+/**
+ * Creates a new class
+ *
+ * @method
+ * @name Scene#createClass
+ * @param {String} className
+ * @param {Object} classData
+ * @returns {Scene} this
+**/
+sceneProto.createClass = $methods.createClass;
 
 /**
  * Updates each element

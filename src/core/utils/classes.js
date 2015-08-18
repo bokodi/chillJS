@@ -36,3 +36,9 @@ $classes.fromPrototype = function(proto, ignore) {
 	
 	return returnValue;
 };
+
+$methods.createClass = function(className, classData) {
+	$classes.set(className, classData);
+	
+	return this;
+};

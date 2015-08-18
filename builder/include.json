@@ -35,6 +35,7 @@
 		"classes/eventTypes/LoadEvent.js",
 		"classes/eventTypes/CollisionEvent.js",
 		
+		"core/utils/methods.js",
 		"core/utils/enums.js",
 		"core/utils/elements.js",
 		"core/utils/abstracts.js",

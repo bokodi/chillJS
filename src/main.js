@@ -122,16 +122,13 @@ Chill.out = function(app, wrapper, callback) {
 /**
  * Creates a new class
  *
- * @memberof Chill
+ * @method
+ * @name Chill.createClass
  * @param {String} className
  * @param {Object} classData
  * @returns {Object} Chill
 **/
-Chill.createClass = function(className, classData) {
-	$classes.set(className, classData);
-	
-	return this;
-};
+Chill.createClass = $methods.createClass;
 
 /**
  * Creates a new mask
@@ -161,7 +158,7 @@ Chill.createMask = function(maskID, mask) {
  * @returns {Chill} this
  * @see Scene#createAbstractElement
 **/
-Chill.createAbstractElement = sceneProto.createAbstractElement;
+Chill.createAbstractElement = $methods.createAbstractElement;
 
 /**
  * Creates a new plugin
