@@ -321,7 +321,8 @@ function repeat(n, callback, thisArg) {
 **/
 var use = (function() {
 	var types = ['string', 'number', 'boolean', 'undefined', 'function'],
-		toString = Object.prototype.toString;
+		toString = Object.prototype.toString,
+		hasOwn = Object.prototype.hasOwnProperty;
 	
 	function inArray(arr, testValue) {
 		var i = 0, il = arr.length;
@@ -344,16 +345,13 @@ var use = (function() {
 	}
 	
 	return function use(target, data) {
-		var hasOwn = Object.prototype.hasOwnProperty,
-			key, targetVal, dataVal, dataValType, i, il;
+		var key, targetVal, dataVal, dataValType, i, il;
 		
 		for (key in data) {
 			if (hasOwn.call(data, key)) {
 				targetVal = target[key];
 				dataVal = data[key];
 				dataValType = smartType(dataVal);
-				
-				if (targetVal === undefined) continue;
 				
 				switch (smartType(targetVal)) {
 					case 'function':
@@ -380,7 +378,6 @@ var use = (function() {
 					case 'string':
 					case 'boolean':
 					case 'number':
-					case 'date':
 					case 'undefined':
 					case 'null':
 						target[key] = dataVal;
