@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>chillJS - tutorials/demos: getting started/lazy start</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="../../chill.css" />
+</head>
+<body>
+	<div id="myDiv"></div>
+	
+	<script src="../../chill.js"></script>
+	<script>
+		Chill.out(new Chill.App(), 'myDiv', function(scene) {
+			scene.resize(320, 80).insertLayer().insert('Text', { text: 'Hello World!' });
+		}).start();
+	</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>chillJS - tutorials/demos: element properties/classes</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="../../chill.css" />
+</head>
+<body>
+	<div id="myDiv"></div>
+	
+	<script src="../../chill.js"></script>
+	<script>
+		Chill.createClass('myClass', {
+			width: 100,
+			height: 80,
+			flow: 'vertical',
+			background: '#abcdef'
+		});
+		
+		Chill.createClass('anotherClass', { width: 200 });
+		
+		Chill.out(new Chill.App({ resize: [[480, 320]] }), 'myDiv', function(scene) {
+			var layer = scene.insertLayer();
+			
+			var element1 = layer.insert('Rectangle');
+			var element2 = layer.insert('Rectangle');
+			
+			element1.classList.add('myClass');
+			element2.addClass('myClass', 5); // shorthand for classList.add
+			element2.addClass('anotherClass', 10); // element2's width will be 200
+		}).start();
+	</script>
+</body>
+</html>

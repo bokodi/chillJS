@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>chillJS - tutorials/demos: basics/addTask</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="../../chill.css" />
+</head>
+<body>
+	<div id="myDiv"></div>
+	
+	<script src="../../chill.js"></script>
+	<script>
+		Chill.out(new Chill.App({ resize: [[480, 320]] }), 'myDiv', function(scene) {
+			var element = scene.insertLayer().insert('Rectangle', {
+				x: 30,
+				y: 30,
+				width: 80,
+				height: 40
+			});
+			
+			element.animate({
+				x: 300,
+				width: 40
+			}, 2500);
+		}).start();
+	</script>
+</body>
+</html>

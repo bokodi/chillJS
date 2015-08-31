@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>chillJS - tutorials/demos: element types/EllipseElement</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="../../chill.css" />
+</head>
+<body>
+	<div id="myDiv"></div>
+	
+	<script src="../../chill.js"></script>
+	<script>
+		Chill.out(new Chill.App({ resize: [[480, 320]] }), 'myDiv', function(scene) {
+			var layer = scene.insertLayer();
+			
+			var ellipse = layer.create('Ellipse', {
+				width: 'fit',
+				height: 'fit',
+				fill: 'red',
+				strokeWidth: 30,
+				strokeColor: 'blue'
+			});
+			
+			layer.background = 'yellow';
+			layer.add(ellipse);
+		}).start();
+	</script>
+</body>
+</html>

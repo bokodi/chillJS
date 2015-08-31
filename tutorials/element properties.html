@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>chillJS - tutorials: Element properties</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="./prism/prism.css" />
+	<link rel="stylesheet" href="layout.css" />
+	<script src="./prism/prism.js"></script>
+</head>
+<body>
+	
+	<header>
+		<h1>chillJS - tutorials<span>: element properties</span></h1>
+		<ul>
+			<li><b>Summary:</b> The common Element properties.</li>
+			<li><b>Target:</b> chillJS v0.1.0</li>
+		</ul>
+		<p>This tutorial is part of the <a href="https://github.com/bokodi/chillJS" target="_blank">chillJS GitHub repository</a></p>
+	</header>
+	
+	<nav>
+		<a class="nav-all" href="index.html">Back to overview</a>
+		<a class="nav-back" href="basics.html">Previous tutorial: Basics</a>
+		<a class="nav-next" href="element types.html">Next tutorial: Element types</a>
+	</nav>
+	
+	<section>
+		<a class="link" href="#element-identifiers"></a>
+		<h2 id="element-identifiers">Element identifiers</h2>
+		<p>The <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#id" target="_blank">Element.id</a></em> represents the element's identifier. It must be unique in a <em><a href="http://bokodi.github.io/chillJS/docs/Layer.html" target="_blank">Layer</a></em>, and is often used to retreive the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em> using <em><a href="http://bokodi.github.io/chillJS/docs/Layer.html#getElementByID" target="_blank">Layer.getElementByID</a></em> method.</p>
+		<div class="tip">You can use the same id for multiple elements in a <em><a href="http://bokodi.github.io/chillJS/docs/Layer.html" target="_blank">Layer</a></em>, but it's hardly not recommended.</div>
+		<p>Every <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em> has a unique id: <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#uuid" target="_blank">Element.uuid</a></em>. This is a read-only property.</p>
+	</section>
+	
+	<section>
+		<a class="link" href="#element-classes"></a>
+		<h2 id="element-classes">Element classes</h2>
+		<p>You can add multiple properties to the elements with classes. First you need to create a new class, then add it to the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#classList" target="_blank">Element.classList</a></em>.</p>
+		<pre class="hasdemo"><code class="language-javascript">Chill.createClass('myClass', {
+	width: 100,
+	height: 80,
+	flow: 'vertical',
+	background: '#ff0000'
+});
+
+Chill.createClass('anotherClass', { width: 200 });
+
+element1.classList.add('myClass');
+element2.addClass('myClass', 5); // shorthand for classList.add
+element2.addClass('anotherClass', 10); // element2's width will be 200</code></pre>
+		<a class="demo" href="demos/element properties - classes.html" target="_blank">see demo</a>
+		<p>There are also <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#removeClass" target="_blank">Element.removeClass</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#toggleClass" target="_blank">Element.toggleClass</a></em> methods. For precedence, you can specify the priority of the class, when you add it to the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em>. If the order id is not given, it will be added as the highest priority.</p>
+	</section>
+	
+	<section>
+		<a class="link" href="#element-positioning"></a>
+		<h2 id="element-positioning">Element positioning</h2>
+		<p>The chillJS positioning scheme is similar to the well-known HTML positioning system. There are no confusing properties like <i>float</i>, <i>display</i> or <i>position</i>, however you can achieve everything you could in HTML styling and even more.</p>
+		<p>First, you need to decide, if you want to place the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em> directly or let it flow. The <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#flow" target="_blank">Element.flow</a></em> property indicates whether the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em> is flowing or not. It's "none" by default, but it also can be "horizontal" or "vertical". The <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#wrap" target="_blank">Element.wrap</a></em> boolean property (true by default) indicates if the flowing <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em> should be in the next "row" or "column" (based on the flow type) whenever it overflows.</p>
+		<div class="tip">You can add space between the flowing elements with the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#margin" target="_blank">Element.margin</a></em> property.</div>
+		<p>On the other hand, if you want to specify the exact place of the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em>, you should use the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#x" target="_blank">Element.x</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#y" target="_blank">Element.y</a></em> properties.</p>
+		<div class="tip">If the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#flow" target="_blank">Element.flow</a></em> property is horizontal or vertical, the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#x" target="_blank">Element.x</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#y" target="_blank">Element.y</a></em> properties are ignored.</div>
+		<p>The <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#offsetX" target="_blank">Element.offsetX</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#offsetY" target="_blank">Element.offsetY</a></em> properties can be very useful in many ways. If you want to move a flowing <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em> or float it to the right.</p>
+		<pre class="hasdemo"><code class="language-javascript">element.edit({
+	x: '100%',
+	offsetX: '-100%'
+});</code></pre>
+		<a class="demo" href="demos/element properties - positioning.html" target="_blank">see demo</a>
+		<div class="tip">The x, marginLeft, marginRight properties percentage value are relative to the parent's width, the y, marginTop, marginBottom to the parent's height, the offsetX to the element's width, and the offsetY to the element's height.</div>
+		<p>You can also set the align of the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em> with the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#horizontalAlign" target="_blank">Element.horizontalAlign</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#verticalAlign" target="_blank">Element.verticalAlign</a></em> properties.</p>
+	</section>
+	
+	<section>
+		<a class="link" href="#element-sizing"></a>
+		<h2 id="element-sizing">Element sizing</h2>
+		<p>The <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#width" target="_blank">Element.width</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#height" target="_blank">Element.height</a></em> properties are used for define the horizontal and vertical size of the elements. These values can be numeric, percentage (relative to the parent), "fit", which means the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em> fills the remaining space of the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#parentElement" target="_blank">Element.parentElement</a></em> or "auto".</p>
+		<div class="tip">In order to use the "auto" value, the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em> must have measureWidth and measureHeight methods. These are used for calculate the size, and must returns numeric value.</div>
+		<p>You can set the minimum and maximum values too, just like in the HTML styling. The properties used for this are: <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#minWidth" target="_blank">Element.minWidth</a></em>, <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#maxWidth" target="_blank">Element.maxWidth</a></em>, <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#minHeight" target="_blank">Element.minHeight</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#maxHeight" target="_blank">Element.maxHeight</a></em>. These also can be numeric or percentage (relative to the parent).</p>
+	</section>
+	
+	<section>
+		<a class="link" href="#element-transforming"></a>
+		<h2 id="element-transforming">Element transforming</h2>
+		<p>The <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#angle" target="_blank">Element.angle</a></em> property rotates the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em>. It requires a numeric value between 0 and 360. Unlike most libraries, this property is in degree, not radian. For scaling the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em>, you can use the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#scaleX" target="_blank">Element.scaleX</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#scaleY" target="_blank">Element.scaleY</a></em> properties. These are 1.0 by default, which produces the 1:1 size of the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em>.</p>
+		<div class="tip">The <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#scaleX" target="_blank">Element.scaleX</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#scaleY" target="_blank">Element.scaleY</a></em> properties doesn't affect the flow.</div>
+		<p>The <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#flipX" target="_blank">Element.flipX</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#flipY" target="_blank">Element.flipY</a></em> boolean properties are used for flip the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em> horizontally or vertically.</p>
+	</section>
+	
+	<section>
+		<a class="link" href="#element-styling"></a>
+		<h2 id="element-styling">Element styling</h2>
+		<p>There are a bunch of common property for customizing the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em>, such as the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#background" target="_blank">Element.background</a></em>, which is used for the background color. You can also set the border of the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em>, with the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#borderWidth" target="_blank">Element.borderWidth</a></em>, <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#borderStyle" target="_blank">Element.borderStyle</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#borderColor" target="_blank">Element.borderColor</a></em> properties. If you only want to add border to the top, you can use the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#borderTopWidth" target="_blank">Element.borderTopWidth</a></em> and the others. The <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#opacity" target="_blank">Element.opacity</a></em> specifies the transparency of the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em>.</p>
+	</section>
+	
+	<nav>
+		<a class="nav-all" href="index.html">Back to overview</a>
+		<a class="nav-back" href="basics.html">Previous tutorial: Basics</a>
+		<a class="nav-next" href="element types.html">Next tutorial: Element types</a>
+	</nav>
+	
+	<hr class="footer-hr" />
+	
+	<footer>
+		<p>For more information, see the <a href="http://bokodi.github.io/chillJS/docs/" target="_blank">documentation</a></p>
+	</footer>
+</body>
+</html>

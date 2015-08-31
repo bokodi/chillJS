@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>chillJS - tutorials/demos: element types/TriangleElement</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="../../chill.css" />
+</head>
+<body>
+	<div id="myDiv"></div>
+	
+	<script src="../../chill.js"></script>
+	<script>
+		Chill.out(new Chill.App({ resize: [[480, 320]] }), 'myDiv', function(scene) {
+			var layer = scene.insertLayer();
+			
+			var triangle = layer.create('Triangle', {
+				width: 50,
+				height: 80,
+				fill: 'lime'
+			});
+			
+			layer.background = 'yellow';
+			layer.add(triangle);
+		}).start();
+	</script>
+</body>
+</html>

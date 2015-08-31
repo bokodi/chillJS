@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>chillJS - tutorials: Basics</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="./prism/prism.css" />
+	<link rel="stylesheet" href="layout.css" />
+	<script src="./prism/prism.js"></script>
+</head>
+<body>
+	
+	<header>
+		<h1>chillJS - tutorials<span>: basics</span></h1>
+		<ul>
+			<li><b>Summary:</b> chillJS basics, events, tasks and animations.</li>
+			<li><b>Target:</b> chillJS v0.1.0</li>
+		</ul>
+		<p>This tutorial is part of the <a href="https://github.com/bokodi/chillJS" target="_blank">chillJS GitHub repository</a></p>
+	</header>
+	
+	<nav>
+		<a class="nav-all" href="index.html">Back to overview</a>
+		<a class="nav-back" href="getting started.html">Previous tutorial: Getting started</a>
+		<a class="nav-next" href="element properties.html">Next tutorial: Element properties</a>
+	</nav>
+	
+	<section>
+		<a class="link" href="#configurator-object"></a>
+		<h2 id="configurator-object">Configurator object</h2>
+		<p>In the first chapter you have seen, how to create layers and elements. Let's see what's under the hood. The <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html#createLayer" target="_blank">Scene.createLayer</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/Layer.html#create" target="_blank">Layer.create</a></em> methods both have an optional parameter (source) for configuration. These are used by a global function. With this function, you can modify the <em><a href="http://bokodi.github.io/chillJS/docs/Layer.html" target="_blank">Layer</a></em> or the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em> (target) in many ways. It depends on the type of the target's and the type of the source's property. Here is the list, how does it works:</p>
+		<table>
+			<tr>
+				<th>Target property type</th>
+				<th>Source property type</th>
+				<th>Action</th>
+			</tr>
+			<tr>
+				<td>Function</td>
+				<td>Array</td>
+				<td>With each item of the source's array, the target's function is called.</td>
+			</tr>
+			<tr>
+				<td>Function</td>
+				<td>Not Array</td>
+				<td>The target's function is called with the source's property as first parameter.</td>
+			</tr>
+			<tr>
+				<td>Array</td>
+				<td>Array</td>
+				<td>Adds every items from the source's array to the end of the target's array.</td>
+			</tr>
+			<tr>
+				<td>Array</td>
+				<td>Not Array</td>
+				<td>Adds the source's property to the end of the target's array.</td>
+			</tr>
+			<tr>
+				<td>Object</td>
+				<td>Object</td>
+				<td>The configurator function is called with the target's property as target and the source's property as source.</td>
+			</tr>
+			<tr>
+				<td>Object</td>
+				<td>Not Object</td>
+				<td>Sets the target's property to the source's property.</td>
+			</tr>
+			<tr>
+				<td>String</td>
+				<td>*</td>
+				<td>Sets the target's property to the source's property.</td>
+			</tr>
+			<tr>
+				<td>Boolean</td>
+				<td>*</td>
+				<td>Sets the target's property to the source's property.</td>
+			</tr>
+			<tr>
+				<td>Number</td>
+				<td>*</td>
+				<td>Sets the target's property to the source's property.</td>
+			</tr>
+			<tr>
+				<td>Undefined</td>
+				<td>*</td>
+				<td>Sets the target's property to the source's property.</td>
+			</tr>
+			<tr>
+				<td>Null</td>
+				<td>*</td>
+				<td>Sets the target's property to the source's property.</td>
+			</tr>
+		</table>
+		<p>Here is how to use it:</p>
+		<pre class="hasdemo"><code class="language-javascript">var layer = scene.insertLayer({
+	insert: [ // call layer.insert two times
+		['Text', { text: 'Hello World!' }], // layer.insert('Text', { text: 'Hello World!' })
+		['Circle', { r: 50 }] // layer.insert('Circle', { r: 50 })
+	]
+});
+
+var element = layer.insert('Rectangle', {
+	classList: { // use element.classList as target
+		add: ['myClass'] // element.classList.add('myClass')
+	},
+	width: 100, // element.width = 100
+	height: 80 // element.height = 80
+});</code></pre>
+		<a class="demo" href="demos/basics - configurator object.html" target="_blank">see demo</a>
+	</section>
+	
+	<section>
+		<a class="link" href="#Chill-App"></a>
+		<h2 id="Chill-App">Chill App</h2>
+		<p>You can also configure the <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html" target="_blank">Scene</a></em> with <em><a href="http://bokodi.github.io/chillJS/docs/Chill.App.html" target="_blank">Chill.App</a></em>. There is one optional parameter, which can be an object, or a string (path to a JSON file).</p>
+		<pre><code class="language-javascript">var app = new Chill.App('path-to-my-json/config.json');
+
+Chill.out(app, 'div1');
+Chill.out(app, 'div2');</code></pre>
+	</section>
+	
+	<section>
+		<a class="link" href="#Events"></a>
+		<h2 id="Events">Events</h2>
+		<p>The <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html" target="_blank">Scene</a></em>, <em><a href="http://bokodi.github.io/chillJS/docs/Layer.html" target="_blank">Layer</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em> are extends <em><a href="http://bokodi.github.io/chillJS/docs/EventTarget.html" target="_blank">EventTarget</a></em>, which is an interface that can receive events and may have listeners for them. You can listen for any <em><a href="http://bokodi.github.io/chillJS/docs/Event.html" target="_blank">Event</a></em>, with the <em><a href="http://bokodi.github.io/chillJS/docs/EventTarget.html#addEventListener" target="_blank">EventTarget.addEventListener</a></em> or <em><a href="http://bokodi.github.io/chillJS/docs/EventTarget.html#on" target="_blank">EventTarget.on</a></em>. The <em><a href="http://bokodi.github.io/chillJS/docs/EventTarget.html#removeEventListener" target="_blank">EventTarget.removeEventListener</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/EventTarget.html#off" target="_blank">EventTarget.off</a></em> removes a given listener, the <em><a href="http://bokodi.github.io/chillJS/docs/EventTarget.html#removeAllEventListeners" target="_blank">EventTarget.removeAllEventListeners</a></em> is used for remove every one of them. You can also check if a listener already added with the <em><a href="http://bokodi.github.io/chillJS/docs/EventTarget.html#hasEventListener" target="_blank">EventTarget.hasEventListener</a></em> method. In order to dispatch an event, you should use <em><a href="http://bokodi.github.io/chillJS/docs/EventTarget.html#dispatchEvent" target="_blank">EventTarget.dispatchEvent</a></em> or <em><a href="http://bokodi.github.io/chillJS/docs/EventTarget.html#emit" target="_blank">EventTarget.emit</a></em>.</p>
+		<pre><code class="language-javascript">element.on('myCustomEvent', function() {
+	this.x += 10;
+});
+
+element.emit('myCustomEvent');</code></pre>
+		<div class="tip">The this value is always the target of the <em><a href="http://bokodi.github.io/chillJS/docs/Event.html" target="_blank">Event</a></em> in the listener.</div>
+		<p>There are not only custom events. You can listen for keyboard events on the <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html" target="_blank">Scene</a></em>, like "keypress", "keydown" or "keyup". The "mousedown", "mousemove", "mouseup", "mouseenter" and "mouseleave" events are works on the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em>. There are also shorthand methods for the mouse events:</p>
+		<pre class="hasdemo"><code class="language-javascript">element.on('mouseenter', function() { this.background = 'orange'; });
+element.mouseleave(function() { this.background = ''; });</code></pre>
+		<a class="demo" href="demos/basics - events.html" target="_blank">see demo</a>
+	</section>
+	
+	<section>
+		<a class="link" href="#Tasks-and-animations"></a>
+		<h2 id="Tasks-and-animations">Tasks and animations</h2>
+		<p>You can add a <em><a href="http://bokodi.github.io/chillJS/docs/Task.html" target="_blank">Task</a></em> to the <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html#queue" target="_blank">Scene.queue</a></em> with the <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html#addTask" target="_blank">Scene.addTask</a></em> method, which requires a listener function as first parameter, and you can also specify the delay between the calls. There are two ways to remove a <em><a href="http://bokodi.github.io/chillJS/docs/Task.html" target="_blank">Task</a></em> from the <em><a href="http://bokodi.github.io/chillJS/docs/Queue.html" target="_blank">Queue</a></em>. If the return value of the listener is true, then the <em><a href="http://bokodi.github.io/chillJS/docs/Task.html" target="_blank">Task</a></em> is removed automatically by the <em><a href="http://bokodi.github.io/chillJS/docs/Queue.html" target="_blank">Queue</a></em>. An other solution is to call the <em><a href="http://bokodi.github.io/chillJS/docs/Queue.html#remove" target="_blank">Queue.remove</a></em> method manually.</p>
+		<pre class="hasdemo"><code class="language-javascript">scene.addTask(function() {
+	return ++element.x > 240;
+}, 25);</code></pre>
+		<a class="demo" href="demos/basics - addTask.html" target="_blank">see demo</a>
+		<p>The <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html#later" target="_blank">Scene.later</a></em> method executes the provided listener function once after a specified delay. The <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html#repeat" target="_blank">Scene.repeat</a></em> repeats the given listener n times.</p>
+		<pre class="hasdemo"><code class="language-javascript">scene.later(function() {
+	element.angle = 90;
+}, 2000); // 2 sec</code></pre>
+		<a class="demo" href="demos/basics - later.html" target="_blank">see demo</a>
+		<p>There is an easier way to animate an <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em>. The <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#animate" target="_blank">Element.animate</a></em> method helps to create animation effects on any numeric property. The first parameter is a plain object, where you can specify the modifications. The second is the duration in milliseconds. You can also set delay optionally in the third parameter.</p>
+		<pre class="hasdemo"><code class="language-javascript">element.animate({
+	x: 300,
+	width: 40
+}, 2500);</code></pre>
+		<a class="demo" href="demos/basics - animate.html" target="_blank">see demo</a>
+		<div class="tip">The <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#animate" target="_blank">Element.animate</a></em> method adds a <em><a href="http://bokodi.github.io/chillJS/docs/Task.html" target="_blank">Task</a></em> to the <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html#queue" target="_blank">Scene.queue</a></em>.</div>
+	</section>
+	
+	<nav>
+		<a class="nav-all" href="index.html">Back to overview</a>
+		<a class="nav-back" href="getting started.html">Previous tutorial: Getting started</a>
+		<a class="nav-next" href="element properties.html">Next tutorial: Element properties</a>
+	</nav>
+	
+	<hr class="footer-hr" />
+	
+	<footer>
+		<p>For more information, see the <a href="http://bokodi.github.io/chillJS/docs/" target="_blank">documentation</a></p>
+	</footer>
+</body>
+</html>

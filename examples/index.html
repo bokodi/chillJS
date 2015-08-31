@@ -3,12 +3,74 @@
 <head>
 	<title>chillJS - examples</title>
 	<meta charset="utf-8" />
+	<style>
+		@font-face {
+			font-family: 'Open Sans Light';
+			font-weight: normal;
+			font-style: normal;
+			src: url('./fonts/OpenSans-Light-webfont.eot');
+			src:
+				local('Open Sans Light'),
+				local('OpenSans Light'),
+				url('./fonts/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'),
+				url('./fonts/OpenSans-Light-webfont.woff') format('woff'),
+				url('./fonts/OpenSans-Light-webfont.svg#open_sanslight') format('svg');
+		}
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		body {
+			width: 100%;
+			max-width: 960px;
+			margin: 30px auto;
+			background: #ddddee;
+			font-family: sans-serif;
+		}
+		header h1 {
+			margin-bottom: 30px;
+			padding: 20px;
+			background: #374456 url('../chillJS-logo.png');
+			background-position: 99.5% 50%;
+			background-repeat: no-repeat;
+			background-size: auto 90%;
+			font-family: 'Open Sans Light', sans-serif;
+			font-size: 32px;
+			color: #ffffff;
+		}
+		ul {
+			list-style-type: none;
+		}
+		li {
+			line-height: 1;
+		}
+		li a {
+			margin: 6px 0;
+			padding: 10px 12px;
+			display: block;
+			background-color: #ffffff;
+		}
+		a {
+			font-family: verdana;
+			font-size: 16px;
+			color: #009BDA;
+			letter-spacing: 1px;
+			text-decoration: none;
+		}
+		a:hover {
+			background-color: #FFF89E;
+		}
+	</style>
 </head>
 <body>
+	<header>
+		<h1>chillJS - examples</h1>
+	</header>
+	
 	<ul>
-		<li><a href="flow">flow</a></li>
-		<li><a href="flappy bird">flappy bird</a></li>
-		<li><a href="hello world">hello world</a></li>
+		<li><a href="hello world" target="_blank">hello world</a></li>
+		<li><a href="flappy bird" target="_blank">flappy bird</a></li>
+		<li><a href="flow" target="_blank">flow</a></li>
 	</ul>
 </body>
 </html>

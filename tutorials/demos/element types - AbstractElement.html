@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>chillJS - tutorials/demos: element types/EllipseElement</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="../../chill.css" />
+</head>
+<body>
+	<div id="myDiv"></div>
+	
+	<script src="../../chill.js"></script>
+	<script>
+		Chill.createAbstractElement('Rect-150x200', 'Rectangle', {
+			width: 150,
+			height: 200,
+			flow: 'horizontal'
+		});
+		
+		Chill.out(new Chill.App({ resize: [[480, 320]] }), 'myDiv', function(scene) {
+			var layer = scene.insertLayer();
+
+			['red', 'blue', 'green'].forEach(function(color) {
+				layer.insert('#Rect-150x200', { fill: color });
+			});
+		}).start();
+	</script>
+</body>
+</html>

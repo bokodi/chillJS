@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>chillJS - tutorials/demos: basics/configurator object</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="../../chill.css" />
+</head>
+<body>
+	<div id="myDiv"></div>
+	
+	<script src="../../chill.js"></script>
+	<script>
+		var scene = Chill.out(new Chill.App({ resize: [[480, 320]] }), 'myDiv', function(scene) {
+			var layer = scene.insertLayer({
+				insert: [
+					['Text', { text: 'Hello World!' }],
+					['Circle', { r: 50 }]
+				]
+			});
+
+			var element = layer.insert('Rectangle', {
+				classList: {
+					add: 'myClass'
+				},
+				width: 100,
+				height: 80
+			});
+		}).start();
+	</script>
+</body>
+</html>

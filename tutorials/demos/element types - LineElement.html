@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>chillJS - tutorials/demos: element types/LineElement</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="../../chill.css" />
+</head>
+<body>
+	<div id="myDiv"></div>
+	
+	<script src="../../chill.js"></script>
+	<script>
+		Chill.out(new Chill.App({ resize: [[480, 320]] }), 'myDiv', function(scene) {
+			var layer = scene.insertLayer();
+			
+			var line = layer.create('Line', {
+				x: 50,
+				y: 30,
+				width: 250,
+				strokeWidth: 10
+			});
+			
+			layer.background = 'yellow';
+			layer.add(line);
+		}).start();
+	</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>chillJS - tutorials/demos: element types/ContainerElement</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="../../chill.css" />
+</head>
+<body>
+	<div id="myDiv"></div>
+	
+	<script src="../../chill.js"></script>
+	<script>
+		Chill.out(new Chill.App({ resize: [[480, 320]] }), 'myDiv', function(scene) {
+			var layer = scene.insertLayer();
+			
+			// adds a container element to layer.body
+			var myContainer = layer.insert('Container', ['myContainer', {
+				x: 50,
+				y: 50,
+				background: 'orange'
+			}]);
+
+			var text = layer.create('Text', {
+				text: 'flowing text\ninside the orange container',
+				flow: 'horizontal'
+			});
+			
+			layer.background = '#abcdef';
+			layer.add(text, 'myContainer'); // notice the second param
+		}).start();
+	</script>
+</body>
+</html>

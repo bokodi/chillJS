@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>chillJS - tutorials: Getting started</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="./prism/prism.css" />
+	<link rel="stylesheet" href="layout.css" />
+	<script src="./prism/prism.js"></script>
+</head>
+<body>
+	
+	<header>
+		<h1>chillJS - tutorials<span>: getting started</span></h1>
+		<ul>
+			<li><b>Summary:</b> Set up an HTML document (load chillJS), and add elements to the scene.</li>
+			<li><b>Target:</b> chillJS v0.1.0</li>
+		</ul>
+		<p>This tutorial is part of the <a href="https://github.com/bokodi/chillJS" target="_blank">chillJS GitHub repository</a></p>
+	</header>
+	
+	<nav>
+		<a class="nav-all" href="index.html">Back to overview</a>
+		<a class="nav-next" href="basics.html">Next tutorial: Basics</a>
+	</nav>
+	
+	<section>
+		<a class="link" href="#Setting-up-your-HTML-document"></a>
+		<h2 id="Setting-up-your-HTML-document">Setting up your HTML document</h2>
+		<pre><code class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+	&lt;title&gt;My first chillJS application&lt;/title&gt;
+	&lt;meta charset="utf-8" /&gt;
+	&lt;link rel="stylesheet" href="path-to-chillJS/chill.css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div id="myDiv"&gt;&lt;/div&gt;
+	
+	&lt;script src="path-to-chillJS/chill.min.js"&gt;&lt;/script&gt;
+	&lt;script&gt;
+		// code here
+	&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+	</section>
+	
+	<section>
+		<a class="link" href="#Initialize-the-Scene"></a>
+		<h2 id="Initialize-the-Scene">Initialize the Scene</h2>
+		<pre><code class="language-javascript">Chill.out(new Chill.App(), 'myDiv');</code></pre>
+		<p>This code creates an empty application. <em><a href="http://bokodi.github.io/chillJS/docs/Chill.html" target="_blank">Chill</a></em> is a global namespace, the <em><a href="http://bokodi.github.io/chillJS/docs/Chill.html#.out" target="_blank">Chill.out</a></em> method initializes the application inside an HTML element (second parameter). This parameter could be an element id (string), or a reference to an HTML element. You will learn about <em><a href="http://bokodi.github.io/chillJS/docs/Chill.App.html" target="_blank">Chill.App</a></em> in the next chapter.</p>
+	</section>
+	
+	<section>
+		<a class="link" href="#Add-elements-to-the-Scene"></a>
+		<h2 id="Add-elements-to-the-Scene">Add elements to the Scene</h2>
+		<p>There is an optional third parameter in the <em><a href="http://bokodi.github.io/chillJS/docs/Chill.html#.out" target="_blank">Chill.out</a></em> method. This is a callback function, which gives us the actual <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html" target="_blank">Scene</a></em>. In order to add an <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em> to it, you will need a <em><a href="http://bokodi.github.io/chillJS/docs/Layer.html" target="_blank">Layer</a></em> first.</p>
+		<pre><code class="language-javascript">Chill.out(new Chill.App(), 'myDiv', function(scene) {
+	scene.resize(320, 80);
+	
+	var layer = scene.createLayer();
+	var element = layer.create('Text', { text: 'Hello World!' });
+	
+	layer.add(element);
+	scene.addLayer(layer);
+	
+	scene.start();
+});</code></pre>
+		<p>Or simply, you can just write:</p>
+		<pre><code class="language-javascript">Chill.out(new Chill.App(), 'myDiv', function(scene) {
+	scene.resize(320, 80).insertLayer().insert('Text', { text: 'Hello World!' });
+	
+	scene.start();
+});</code></pre>
+		<div class="tip">The <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html#insertLayer" target="_blank">Scene.insertLayer</a></em> is a shorthand for <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html#createLayer" target="_blank">Scene.createLayer</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html#addLayer" target="_blank">Scene.addLayer</a></em>, the <em><a href="http://bokodi.github.io/chillJS/docs/Layer.html#insert" target="_blank">Layer.insert</a></em> is a shorthand for <em><a href="http://bokodi.github.io/chillJS/docs/Layer.html#create" target="_blank">Layer.create</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/Layer.html#add" target="_blank">Layer.add</a></em>.</div>
+	</section>
+	
+	<section>
+		<a class="link" href="#Lazy-start"></a>
+		<h2 id="Lazy-start">Lazy start</h2>
+		<pre class="hasdemo"><code class="language-javascript">Chill.out(new Chill.App(), 'myDiv', function(scene) {
+	scene.resize(320, 80).insertLayer().insert('Text', { text: 'Hello World!' });
+}).start();</code></pre>
+		<a class="demo" href="demos/getting started - lazy start.html" target="_blank">see demo</a>
+		<div class="tip">The <em><a href="http://bokodi.github.io/chillJS/docs/Chill.html#.out" target="_blank">Chill.out</a></em> method returns the created <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html" target="_blank">Scene</a></em></div>
+	</section>
+	
+	<nav>
+		<a class="nav-all" href="index.html">Back to overview</a>
+		<a class="nav-next" href="basics.html">Next tutorial: Basics</a>
+	</nav>
+	
+	<hr class="footer-hr" />
+	
+	<footer>
+		<p>For more information, see the <a href="http://bokodi.github.io/chillJS/docs/" target="_blank">documentation</a></p>
+	</footer>
+</body>
+</html>

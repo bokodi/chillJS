@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>chillJS - tutorials: Element types</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="./prism/prism.css" />
+	<link rel="stylesheet" href="layout.css" />
+	<script src="./prism/prism.js"></script>
+</head>
+<body>
+	
+	<header>
+		<h1>chillJS - tutorials<span>: element types</span></h1>
+		<ul>
+			<li><b>Summary:</b> Introduction to the default element types.</li>
+			<li><b>Target:</b> chillJS v0.1.0</li>
+		</ul>
+		<p>This tutorial is part of the <a href="https://github.com/bokodi/chillJS" target="_blank">chillJS GitHub repository</a></p>
+	</header>
+	
+	<nav>
+		<a class="nav-all" href="index.html">Back to overview</a>
+		<a class="nav-back" href="element properties.html">Previous tutorial: Element properties</a>
+		<a class="nav-next" href="example.html">Next tutorial: Let's create flappy bird in 15 minutes!</a>
+	</nav>
+	
+	<section>
+		<a class="link" href="#Container-element"></a>
+		<h2 id="Container-element">Container element</h2>
+		<p>This is the most important element type. Only <em><a href="http://bokodi.github.io/chillJS/docs/ContainerElement.html" target="_blank">ContainerElement</a></em> can hold other elements. Every <em><a href="http://bokodi.github.io/chillJS/docs/Layer.html" target="_blank">Layer</a></em> has a main container by default, called "body". There are more ways to access it:</p>
+		<pre><code class="language-javascript">var body = layer.body;
+// or
+var body = layer.getElementByID('body');</code></pre>
+		<p>However you don't have to get the body in order to add elements to it. You only need to provide the id in the <em><a href="http://bokodi.github.io/chillJS/docs/Layer.html#add" target="_blank">Layer.add</a></em> method, which is <i>body</i> by default. Let's see, how to add elements to other containers.</p>
+		<pre class="hasdemo"><code class="language-javascript">// adds a container element to layer.body
+var myContainer = layer.insert('Container', ['myContainer', {
+	x: 50,
+	y: 50,
+	background: 'orange'
+}]);
+
+var text = layer.create('Text', {
+	text: 'flowing text\ninside the orange container',
+	flow: 'horizontal'
+});
+
+layer.background = '#abcdef';
+layer.add(text, 'myContainer'); // notice the second param</code></pre>
+		<a class="demo" href="demos/element types - ContainerElement.html" target="_blank">see demo</a>
+	</section>
+	
+	<section>
+		<a class="link" href="#Text-element"></a>
+		<h2 id="Text-element">Text element</h2>
+		<p><em><a href="http://bokodi.github.io/chillJS/docs/TextElement.html" target="_blank">TextElement</a></em> is for displaying text on the <em><a href="http://bokodi.github.io/chillJS/docs/Layer.html" target="_blank">Layer</a></em>. It extends <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em>, so you can also set much more (common)properties, such as <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#background" target="_blank">Element.background</a></em>. Some of the <em><a href="http://bokodi.github.io/chillJS/docs/TextElement.html" target="_blank">TextElement</a></em> properties might be familiar from HTML element styling.</p>
+		<p>You can set the text of the element with <em><a href="http://bokodi.github.io/chillJS/docs/TextElement.html#text" target="_blank">TextElement.text</a></em>. The width is "auto" by default, which means the element horizontal size will be measured (width of longest row). The height is also "auto", the vertical size will be calculated (number of lines multiplied by the measured line height). The <em><a href="http://bokodi.github.io/chillJS/docs/TextElement.html#lineHeight" target="_blank">TextElement.lineHeight</a></em> is default to "auto" (100%). It could be numeric or percentage (relative to <em><a href="http://bokodi.github.io/chillJS/docs/TextElement.html#fontSize" target="_blank">TextElement.fontSize</a></em>) too. <em><a href="http://bokodi.github.io/chillJS/docs/TextElement.html#textColor" target="_blank">TextElement.textColor</a></em> specifies the color of the text. The <em><a href="http://bokodi.github.io/chillJS/docs/TextElement.html#fontWeight" target="_blank">TextElement.fontWeight</a></em> defines the thickness of the letters ("bold" or "normal"), <em><a href="http://bokodi.github.io/chillJS/docs/TextElement.html#fontStyle" target="_blank">TextElement.fontStyle</a></em> can be "italic" or "normal". The <em><a href="http://bokodi.github.io/chillJS/docs/TextElement.html#textIndent" target="_blank">TextElement.textIndent</a></em> property specifies how much horizontal space should be left before the beginning of the first line of the text. The <em><a href="http://bokodi.github.io/chillJS/docs/TextElement.html#textAlign" target="_blank">TextElement.textAlign</a></em> property describes how the text is aligned in its rendering box. <em><a href="http://bokodi.github.io/chillJS/docs/TextElement.html#textDecoration" target="_blank">TextElement.textDecoration</a></em> (default to "none") is used to set the text formatting to "underline", "overline" or "line-through". The <em><a href="http://bokodi.github.io/chillJS/docs/TextElement.html#textTransform" target="_blank">TextElement.textTransform</a></em> property specifies how to capitalize an element's text. It can be used to make text appear in all-uppercase ("uppercase"), all-lowercase ("lowercase") or with each word capitalized ("capitalize"). The <em><a href="http://bokodi.github.io/chillJS/docs/TextElement.html#fontFamily" target="_blank">TextElement.fontFamily</a></em> property lets you specify a font for the text. <em><a href="http://bokodi.github.io/chillJS/docs/TextElement.html#letterSpacing" target="_blank">TextElement.letterSpacing</a></em> specifies the spacing behavior between the characters. It's a numeric property and indicates how many spaces should be between the words.</p>
+		<pre class="hasdemo"><code class="language-javascript">var text = layer.create('Text', {
+	text: 'my Text\nsecond row\n\nnotice the empty line',
+	width: '100%',
+	textAlign: 'center',
+	textColor: '#ff0000',
+	fontWeight: 'bold',
+	fontStyle: 'italic',
+	lineHeight: '150%'
+});</code></pre>
+		<a class="demo" href="demos/element types - TextElement.html" target="_blank">see demo</a>
+	</section>
+	
+	<section>
+		<a class="link" href="#Polygon-element"></a>
+		<h2 id="Polygon-element">Polygon element</h2>
+		<p><em><a href="http://bokodi.github.io/chillJS/docs/PolygonElement.html" target="_blank">PolygonElement</a></em> is not instantiatable, but extensible. It extends the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em>. It has at least two <em><a href="http://bokodi.github.io/chillJS/docs/PolygonElement.html#vertices" target="_blank">PolygonElement.vertices</a></em>. Every vertex is an object, with "x" and "y" properties. These are defined in the extended elements.</p>
+		<p><em><a href="http://bokodi.github.io/chillJS/docs/PolygonElement.html#fill" target="_blank">PolygonElement.fill</a></em> specifies the color to use as background inside the shape. It's default to empty string (""), which means transparent.</p>
+		<div class="tip">Any color could be hexa ("#ff0000") or word ("red") or rgb ("rgb(255, 0, 0)") or rgba ("rgba(255, 0, 0, 1)").</div>
+		<p><em><a href="http://bokodi.github.io/chillJS/docs/PolygonElement.html#strokeWidth" target="_blank">PolygonElement.strokeWidth</a></em> sets the thickness of the lines. You also can provide color for lines with <em><a href="http://bokodi.github.io/chillJS/docs/PolygonElement.html#strokeColor" target="_blank">PolygonElement.strokeColor</a></em>.</p>
+	</section>
+	
+	<section>
+		<a class="link" href="#Line-element"></a>
+		<h2 id="Line-element">Line element</h2>
+		<p><em><a href="http://bokodi.github.io/chillJS/docs/LineElement.html" target="_blank">LineElement</a></em> extends <em><a href="http://bokodi.github.io/chillJS/docs/PolygonElement.html" target="_blank">PolygonElement</a></em>. The width and height are a bit tricky here, because <em><a href="http://bokodi.github.io/chillJS/docs/LineElement.html" target="_blank">LineElement</a></em> is also represented in a box (like other elements, you can set its background color, or add border to it). The line goes from the top left corner to bottom right. It's vertices are at [0, 0] and [1, 1]. If you want a horizontal line, the height of the line must be 0, for vertical line, set the width to 0. You can also rotate it with <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#angle" target="_blank">Element.angle</a></em>.</p>
+		<pre class="hasdemo"><code class="language-javascript">var line = layer.create('Line', {
+	x: 50,
+	y: 30,
+	width: 250,
+	strokeWidth: 10
+});</code></pre>
+		<a class="demo" href="demos/element types - LineElement.html" target="_blank">see demo</a>
+	</section>
+	
+	<section>
+		<a class="link" href="#Triangle-element"></a>
+		<h2 id="Triangle-element">Triangle element</h2>
+		<p><em><a href="http://bokodi.github.io/chillJS/docs/TriangleElement.html" target="_blank">TriangleElement</a></em> extends <em><a href="http://bokodi.github.io/chillJS/docs/PolygonElement.html" target="_blank">PolygonElement</a></em>. Vertices are at [0.5, 0], [1, 1], [0, 1].</p>
+		<pre class="hasdemo"><code class="language-javascript">var triangle = layer.create('Triangle', {
+	width: 50,
+	height: 80,
+	fill: 'lime'
+});</code></pre>
+		<a class="demo" href="demos/element types - TriangleElement.html" target="_blank">see demo</a>
+	</section>
+	
+	<section>
+		<a class="link" href="#Rectangle-element"></a>
+		<h2 id="Rectangle-element">Rectangle element</h2>
+		<p><em><a href="http://bokodi.github.io/chillJS/docs/RectangleElement.html" target="_blank">RectangleElement</a></em> extends <em><a href="http://bokodi.github.io/chillJS/docs/PolygonElement.html" target="_blank">PolygonElement</a></em>. Vertices are at [0, 0], [1, 0], [1, 1], [0, 1].</p>
+		<pre class="hasdemo"><code class="language-javascript">var rectangle = layer.create('Rectangle', {
+	x: 100,
+	y: 100,
+	width: 50,
+	height: 80,
+	angle: 45
+});</code></pre>
+		<a class="demo" href="demos/element types - RectangleElement.html" target="_blank">see demo</a>
+	</section>
+	
+	<section>
+		<a class="link" href="#Pentagon-element"></a>
+		<h2 id="Pentagon-element">Pentagon element</h2>
+		<p><em><a href="http://bokodi.github.io/chillJS/docs/PentagonElement.html" target="_blank">PentagonElement</a></em> extends <em><a href="http://bokodi.github.io/chillJS/docs/PolygonElement.html" target="_blank">PolygonElement</a></em>. Vertices are at [0.5, 0], [1, 0.4], [0.8, 1], [0.2, 1], [0, 0.4].</p>
+		<pre class="hasdemo"><code class="language-javascript">var pentagon = layer.create('Pentagon', {
+	width: 80,
+	height: 80
+});</code></pre>
+		<a class="demo" href="demos/element types - PentagonElement.html" target="_blank">see demo</a>
+	</section>
+	
+	<section>
+		<a class="link" href="#Hexagon-element"></a>
+		<h2 id="Hexagon-element">Hexagon element</h2>
+		<p><em><a href="http://bokodi.github.io/chillJS/docs/HexagonElement.html" target="_blank">HexagonElement</a></em> extends <em><a href="http://bokodi.github.io/chillJS/docs/PolygonElement.html" target="_blank">PolygonElement</a></em>. Vertices are at [0.25, 0], [0.75, 0], [1, 0.5], [0.75, 1], [0.25, 1], [0, 0.5].</p>
+		<pre class="hasdemo"><code class="language-javascript">var hexagon = layer.create('Hexagon', {
+	x: '50%',
+	y: '50%',
+	offsetX: '-50%',
+	offsetY: '-50%',
+	width: '25%',
+	height: '25%',
+	fill: 'purple'
+});</code></pre>
+		<a class="demo" href="demos/element types - HexagonElement.html" target="_blank">see demo</a>
+	</section>
+	
+	<section>
+		<a class="link" href="#Star-element"></a>
+		<h2 id="Star-element">Star element</h2>
+		<p><em><a href="http://bokodi.github.io/chillJS/docs/StarElement.html" target="_blank">StarElement</a></em> extends <em><a href="http://bokodi.github.io/chillJS/docs/PolygonElement.html" target="_blank">PolygonElement</a></em>. Vertices are at [0, 1], [0.5, 0], [1, 1], [0, 0.3], [1, 0.3].</p>
+		<pre class="hasdemo"><code class="language-javascript">var star = layer.create('Star', {
+	width: '100%',
+	height: '100%',
+	fill: 'white'
+});</code></pre>
+		<a class="demo" href="demos/element types - StarElement.html" target="_blank">see demo</a>
+	</section>
+	
+	<section>
+		<a class="link" href="#Circle-element"></a>
+		<h2 id="Circle-element">Circle element</h2>
+		<p><em><a href="http://bokodi.github.io/chillJS/docs/CircleElement.html" target="_blank">CircleElement</a></em> extends <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em>. The "x" and "y" properties defines the top left corner, not the center of the circle. If you would like othervise, you can use the <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#offsetX" target="_blank">Element.offsetX</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/Element.html#offsetY" target="_blank">Element.offsetY</a></em> properties. The <em><a href="http://bokodi.github.io/chillJS/docs/CircleElement.html#r" target="_blank">CircleElement.r</a></em> property indicates the radius of the element. You can set its color with the <em><a href="http://bokodi.github.io/chillJS/docs/CircleElement.html#fill" target="_blank">CircleElement.fill</a></em>, the line width and color with the <em><a href="http://bokodi.github.io/chillJS/docs/CircleElement.html#strokeWidth" target="_blank">CircleElement.strokeWidth</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/CircleElement.html#strokeColor" target="_blank">CircleElement.strokeColor</a></em> properties, just like a <em><a href="http://bokodi.github.io/chillJS/docs/PolygonElement.html" target="_blank">PolygonElement</a></em>.</p>
+		<pre class="hasdemo"><code class="language-javascript">var circle = layer.create('Circle', {
+	x: '100%',
+	offsetX: '-50%',
+	offsetY: '-50%',
+	r: 200,
+	fill: 'rgb(100, 100, 255)'
+});</code></pre>
+		<a class="demo" href="demos/element types - CircleElement.html" target="_blank">see demo</a>
+	</section>
+	
+	<section>
+		<a class="link" href="#Ellipse-element"></a>
+		<h2 id="Ellipse-element">Ellipse element</h2>
+		<p><em><a href="http://bokodi.github.io/chillJS/docs/EllipseElement.html" target="_blank">EllipseElement</a></em> extends <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em>. It's very similar to the <em><a href="http://bokodi.github.io/chillJS/docs/CircleElement.html" target="_blank">CircleElement</a></em>, only it's uses the "width" and "height" properties in order to determine the size of itself.</p>
+		<pre class="hasdemo"><code class="language-javascript">var ellipse = layer.create('Ellipse', {
+	width: 'fit',
+	height: 'fit',
+	fill: 'red',
+	strokeWidth: 30,
+	strokeColor: 'blue'
+});</code></pre>
+		<a class="demo" href="demos/element types - EllipseElement.html" target="_blank">see demo</a>
+	</section>
+	
+	<section>
+		<a class="link" href="#Image-element"></a>
+		<h2 id="Image-element">Image element</h2>
+		<p><em><a href="http://bokodi.github.io/chillJS/docs/ImageElement.html" target="_blank">ImageElement</a></em> extends <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em>. It displays an image loaded from a given source. The <em><a href="http://bokodi.github.io/chillJS/docs/ImageElement.html#src" target="_blank">ImageElement.src</a></em> property can be a path, or an identifier to a preloaded image. You can preload images with <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html#preload" target="_blank">Scene.preload</a></em>. If you've given an id, you can use it as an src with a hash mark ("#") character at the beginning:</p>
+		<pre><code class="language-javascript">scene.preload('./images/', {
+	Image: ['@150x200.jpg as myImage'] // the "@" character replaced to the base path: "./images/"
+});
+
+var image = layer.create('Image', {
+	src: '#myImage' // "#" character required
+});</code></pre>
+		<p>If you don't want to preload it, you can simply use a path:</p>
+		<pre><code class="language-javascript">var image = layer.create('Image', {
+	src: 'images/150x200.jpg'
+});</code></pre>
+		<p>The width and height properties of the <em><a href="http://bokodi.github.io/chillJS/docs/ImageElement.html" target="_blank">ImageElement</a></em> are "auto" by default, which means it will use the size of the source. The <em><a href="http://bokodi.github.io/chillJS/docs/ImageElement.html#sourceX" target="_blank">ImageElement.sourceX</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/ImageElement.html#sourceY" target="_blank">ImageElement.sourceY</a></em> properties are indicates the top left corner of the sub-rectangle of the source image to draw. The <em><a href="http://bokodi.github.io/chillJS/docs/ImageElement.html#sourceWidth" target="_blank">ImageElement.sourceWidth</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/ImageElement.html#sourceHeight" target="_blank">ImageElement.sourceHeight</a></em> are the width and height of the sub-rectangle of the source image to draw. These properties can be numeric or percentage (relative to the source image).</p>
+		<pre><code class="language-javascript">var image = layer.create('Image', {
+	sourceX: 50,
+	sourceY: '50%',
+	sourceWidth: '50%',
+	sourceHeight: 50,
+	src: 'images/100x100.png'
+});</code></pre>
+	</section>
+	
+	<section>
+		<a class="link" href="#SpriteSheet-element"></a>
+		<h2 id="SpriteSheet-element">SpriteSheet element</h2>
+		<p><em><a href="http://bokodi.github.io/chillJS/docs/SpriteSheetElement.html" target="_blank">SpriteSheetElement</a></em> extends <em><a href="http://bokodi.github.io/chillJS/docs/Element.html" target="_blank">Element</a></em>. It's used for animating images. The <em><a href="http://bokodi.github.io/chillJS/docs/SpriteSheetElement.html#src" target="_blank">SpriteSheetElement.src</a></em> works the same way as <em><a href="http://bokodi.github.io/chillJS/docs/ImageElement.html#src" target="_blank">ImageElement.src</a></em>. The <em><a href="http://bokodi.github.io/chillJS/docs/SpriteSheetElement.html#sourceX" target="_blank">SpriteSheetElement.sourceX</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/SpriteSheetElement.html#sourceY" target="_blank">SpriteSheetElement.sourceY</a></em> also the same, however <em><a href="http://bokodi.github.io/chillJS/docs/SpriteSheetElement.html#frameWidth" target="_blank">SpriteSheetElement.frameWidth</a></em> and <em><a href="http://bokodi.github.io/chillJS/docs/SpriteSheetElement.html#frameHeight" target="_blank">SpriteSheetElement.frameHeight</a></em> properties are new here. These are indicates the size of each frame from the source image. The <em><a href="http://bokodi.github.io/chillJS/docs/SpriteSheetElement.html#frameRate" target="_blank">SpriteSheetElement.frameRate</a></em> is used for add latency between the frames. You can add multiple animations to the <em><a href="http://bokodi.github.io/chillJS/docs/SpriteSheetElement.html" target="_blank">SpriteSheetElement</a></em> like "stand", "walk" or "run", with <em><a href="http://bokodi.github.io/chillJS/docs/SpriteSheetElement.html#addAnimation" target="_blank">SpriteSheetElement.addAnimation</a></em>. The first parameter is the id of the animation, the secong is an object, where you can edit the frames or direction of the animation.</p>
+		<pre><code class="language-javascript">var sprite = layer.create('SpriteSheet', {
+	frameWidth: 80,
+	frameHeight: 80,
+	src: 'images/sprite.png',
+	setFrames: [4],
+	addAnimation: [['default', {
+		frames: [0, 1, 2, 3],
+		frameRate: 20
+	}]]
+});</code></pre>
+	</section>
+	
+	<section>
+		<a class="link" href="#Abstract-element"></a>
+		<h2 id="Abstract-element">Abstract element</h2>
+		<p>You cannot add <em><a href="http://bokodi.github.io/chillJS/docs/AbstractElement.html" target="_blank">AbstractElement</a></em> to the <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html" target="_blank">Scene</a></em>. This type is providing initial values and implementations of behavior. You create an <em><a href="http://bokodi.github.io/chillJS/docs/AbstractElement.html" target="_blank">AbstractElement</a></em>, then instantiate it. The <em><a href="http://bokodi.github.io/chillJS/docs/Layer.html#create" target="_blank">Layer.create</a></em> method checks the first character in the element type param. If it's a hash mark (#), then looks for abstract element by the given id. Let's see an example.</p>
+		<pre class="hasdemo"><code class="language-javascript">Chill.createAbstractElement('Rect-150x200', 'Rectangle', {
+	width: 150,
+	height: 200,
+	flow: 'horizontal'
+});
+
+['red', 'blue', 'green'].forEach(function(color) {
+	layer.insert('#Rect-150x200', { fill: color });
+});</code></pre>
+		<a class="demo" href="demos/element types - AbstractElement.html" target="_blank">see demo</a>
+	</section>
+	
+	<nav>
+		<a class="nav-all" href="index.html">Back to overview</a>
+		<a class="nav-back" href="element properties.html">Previous tutorial: Element properties</a>
+		<a class="nav-next" href="example.html">Next tutorial: Let's create flappy bird in 15 minutes!</a>
+	</nav>
+	
+	<hr class="footer-hr" />
+	
+	<footer>
+		<p>For more information, see the <a href="http://bokodi.github.io/chillJS/docs/" target="_blank">documentation</a></p>
+	</footer>
+</body>
+</html>

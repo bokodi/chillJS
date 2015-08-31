@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>chillJS - tutorials/demos: element types/HexagonElement</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="../../chill.css" />
+</head>
+<body>
+	<div id="myDiv"></div>
+	
+	<script src="../../chill.js"></script>
+	<script>
+		Chill.out(new Chill.App({ resize: [[480, 320]] }), 'myDiv', function(scene) {
+			var layer = scene.insertLayer();
+			
+			var hexagon = layer.create('Hexagon', {
+				x: '50%',
+				y: '50%',
+				offsetX: '-50%',
+				offsetY: '-50%',
+				width: '25%',
+				height: '25%',
+				fill: 'purple'
+			});
+			
+			layer.background = 'yellow';
+			layer.add(hexagon);
+		}).start();
+	</script>
+</body>
+</html>

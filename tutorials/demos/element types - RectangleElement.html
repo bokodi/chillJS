@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>chillJS - tutorials/demos: element types/RectangleElement</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="../../chill.css" />
+</head>
+<body>
+	<div id="myDiv"></div>
+	
+	<script src="../../chill.js"></script>
+	<script>
+		Chill.out(new Chill.App({ resize: [[480, 320]] }), 'myDiv', function(scene) {
+			var layer = scene.insertLayer();
+			
+			var rectangle = layer.create('Rectangle', {
+				x: 100,
+				y: 100,
+				width: 50,
+				height: 80,
+				angle: 45
+			});
+			
+			layer.background = 'yellow';
+			layer.add(rectangle);
+		}).start();
+	</script>
+</body>
+</html>

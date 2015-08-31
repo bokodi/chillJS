@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>chillJS - tutorials/demos: element properties/positioning</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="../../chill.css" />
+</head>
+<body>
+	<div id="myDiv"></div>
+	
+	<script src="../../chill.js"></script>
+	<script>
+		Chill.out(new Chill.App({ resize: [[480, 320]] }), 'myDiv', function(scene) {
+			var layer = scene.insertLayer();
+			var element = layer.insert('Rectangle', {
+				width: 80,
+				height: 60,
+				strokeWidth: 0,
+				fill: 'black'
+			});
+			
+			layer.background = 'yellow';
+			
+			element.edit({
+				x: '100%',
+				offsetX: '-100%'
+			});
+		}).start();
+	</script>
+</body>
+</html>

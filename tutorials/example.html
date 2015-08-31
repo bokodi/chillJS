@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>chillJS - tutorials: Let's create flappy bird in 15 minutes!</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="./prism/prism.css" />
+	<link rel="stylesheet" href="layout.css" />
+	<script src="./prism/prism.js"></script>
+</head>
+<body>
+	
+	<header>
+		<h1>chillJS - tutorials<span>: let's create flappy bird in 15 minutes!</span></h1>
+		<ul>
+			<li><b>Summary:</b> A real world example: flappy bird.</li>
+			<li><b>Target:</b> chillJS v0.1.0</li>
+		</ul>
+		<p>This tutorial is part of the <a href="https://github.com/bokodi/chillJS" target="_blank">chillJS GitHub repository</a></p>
+	</header>
+	
+	<nav>
+		<a class="nav-all" href="index.html">Back to overview</a>
+		<a class="nav-back" href="element types.html">Previous tutorial: Element types</a>
+	</nav>
+	
+	<section>
+		<a class="link" href="#Setting-up"></a>
+		<h2 id="Setting-up">Setting up</h2>
+		<p>First thing is to prepare our application. For better understanding we will separate our game into more files. Here is how the structure should look like:</p>
+		<ul class="file-structure">
+			<li>chill/
+				<ul>
+					<li>chill.css</li>
+					<li>chill.min.js</li>
+				</ul>
+			</li>
+			<li>chill apps/
+				<ul>
+					<li>flappy-bird.json</li>
+				</ul>
+			</li>
+			<li>images/
+				<ul>
+					<li>flappy-bird.png</li>
+				</ul>
+			</li>
+			<li>scripts/
+				<ul>
+					<li>flappy-bird.js</li>
+				</ul>
+			</li>
+			<li>styles/
+				<ul>
+					<li>flappy-bird.css</li>
+				</ul>
+			</li>
+			<li>index.html</li>
+		</ul>
+		<p>Now with your favourite text-editor, open the index.html file, and write the following. This is a basic HTML document, which loads the required files.</p>
+		<pre><code class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+	&lt;title&gt;Flappy bird - chillJS application&lt;/title&gt;
+	&lt;meta charset="utf-8" /&gt;
+	&lt;link rel="stylesheet" href="chill/chill.css" /&gt;
+	&lt;link rel="stylesheet" href="styles/flappy-bird.css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div id="wrapper"&gt;&lt;/div&gt;
+	
+	&lt;script src="chill/chill.min.js"&gt;&lt;/script&gt;
+	&lt;script src="scripts/flappy-bird.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+	</section>
+	
+	<section>
+		<a class="link" href="#Add-some-style"></a>
+		<h2 id="Add-some-style">Add some style</h2>
+		<p>Place the game in the middle of the screen with this little css code (styles/flappy-bird.css)</p>
+		<pre><code class="language-css">#wrapper {
+	width: 320px;
+	height: 480px;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	border: 1px solid #000;
+}</code></pre>
+	</section>
+	
+	<section>
+		<a class="link" href="#Configure-the-app"></a>
+		<h2 id="Configure-the-app">Configure the app</h2>
+		<p>In this step we define some initial data, add elements to the <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html" target="_blank">Scene</a></em> and load images. We want it in the chill apps/flappy-bird.json file, because there is no logic, just some initialization options. There are elements, which we want to add to the <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html" target="_blank">Scene</a></em> several times, so we should create abstract elements. This means there is an order in the steps, thus we need to organize the the configurator object like this:</p>
+		<pre><code class="language-javascript">{
+	"include": [
+		{}, // first steps here
+		{}
+	]
+}</code></pre>
+		<p>The array ensures the order, unlike the object, so we will call the <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html#include" target="_blank">Scene.include</a></em> method two times. Now we can add the config:</p>
+		<pre><code class="language-javascript">{ "include": [
+	{
+		"screen": {
+			"width": 320,
+			"height": 480
+		},
+		
+		"preload": [["./", {
+			"Image": ["@images/flappy-bird.png as sheet"]
+		}]],
+		
+		"createAbstractElement": [
+			["bg", "Image", {
+				"src": "#sheet",
+				"y": "100%",
+				"offsetY": "-100%",
+				"width": 276,
+				"height": 228,
+				"sourceWidth": 276,
+				"sourceHeight": 228
+			}],
+			["fg", "Image", {
+				"src": "#sheet",
+				"y": "100%",
+				"offsetY": "-100%",
+				"width": 224,
+				"height": 112,
+				"vX": -2,
+				"sourceX": 276,
+				"sourceWidth": 224,
+				"sourceHeight": 112
+			}],
+			["pipe", "Image", {
+				"src": "#sheet",
+				"width": 52,
+				"height": 200,
+				"x": 320,
+				"vX": -2,
+				"sourceWidth": 52,
+				"sourceHeight": 400
+			}]
+		]
+	},
+	
+	{
+		"insertLayer": [{
+			"id": "main",
+			
+			"background": "#70C5CF",
+			
+			"insert": [
+				["#bg"],
+				["#bg", { "x": 276 }],
+				
+				["Container", "pipes"],
+				
+				["#fg", {
+					"id": "fg1",
+					"minX": -14,
+					"maxX": 0
+				}],
+				
+				["#fg", {
+					"x": 224,
+					"minX": 210,
+					"maxX": 224
+				}],
+				
+				["SpriteSheet", {
+					"id": "bird",
+					"src": "#sheet",
+					"x": 50,
+					"y": 200,
+					"vY": -5,
+					"angle": -15,
+					"sourceX": 312,
+					"sourceY": 230,
+					"frameWidth": 34,
+					"frameHeight": 24,
+					"frameRate": 14,
+					"frames": [{ "x": 312, "y": 230 }, { "x": 312, "y": 256 }, { "x": 312, "y": 282 }],
+					"addAnimation": [["default", { "frames": [0, 1, 2] } ]],
+					"set": [
+						["gravity", 0.25],
+						["jumpSpeed", 4.6]
+					]
+				}]
+			]
+		}]
+	}
+]}</code></pre>
+		<p>There is nothing interesting here. In the first step, we set the screen width, load our only image and create some <em><a href="http://bokodi.github.io/chillJS/docs/AbstractElement.html" target="_blank">AbstractElement</a></em>. In the second one, we add a <em><a href="http://bokodi.github.io/chillJS/docs/Layer.html" target="_blank">Layer</a></em> and all elements except the pipes. We will store the pipes in an other <em><a href="http://bokodi.github.io/chillJS/docs/ContainerElement.html" target="_blank">ContainerElement</a></em>, so we can access them easier.</p>
+	</section>
+	
+	<section>
+		<a class="link" href="#Implement-the-logic"></a>
+		<h2 id="Implement-the-logic">Implement the logic</h2>
+		<p>Let's write some real code. Call <em><a href="http://bokodi.github.io/chillJS/docs/Chill.html#.out" target="_blank">Chill.out</a></em> and provide our json app. Also specify which HTML element should it place in.</p>
+		<pre><code class="language-javascript">Chill.out(new Chill.App('./chill apps/flappy-bird.json'), 'wrapper', function(scene) {
+	// code here
+});</code></pre>
+		<p>Now we should access the added elements:</p>
+		<pre><code class="language-javascript">var layer = scene.getLayer('main');
+var pipes = layer.getElementByID('pipes');
+var bird = layer.getElementByID('bird');
+var score = layer.getElementByID('score');
+var fg = layer.getElementByID('fg1');</code></pre>
+		<p>Also create a collision detector:</p>
+		<pre><code class="language-javascript">var detector = scene.watch(bird, []);</code></pre>
+		<p>We don't want to start the <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html" target="_blank">Scene</a></em> until the image(s) are loaded:</p>
+		<pre><code class="language-javascript">scene.on('preloadComplete', scene.start);</code></pre>
+		<p>This code listens on the "preloadComplete", and calls the <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html#start" target="_blank">Scene.start</a></em> method, when it triggers. The elements should be updated, so we need to create an other listener, which fires on every tick:</p>
+		<pre><code class="language-javascript">scene.on('tick', function() {
+	bird.vY += bird.get('gravity');
+	
+	if (bird.vY >= bird.get('jumpSpeed')) {
+		bird.currentFrame = 1;
+		bird.angle = Math.min(90, bird.angle + 15);
+	} else {
+		bird.angle = -15;
+	}
+	
+	if (bird.screenYE > fg.screenY) scene.stop();
+	
+	pipes.each(removePipe);
+});
+
+function removePipe(pipe) {
+	if (pipe.screenXE < 0) {
+		layer.remove(pipe);
+		detector.removeTarget(pipe);
+	}
+}</code></pre>
+		<p>Increment vertical velocity of the bird by the gravity, which is defined in the json configurator file. Also add some rotation to make it more realistic. If the bird falls on the floor, stop the game, when a pipe leaves the screen, remove it from the <em><a href="http://bokodi.github.io/chillJS/docs/Layer.html" target="_blank">Layer</a></em>.</p>
+		<p>On click event the bird should "jump". This little code sets the vertical velocity to a negative value (jumpSpeed defined in the json).</p>
+		<pre><code class="language-javascript">scene.on('mousedown', function() {
+	bird.vY = -bird.get('jumpSpeed');
+});</code></pre>
+		<p>Add two pipes in every two sec:</p>
+		<pre><code class="language-javascript">scene.addTask(function() {
+	var offset = Math.random() * 100 | 0;
+	
+	detector.addTarget(layer.insert('#pipe', {
+		y: -offset,
+		sourceX: 554
+	}, 'pipes'));
+	
+	detector.addTarget(layer.insert('#pipe', {
+		y: scene.screen.height - offset,
+		offsetY: "-100%",
+		sourceX: 502
+	}, 'pipes'));
+}, 2000);</code></pre>
+		<p>Almost done, we need to stop the <em><a href="http://bokodi.github.io/chillJS/docs/Scene.html" target="_blank">Scene</a></em> on collision:</p>
+		<pre><code class="language-javascript">bird.on('collision', function() {
+	scene.stop();
+});</code></pre>
+		<p>That's all. 56 lines of code. Pretty easy!</p>
+	</section>
+	
+	<section>
+		<a class="link" href="#Overview"></a>
+		<h2 id="Overview">Overview</h2>
+		<p>Here is the code in one piece. You can also try it out online <a href="http://bokodi.github.io/chillJS/examples/flappy%20bird/" target="_blank">here</a>.</p>
+		<pre><code class="language-javascript">Chill.out(new Chill.App('./chill apps/flappy-bird.json'), 'wrapper', function(scene) {
+	var layer = scene.getLayer('main');
+	var pipes = layer.getElementByID('pipes');
+	var bird = layer.getElementByID('bird');
+	var score = layer.getElementByID('score');
+	var fg = layer.getElementByID('fg1');
+	
+	var detector = scene.watch(bird, []);
+	
+	scene.on('preloadComplete', scene.start);
+	
+	scene.on('tick', function() {
+		bird.vY += bird.get('gravity');
+		
+		if (bird.vY >= bird.get('jumpSpeed')) {
+			bird.currentFrame = 1;
+			bird.angle = Math.min(90, bird.angle + 15);
+		} else {
+			bird.angle = -15;
+		}
+		
+		if (bird.screenYE > fg.screenY) scene.stop();
+		
+		pipes.each(removePipe);
+	});
+
+	function removePipe(pipe) {
+		if (pipe.screenXE < 0) {
+			layer.remove(pipe);
+			detector.removeTarget(pipe);
+		}
+	}
+	
+	scene.on('mousedown', function() {
+		bird.vY = -bird.get('jumpSpeed');
+	});
+	
+	scene.addTask(function() {
+		var offset = Math.random() * 100 | 0;
+		
+		detector.addTarget(layer.insert('#pipe', {
+			y: -offset,
+			sourceX: 554
+		}, 'pipes'));
+		
+		detector.addTarget(layer.insert('#pipe', {
+			y: scene.screen.height - offset,
+			offsetY: "-100%",
+			sourceX: 502
+		}, 'pipes'));
+	}, 2000);
+	
+	bird.on('collision', function() {
+		scene.stop();
+	});
+});
+</code></pre>
+	</section>
+	
+	<nav>
+		<a class="nav-all" href="index.html">Back to overview</a>
+		<a class="nav-back" href="element types.html">Previous tutorial: Element types</a>
+	</nav>
+	
+	<hr class="footer-hr" />
+	
+	<footer>
+		<p>For more information, see the <a href="http://bokodi.github.io/chillJS/docs/" target="_blank">documentation</a></p>
+	</footer>
+</body>
+</html>
