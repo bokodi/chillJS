@@ -815,7 +815,7 @@ sceneProto.later = function(listener, delay, thisArg) {
  * @returns {Scene} this
 **/
 sceneProto.repeat = function(listener, times, delay, thisArg) {
-	var n = 0;
+	var n = 0; // memory leak
 	
 	return this.queue.add(new Task(function() {
 		listener.apply(this, getArgs(arguments));

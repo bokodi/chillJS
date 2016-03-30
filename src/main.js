@@ -76,6 +76,8 @@ chillDebuggerProto.scene = null;
  * @returns {Scene}
 **/
 chillDebuggerProto.addElements = function(layer, count, elementType, callback) {
+	var callbackIsFunction = isFunction(callback);
+	
 	elementType = isUndefined(elementType) ? 'Text' : elementType;
 	
 	repeat(count, function(i) {
@@ -83,7 +85,7 @@ chillDebuggerProto.addElements = function(layer, count, elementType, callback) {
 		
 		layer.add(element);
 		
-		if (isFunction(callback)) callback(element, i);
+		if (callbackIsFunction) callback(element, i);
 	});
 	
 	return this.scene;
@@ -211,38 +213,40 @@ Chill.createPlugin = function(pluginID, pluginConstructor, pluginConfig, force) 
 Chill.createElementType = function(type, createData) {
 	var parent, prototype, constructor;
 	
-	if (!isFunction(createData.constructor)) {
-		warning('Constructor is required to create a new element type');
-	} else if ($elements.hasType(type)) {
-		warning('Cannot create "' + type + '", type already exists');
-	} else {
-		parent = $elements.getExtendable(createData.extends);
-		
-		if (isNull(parent)) {
-			if (!isUndefined(createData.extends)) warning('Cannot extend "' + createData.extends + '", type does not exists, fall back to default: Element');
+	if (isObject(createData)) {
+		if (!isFunction(createData.constructor)) {
+			warning('Constructor is required to create a new element type');
+		} else if ($elements.hasType(type)) {
+			warning('Cannot create "' + type + '", type already exists');
+		} else {
+			parent = $elements.getExtendable(createData.extends);
 			
-			parent = Element;
-		}
-		
-		prototype = Object.create(parent.prototype);
-		
-		constructor = function CustomElement() {
-			var args = getArgs(arguments);
+			if (isNull(parent)) {
+				if (!isUndefined(createData.extends)) warning('Cannot extend "' + createData.extends + '", type does not exists, fall back to default: Element');
+				
+				parent = Element;
+			}
 			
-			parent.apply(this, args);
-			createData.constructor.apply(this, args);
-		};
-		
-		if (isFunction(createData.prototype)) {
-			createData.prototype.call(prototype);
-		} else if (isObject(createData.prototype)) {
-			assign(prototype, createData.prototype);
+			prototype = Object.create(parent.prototype);
+			
+			constructor = function CustomElement() {
+				var args = getArgs(arguments);
+				
+				parent.apply(this, args);
+				createData.constructor.apply(this, args);
+			};
+			
+			if (isFunction(createData.prototype)) {
+				createData.prototype.call(prototype);
+			} else if (isObject(createData.prototype)) {
+				assign(prototype, createData.prototype);
+			}
+			
+			constructor.prototype = prototype;
+			constructor.prototype.constructor = constructor;
+			
+			$elements.addType(type, constructor, createData.instantiatable, createData.extendable);
 		}
-		
-		constructor.prototype = prototype;
-		constructor.prototype.constructor = constructor;
-		
-		$elements.addType(type, constructor, createData.instantiatable, createData.extendable);
 	}
 	
 	return this;

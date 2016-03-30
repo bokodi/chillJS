@@ -1,44 +1,44 @@
 /**
- * Creates a new ImageElement
+ * Creates a new PatternElement
  *
- * @class ImageElement
+ * @class PatternElement
  * @extends Element
  * @param {Object} [elementUse]
  * @description todoc
 **/
-function ImageElement(elementUse) {
+function PatternElement(elementUse) {
 	Element.call(this);
 	
-	this.classList.add(imageElementProto.elementType, 1);
+	this.classList.add(patternElementProto.elementType, 1);
 	
-	forIn(imageElementClass, this.addPropSafe, this);
+	forIn(patternElementClass, this.addPropSafe, this);
 	
 	this.img = new Image();
 	
 	this.edit(elementUse);
 }
 
-/** @lends ImageElement# **/
-var imageElementProto = ImageElement.prototype = Object.create(Element.prototype);
-imageElementProto.constructor = ImageElement;
+/** @lends PatternElement# **/
+var patternElementProto = PatternElement.prototype = Object.create(Element.prototype);
+patternElementProto.constructor = PatternElement;
 
 /**
  * The type of the element
  *
  * @type String
- * @default 'ImageElement'
+ * @default 'PatternElement'
  * @readonly
 **/
-imageElementProto.elementType = 'ImageElement';
+patternElementProto.elementType = 'PatternElement';
 
 /**
  * The name of the element
  *
  * @type String
- * @default 'Image'
+ * @default 'Pattern'
  * @readonly
 **/
-imageElementProto.elementName = 'Image';
+patternElementProto.elementName = 'Pattern';
 
 /**
  * The x position of the source image to draw into the destination context
@@ -46,7 +46,7 @@ imageElementProto.elementName = 'Image';
  * @type Number|String
  * @default 0
 **/
-imageElementProto.sourceX = 0;
+patternElementProto.sourceX = 0;
 
 /**
  * The y position of the source image to draw into the destination context
@@ -54,7 +54,7 @@ imageElementProto.sourceX = 0;
  * @type Number|String
  * @default 0
 **/
-imageElementProto.sourceY = 0;
+patternElementProto.sourceY = 0;
 
 /**
  * The width of the source image to draw into the destination context
@@ -62,7 +62,7 @@ imageElementProto.sourceY = 0;
  * @type Number|String
  * @default '100%'
 **/
-imageElementProto.sourceWidth = '100%';
+patternElementProto.sourceWidth = '100%';
 
 /**
  * The height of the source image to draw into the destination context
@@ -70,7 +70,7 @@ imageElementProto.sourceWidth = '100%';
  * @type Number|String
  * @default '100%'
 **/
-imageElementProto.sourceHeight = '100%';
+patternElementProto.sourceHeight = '100%';
 
 /**
  * The image of the element
@@ -79,16 +79,16 @@ imageElementProto.sourceHeight = '100%';
  * @default null
  * @readonly
 **/
-imageElementProto.img = null;
+patternElementProto.img = null;
 
 /**
  * The source of the image
  *
- * @name ImageElement#src
+ * @name PatternElement#src
  * @type String
  * @default ''
 **/
-Object.defineProperty(imageElementProto, 'src', {
+Object.defineProperty(patternElementProto, 'src', {
 	get: function() {
 		return this.img.src;
 	},
@@ -102,11 +102,20 @@ Object.defineProperty(imageElementProto, 'src', {
 });
 
 /**
+ * A String indicating how to repeat the image (repeat|repeat-x|repeat-y|no-repeat)
+ *
+ * @name PatternElement#repeat
+ * @type String
+ * @default 'repeat'
+**/
+patternElementProto.repeat = 'repeat';
+
+/**
  * Gets the auto width of the element
  *
  * @returns {Number}
 **/
-imageElementProto.measureWidth = function() {
+patternElementProto.measureWidth = function() {
 	var sourceWidth = this.sourceWidth;
 	
 	if (isNumber(sourceWidth)) return sourceWidth;
@@ -120,7 +129,7 @@ imageElementProto.measureWidth = function() {
  *
  * @returns {Number}
 **/
-imageElementProto.measureHeight = function() {
+patternElementProto.measureHeight = function() {
 	var sourceHeight = this.sourceHeight;
 	
 	if (isNumber(sourceHeight)) return sourceHeight;
@@ -133,29 +142,26 @@ imageElementProto.measureHeight = function() {
  * Draws the element to the given context
  *
  * @param {CanvasRenderingContext2D} ctx
- * @returns {ImageElement} this
+ * @returns {PatternElement} this
 **/
-imageElementProto.draw = function(ctx) {
+patternElementProto.draw = function(ctx) {
 	var img = this.img, sx, sy;
 	
 	if (img.complete === true) {
 		if (isPercent(sx = this.sourceX)) sx = parsePercent(sx, img.width);
 		if (isPercent(sy = this.sourceY)) sy = parsePercent(sy, img.height);
 		
-		ctx.drawImage(img,
-			sx, sy,
-			this.measureWidth(), this.measureHeight(),
-			this.screenX, this.screenY,
-			this.renderWidth, this.renderHeight
-		);
+		ctx.rect(this.screenX, this.screenY, this.renderWidth, this.renderHeight);
+		ctx.fillStyle = ctx.createPattern(img, this.repeat);
+		ctx.fill();
 	}
 	
 	return this;
 };
 
-var imageElementClass = $classes.fromPrototype(imageElementProto, ['elementType', 'elementName']);
-imageElementClass.width = 'auto';
-imageElementClass.height = 'auto';
+var patternElementClass = $classes.fromPrototype(patternElementProto, ['elementType', 'elementName']);
+patternElementClass.width = 'auto';
+patternElementClass.height = 'auto';
 
-$elements.addType(imageElementProto.elementName, ImageElement, true, true);
-$classes.set(imageElementProto.elementType, imageElementClass);
+$elements.addType(patternElementProto.elementName, PatternElement, true, true);
+$classes.set(patternElementProto.elementType, patternElementClass);

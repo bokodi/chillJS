@@ -469,14 +469,18 @@ layerProto.render = (function() {
 	function draw(element) {
 		var ctx = this.ctx;
 		
-		ctx.save();
-		
-		element.applyTransform(ctx);
-		element.applyMask(ctx);
-		element.drawBox(ctx);
-		element.draw(ctx);
-		
-		ctx.restore();
+		if (element.opacity > 0) {
+			ctx.save();
+			
+			ctx.globalAlpha = element.opacity;
+			
+			element.applyTransform(ctx);
+			element.applyMask(ctx);
+			element.drawBox(ctx);
+			element.draw(ctx);
+			
+			ctx.restore();
+		}
 	}
 	
 	return function render() {

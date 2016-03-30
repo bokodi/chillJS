@@ -90,6 +90,18 @@ function privateContainerElement() {
 	};
 	
 	/**
+	 * Removes all elements from the ContainerElement
+	 *
+	 * @alias ContainerElement#clear
+	 * @returns {ContainerElement} this
+	**/
+	this.clear = function() {
+		_elements.clear();
+		
+		return this;
+	};
+	
+	/**
 	 * Returns the number of elements in the ContainerElement
 	 *
 	 * @alias ContainerElement#count
@@ -101,7 +113,7 @@ function privateContainerElement() {
 		
 		if (ifRecursive === true) {
 			this.each(function(element) {
-				if (is(element, ContainerElement)) count += element.count;
+				if (is(element, ContainerElement)) count += element.count();
 			});
 		}
 		

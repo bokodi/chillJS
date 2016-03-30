@@ -62,6 +62,7 @@
 		"core/elementTypes/EllipseElement.js",
 		"core/elementTypes/TextElement.js",
 		"core/elementTypes/ImageElement.js",
+		"core/elementTypes/PatternElement.js",
 		"core/elementTypes/SpriteSheetElement.js",
 		
 		"main.js",

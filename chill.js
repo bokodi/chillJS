@@ -1,5 +1,5 @@
-// chillJS[0.1.0]
-// Sat Aug 01 2015
+// chillJS
+// Sun Feb 28 2016
 
 /*
 The MIT License (MIT)
@@ -509,7 +509,8 @@ function repeat(n, callback, thisArg) {
 **/
 var use = (function() {
 	var types = ['string', 'number', 'boolean', 'undefined', 'function'],
-		toString = Object.prototype.toString;
+		toString = Object.prototype.toString,
+		hasOwn = Object.prototype.hasOwnProperty;
 	
 	function inArray(arr, testValue) {
 		var i = 0, il = arr.length;
@@ -532,16 +533,13 @@ var use = (function() {
 	}
 	
 	return function use(target, data) {
-		var hasOwn = Object.prototype.hasOwnProperty,
-			key, targetVal, dataVal, dataValType, i, il;
+		var key, targetVal, dataVal, dataValType, i, il;
 		
 		for (key in data) {
 			if (hasOwn.call(data, key)) {
 				targetVal = target[key];
 				dataVal = data[key];
 				dataValType = smartType(dataVal);
-				
-				if (targetVal === undefined) continue;
 				
 				switch (smartType(targetVal)) {
 					case 'function':
@@ -568,7 +566,6 @@ var use = (function() {
 					case 'string':
 					case 'boolean':
 					case 'number':
-					case 'date':
 					case 'undefined':
 					case 'null':
 						target[key] = dataVal;
@@ -3076,13 +3073,17 @@ queueProto.each = function(callback) {
  *
  * @returns {Queue} this
 **/
-queueProto.perform = function() {
-	this.each(function(task) {
+queueProto.perform = (function() {
+	function execute(task) {
 		if (task.execute() === true) this.remove(task);
-	});
+	}
 	
-	return this;
-};
+	return function perform() {
+		this.each(execute);
+		
+		return this;
+	};
+}());
 
 /**
  * Returns the string value of the queue
@@ -3506,6 +3507,15 @@ collisionEventProto.constructor = CollisionEvent;
 **/
 collisionEventProto.objectives = null;
 
+// File: core/utils/methods.js
+/**
+ * $methods namespace
+ *
+ * @namespace $methods
+ * @description todoc
+**/
+var $methods = stdClass();
+
 // File: core/utils/enums.js
 /**
  * $enums namespace
@@ -3633,6 +3643,12 @@ $elements.removeType = function(type) {
 **/
 var $abstracts = inherit(Collection);
 
+$methods.createAbstractElement = function(elemID, elementType, elementUse, args) {
+	$abstracts.set(elemID, new AbstractElement(elementType, elementUse, args));
+	
+	return this;
+};
+
 // File: core/utils/classes.js
 /**
  * $classes namespace
@@ -3671,6 +3687,12 @@ $classes.fromPrototype = function(proto, ignore) {
 	});
 	
 	return returnValue;
+};
+
+$methods.createClass = function(className, classData) {
+	$classes.set(className, classData);
+	
+	return this;
 };
 
 // File: core/utils/masks.js
@@ -6009,14 +6031,18 @@ layerProto.render = (function() {
 	function draw(element) {
 		var ctx = this.ctx;
 		
-		ctx.save();
-		
-		element.applyTransform(ctx);
-		element.applyMask(ctx);
-		element.drawBox(ctx);
-		element.draw(ctx);
-		
-		ctx.restore();
+		if (element.opacity > 0) {
+			ctx.save();
+			
+			ctx.globalAlpha = element.opacity;
+			
+			element.applyTransform(ctx);
+			element.applyMask(ctx);
+			element.drawBox(ctx);
+			element.draw(ctx);
+			
+			ctx.restore();
+		}
 	}
 	
 	return function render() {
@@ -6906,7 +6932,7 @@ sceneProto.later = function(listener, delay, thisArg) {
  * @returns {Scene} this
 **/
 sceneProto.repeat = function(listener, times, delay, thisArg) {
-	var n = 0;
+	var n = 0; // memory leak
 	
 	return this.queue.add(new Task(function() {
 		listener.apply(this, getArgs(arguments));
@@ -6975,17 +7001,26 @@ sceneProto.addPlugin = function(pluginID, pluginConfig) {
 /**
  * Creates an AbstractElement
  *
- * @param {String} elementID
+ * @method
+ * @name Scene#createAbstractElement
+ * @param {String} elemID
  * @param {String} elementType
  * @param {Object} [elementUse]
  * @param {Array} [args]
  * @returns {Scene} this
 **/
-sceneProto.createAbstractElement = function(elemID, elementType, elementUse, args) {
-	$abstracts.set(elemID, new AbstractElement(elementType, elementUse, args));
-	
-	return this;
-};
+sceneProto.createAbstractElement = $methods.createAbstractElement;
+
+/**
+ * Creates a new class
+ *
+ * @method
+ * @name Scene#createClass
+ * @param {String} className
+ * @param {Object} classData
+ * @returns {Scene} this
+**/
+sceneProto.createClass = $methods.createClass;
 
 /**
  * Updates each element
@@ -7046,8 +7081,8 @@ sceneProto.reflow = (function() {
 			x = l;
 			y = b;
 		} else {
-			x = parseValue(element.x, parentWidth);
-			y = parseValue(element.y, parentHeight);
+			x = parseValue(element.x, parentWidth) + parentX;
+			y = parseValue(element.y, parentHeight) + parentY;
 		}
 		
 		x += marginLeft;
@@ -7401,6 +7436,18 @@ function privateContainerElement() {
 	};
 	
 	/**
+	 * Removes all elements from the ContainerElement
+	 *
+	 * @alias ContainerElement#clear
+	 * @returns {ContainerElement} this
+	**/
+	this.clear = function() {
+		_elements.clear();
+		
+		return this;
+	};
+	
+	/**
 	 * Returns the number of elements in the ContainerElement
 	 *
 	 * @alias ContainerElement#count
@@ -7412,7 +7459,7 @@ function privateContainerElement() {
 		
 		if (ifRecursive === true) {
 			this.each(function(element) {
-				if (is(element, ContainerElement)) count += element.count;
+				if (is(element, ContainerElement)) count += element.count();
 			});
 		}
 		
@@ -8539,7 +8586,7 @@ imageElementProto.measureWidth = function() {
 	var sourceWidth = this.sourceWidth;
 	
 	if (isNumber(sourceWidth)) return sourceWidth;
-	if (isPercent(sourceWidth)) return parsePercent(sourceWidth, img.width);
+	if (isPercent(sourceWidth)) return parsePercent(sourceWidth, this.img.width);
 	
 	return this.img.width;
 };
@@ -8553,7 +8600,7 @@ imageElementProto.measureHeight = function() {
 	var sourceHeight = this.sourceHeight;
 	
 	if (isNumber(sourceHeight)) return sourceHeight;
-	if (isPercent(sourceHeight)) return parsePercent(sourceHeight, img.height);
+	if (isPercent(sourceHeight)) return parsePercent(sourceHeight, this.img.height);
 	
 	return this.img.height;
 };
@@ -8588,6 +8635,175 @@ imageElementClass.height = 'auto';
 
 $elements.addType(imageElementProto.elementName, ImageElement, true, true);
 $classes.set(imageElementProto.elementType, imageElementClass);
+
+// File: core/elementTypes/PatternElement.js
+/**
+ * Creates a new PatternElement
+ *
+ * @class PatternElement
+ * @extends Element
+ * @param {Object} [elementUse]
+ * @description todoc
+**/
+function PatternElement(elementUse) {
+	Element.call(this);
+	
+	this.classList.add(patternElementProto.elementType, 1);
+	
+	forIn(patternElementClass, this.addPropSafe, this);
+	
+	this.img = new Image();
+	
+	this.edit(elementUse);
+}
+
+/** @lends PatternElement# **/
+var patternElementProto = PatternElement.prototype = Object.create(Element.prototype);
+patternElementProto.constructor = PatternElement;
+
+/**
+ * The type of the element
+ *
+ * @type String
+ * @default 'PatternElement'
+ * @readonly
+**/
+patternElementProto.elementType = 'PatternElement';
+
+/**
+ * The name of the element
+ *
+ * @type String
+ * @default 'Pattern'
+ * @readonly
+**/
+patternElementProto.elementName = 'Pattern';
+
+/**
+ * The x position of the source image to draw into the destination context
+ *
+ * @type Number|String
+ * @default 0
+**/
+patternElementProto.sourceX = 0;
+
+/**
+ * The y position of the source image to draw into the destination context
+ *
+ * @type Number|String
+ * @default 0
+**/
+patternElementProto.sourceY = 0;
+
+/**
+ * The width of the source image to draw into the destination context
+ *
+ * @type Number|String
+ * @default '100%'
+**/
+patternElementProto.sourceWidth = '100%';
+
+/**
+ * The height of the source image to draw into the destination context
+ *
+ * @type Number|String
+ * @default '100%'
+**/
+patternElementProto.sourceHeight = '100%';
+
+/**
+ * The image of the element
+ *
+ * @type Image
+ * @default null
+ * @readonly
+**/
+patternElementProto.img = null;
+
+/**
+ * The source of the image
+ *
+ * @name PatternElement#src
+ * @type String
+ * @default ''
+**/
+Object.defineProperty(patternElementProto, 'src', {
+	get: function() {
+		return this.img.src;
+	},
+	set: function(newVal) {
+		if (startsWith(newVal, '#')) {
+			newVal = $assets.getByID(Loader.IMG, newVal.slice(1)).src;
+		}
+		
+		return this.img.src = newVal;
+	}
+});
+
+/**
+ * A String indicating how to repeat the image (repeat|repeat-x|repeat-y|no-repeat)
+ *
+ * @name PatternElement#repeat
+ * @type String
+ * @default 'repeat'
+**/
+patternElementProto.repeat = 'repeat';
+
+/**
+ * Gets the auto width of the element
+ *
+ * @returns {Number}
+**/
+patternElementProto.measureWidth = function() {
+	var sourceWidth = this.sourceWidth;
+	
+	if (isNumber(sourceWidth)) return sourceWidth;
+	if (isPercent(sourceWidth)) return parsePercent(sourceWidth, this.img.width);
+	
+	return this.img.width;
+};
+
+/**
+ * Gets the auto height of the element
+ *
+ * @returns {Number}
+**/
+patternElementProto.measureHeight = function() {
+	var sourceHeight = this.sourceHeight;
+	
+	if (isNumber(sourceHeight)) return sourceHeight;
+	if (isPercent(sourceHeight)) return parsePercent(sourceHeight, this.img.height);
+	
+	return this.img.height;
+};
+
+/**
+ * Draws the element to the given context
+ *
+ * @param {CanvasRenderingContext2D} ctx
+ * @returns {PatternElement} this
+**/
+patternElementProto.draw = function(ctx) {
+	var img = this.img, sx, sy;
+	
+	if (img.complete === true) {
+		if (isPercent(sx = this.sourceX)) sx = parsePercent(sx, img.width);
+		if (isPercent(sy = this.sourceY)) sy = parsePercent(sy, img.height);
+		
+		ctx.rect(this.screenX, this.screenY, this.renderWidth, this.renderHeight);
+		ctx.fillStyle = ctx.createPattern(img, this.repeat);
+		ctx.fill();
+	}
+	
+	return this;
+};
+
+var patternElementClass = $classes.fromPrototype(patternElementProto, ['elementType', 'elementName']);
+patternElementClass.width = 'auto';
+patternElementClass.height = 'auto';
+
+$elements.addType(patternElementProto.elementName, PatternElement, true, true);
+$classes.set(patternElementProto.elementType, patternElementClass);
 
 // File: core/elementTypes/SpriteSheetElement.js
 /**
@@ -9097,6 +9313,8 @@ chillDebuggerProto.scene = null;
  * @returns {Scene}
 **/
 chillDebuggerProto.addElements = function(layer, count, elementType, callback) {
+	var callbackIsFunction = isFunction(callback);
+	
 	elementType = isUndefined(elementType) ? 'Text' : elementType;
 	
 	repeat(count, function(i) {
@@ -9104,7 +9322,7 @@ chillDebuggerProto.addElements = function(layer, count, elementType, callback) {
 		
 		layer.add(element);
 		
-		if (isFunction(callback)) callback(element, i);
+		if (callbackIsFunction) callback(element, i);
 	});
 	
 	return this.scene;
@@ -9143,16 +9361,13 @@ Chill.out = function(app, wrapper, callback) {
 /**
  * Creates a new class
  *
- * @memberof Chill
+ * @method
+ * @name Chill.createClass
  * @param {String} className
  * @param {Object} classData
  * @returns {Object} Chill
 **/
-Chill.createClass = function(className, classData) {
-	$classes.set(className, classData);
-	
-	return this;
-};
+Chill.createClass = $methods.createClass;
 
 /**
  * Creates a new mask
@@ -9182,7 +9397,7 @@ Chill.createMask = function(maskID, mask) {
  * @returns {Chill} this
  * @see Scene#createAbstractElement
 **/
-Chill.createAbstractElement = sceneProto.createAbstractElement;
+Chill.createAbstractElement = $methods.createAbstractElement;
 
 /**
  * Creates a new plugin
@@ -9235,38 +9450,40 @@ Chill.createPlugin = function(pluginID, pluginConstructor, pluginConfig, force) 
 Chill.createElementType = function(type, createData) {
 	var parent, prototype, constructor;
 	
-	if (!isFunction(createData.constructor)) {
-		warning('Constructor is required to create a new element type');
-	} else if ($elements.hasType(type)) {
-		warning('Cannot create "' + type + '", type already exists');
-	} else {
-		parent = $elements.getExtendable(createData.extends);
-		
-		if (isNull(parent)) {
-			if (!isUndefined(createData.extends)) warning('Cannot extend "' + createData.extends + '", type does not exists, fall back to default: Element');
+	if (isObject(createData)) {
+		if (!isFunction(createData.constructor)) {
+			warning('Constructor is required to create a new element type');
+		} else if ($elements.hasType(type)) {
+			warning('Cannot create "' + type + '", type already exists');
+		} else {
+			parent = $elements.getExtendable(createData.extends);
 			
-			parent = Element;
-		}
-		
-		prototype = Object.create(parent.prototype);
-		
-		constructor = function CustomElement() {
-			var args = getArgs(arguments);
+			if (isNull(parent)) {
+				if (!isUndefined(createData.extends)) warning('Cannot extend "' + createData.extends + '", type does not exists, fall back to default: Element');
+				
+				parent = Element;
+			}
 			
-			parent.call(this, args);
-			createData.constructor.apply(this, args);
-		};
-		
-		if (isFunction(createData.prototype)) {
-			createData.prototype.call(prototype);
-		} else if (isObject(createData.prototype)) {
-			assign(prototype, createData.prototype);
+			prototype = Object.create(parent.prototype);
+			
+			constructor = function CustomElement() {
+				var args = getArgs(arguments);
+				
+				parent.apply(this, args);
+				createData.constructor.apply(this, args);
+			};
+			
+			if (isFunction(createData.prototype)) {
+				createData.prototype.call(prototype);
+			} else if (isObject(createData.prototype)) {
+				assign(prototype, createData.prototype);
+			}
+			
+			constructor.prototype = prototype;
+			constructor.prototype.constructor = constructor;
+			
+			$elements.addType(type, constructor, createData.instantiatable, createData.extendable);
 		}
-		
-		constructor.prototype = prototype;
-		constructor.prototype.constructor = constructor;
-		
-		$elements.addType(type, constructor, createData.instantiatable, createData.extendable);
 	}
 	
 	return this;

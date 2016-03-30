@@ -83,13 +83,17 @@ queueProto.each = function(callback) {
  *
  * @returns {Queue} this
 **/
-queueProto.perform = function() {
-	this.each(function(task) {
+queueProto.perform = (function() {
+	function execute(task) {
 		if (task.execute() === true) this.remove(task);
-	});
+	}
 	
-	return this;
-};
+	return function perform() {
+		this.each(execute);
+		
+		return this;
+	};
+}());
 
 /**
  * Returns the string value of the queue
