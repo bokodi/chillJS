@@ -9,9 +9,16 @@
     "chill.js",
     "2d"
   ],
-  "homepage": "http://bokodi.github.io/chillJS/",
-  "license": "MIT",
   "author": "Gábor Bokodi",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bokodi/chillJS.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bokodi/chillJS/issues"
+  },
+  "homepage": "http://bokodi.github.io/chillJS/",
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
