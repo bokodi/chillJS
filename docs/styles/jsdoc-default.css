@@ -378,6 +378,10 @@ table {
 
 .members-odd, .methods-odd {
 	border-top: 2px dashed #7B7BA7;
+	border-bottom: 2px dashed #7B7BA7;
+}
+.methods-odd:last-child {
+	border-bottom: none;
 }
 .members-even, .methods-even {
 	
