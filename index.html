@@ -50,15 +50,9 @@
 <h5>
 <a id="build" class="anchor" href="#build" aria-hidden="true"><span class="octicon octicon-link"></span></a>build</h5>
 
-<p>Build requires <a href="https://nodejs.org/" target="_blank">node.js</a> or <a href="https://iojs.org/en/index.html" target="_blank">io.js</a> (don't forget to install the dependencies: <code>$ npm install</code>).</p>
+<p>Build requires <a href="https://nodejs.org/" target="_blank">Node.js</a> and <a href="http://gulpjs.com/" target="_blank">Gulp</a>.</p>
 
-<pre><code>$ node ./builder/build.js
-</code></pre>
-
-<h5>
-<a id="release" class="anchor" href="#release" aria-hidden="true"><span class="octicon octicon-link"></span></a>release</h5>
-
-<pre><code>$ node ./builder/build.js -v 0.1.0
+<pre><code>gulp build
 </code></pre>
 
 <h5>
@@ -66,7 +60,7 @@
 
 <p>chillJS uses <a href="http://usejsdoc.org/" target="_blank">JSDoc 3</a> to generate the documentation:</p>
 
-<pre><code>$ jsdoc chill.js -d "./docs" -t ./builder/jsdoc-template --readme "./README.md"
+<pre><code>jsdoc chill.js -d "./docs" -t ./builder/jsdoc-template --readme "./README.md"
 </code></pre>
 
 <h5>
