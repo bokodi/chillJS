@@ -1,35 +1,18 @@
-// chillJS
-// Sun Feb 28 2016
+/**
+ * chillJS - JavaScript 2D library
+ * 
+ * @version v0.0.1
+ * @link http://bokodi.github.io/chillJS/
+ * @license MIT
+ * 
+ * 
+ * Date: Wed Mar 30 2016
+ */
 
-/*
-The MIT License (MIT)
 
-Copyright (c) 2015 Gábor Bokodi
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/
-
-// File: moduleHeader.js
 (function(window) {
 'use strict';
 
-// File: helpers/polyfills.js
 window.requestAnimationFrame =
 	window.requestAnimationFrame ||
 	window.webkitRequestAnimationFrame ||
@@ -44,7 +27,6 @@ window.cancelAnimationFrame =
 	window.msCancelAnimationFrame ||
 	window.oCancelAnimationFrame;
 
-// File: helpers/regexHelpers.js
 var numRegX = /[+-]?(?:\d*\.|)\d+/;
 var lineBreakRegX = /\n/;
 
@@ -62,7 +44,6 @@ function findFirstRegX(regX, str) {
 	return val === null ? null : val[0];
 }
 
-// File: helpers/typeHelpers.js
 /**
  * Determines whether a value is Array or not
  *
@@ -185,7 +166,6 @@ function is(o1, o2) {
 	return o1 instanceof o2;
 }
 
-// File: helpers/commonHelpers.js
 /**
  * Creates a new empty object, and returns it
  *
@@ -597,7 +577,6 @@ var use = (function() {
 	};
 }());
 
-// File: helpers/stringHelpers.js
 /**
  * Determines whether a string begins with the characters of another string
  *
@@ -643,7 +622,6 @@ var capitalize = (function() {
 	};
 }());
 
-// File: helpers/arrayHelpers.js
 /**
  * Removes item(s) from an array
  *
@@ -875,7 +853,6 @@ function createArray(length, fillValue) {
 	return fillArray(new Array(length), fillValue);
 }
 
-// File: helpers/objectHelpers.js
 /**
  * Copies the values of all enumerable own properties from one or more source objects to a target object
  *
@@ -1024,7 +1001,6 @@ function getProps(obj, properties) {
 	return returnValue;
 }
 
-// File: helpers/DOMHelpers.js
 /**
  * window.document
  *
@@ -1161,7 +1137,6 @@ function createElement(tagName, parentElement, textContent) {
 	return elem;
 }
 
-// File: classes/HTTP.js
 /**
  * HTTP namespace
  *
@@ -1236,7 +1211,6 @@ HTTP.post = function(url, data, callback) {
 	return httpRequest;
 };
 
-// File: classes/Enum.js
 /**
  * Creates a new Enum
  *
@@ -1299,7 +1273,6 @@ function enumAssign() {
 	}
 }
 
-// File: classes/Event.js
 /**
  * Creates a new Event
  *
@@ -1427,7 +1400,6 @@ eventProto.toString = function() {
 	return this.type + ' Event';
 };
 
-// File: classes/EventTarget.js
 /**
  * Creates a new EventTarget
  * 
@@ -1622,7 +1594,6 @@ eventTargetProto.toString = function() {
 	return '[object EventTarget]';
 };
 
-// File: classes/OrderedList.js
 /**
  * Creates a new OrderedList
  *
@@ -1955,7 +1926,6 @@ orderedListProto.toString = function() {
 	return '[object OrderedList]';
 };
 
-// File: classes/Storage.js
 /**
  * Creates a new PublicStorage
  *
@@ -2133,7 +2103,6 @@ function Storage() {
 var storageProto = Storage.prototype = Object.create(null);
 storageProto.constructor = Storage;
 
-// File: classes/Vector2.js
 /**
  * Creates a Vector2
  *
@@ -2576,7 +2545,6 @@ vector2Proto.toString = function() {
 	return 'Vector2 at ' + this.x + ' ' + this.y;
 };
 
-// File: classes/Screen.js
 /**
  * Creates a new Screen
  *
@@ -2625,7 +2593,6 @@ screenProto.toString = function() {
 	return 'Screen[' + this.width + ', ' + this.height + '] at ' + this.pos.x + ', ' + this.pos.y;
 };
 
-// File: classes/Cursor.js
 /**
  * Creates a new Cursor
  *
@@ -2671,7 +2638,6 @@ cursorProto.toString = function() {
 	return 'Cursor at ' + this.x + ', ' + this.y;
 };
 
-// File: classes/ClassList.js
 /**
  * Creates a new ClassList
  *
@@ -2718,7 +2684,6 @@ classListProto.toString = function() {
 	return '[object ClassList]';
 };
 
-// File: classes/Loader.js
 /**
  * Creates a new Loader
  *
@@ -2987,7 +2952,6 @@ loaderProto.remove = function(item) {
 	return null;
 };
 
-// File: classes/Queue.js
 /**
  * Creates a new Queue
  *
@@ -3094,7 +3058,6 @@ queueProto.toString = function() {
 	return '[object Queue]';
 };
 
-// File: classes/Task.js
 /**
  * Creates a new Task
  *
@@ -3157,7 +3120,6 @@ taskProto.toString = function() {
 	return '[object Task]';
 };
 
-// File: classes/Collection.js
 /**
  * Creates a new Collection
  *
@@ -3316,7 +3278,6 @@ collectionProto.all = function() {
 	return all;
 };
 
-// File: classes/eventTypes/MouseEvent.js
 /**
  * Creates a new MouseEvent
  *
@@ -3367,7 +3328,6 @@ mouseEventProto.y = 0;
 **/
 mouseEventProto.button = null;
 
-// File: classes/eventTypes/KeyboardEvent.js
 /**
  * Creates a new KeyboardEvent
  *
@@ -3406,7 +3366,6 @@ keyboardEventProto.keyCode = null;
 **/
 keyboardEventProto.character = null;
 
-// File: classes/eventTypes/DragEvent.js
 /**
  * Creates a new DragEvent
  *
@@ -3458,7 +3417,6 @@ dragEventProto.dragStartY = null;
 **/
 dragEventProto.dragged = null;
 
-// File: classes/eventTypes/LoadEvent.js
 /**
  * Creates a new LoadEvent
  *
@@ -3478,7 +3436,6 @@ function LoadEvent(eventType, target) {
 var loadEventProto = LoadEvent.prototype = Object.create(Event.prototype);
 loadEventProto.constructor = LoadEvent;
 
-// File: classes/eventTypes/CollisionEvent.js
 /**
  * Creates a new CollisionEvent
  *
@@ -3507,7 +3464,6 @@ collisionEventProto.constructor = CollisionEvent;
 **/
 collisionEventProto.objectives = null;
 
-// File: core/utils/methods.js
 /**
  * $methods namespace
  *
@@ -3516,7 +3472,6 @@ collisionEventProto.objectives = null;
 **/
 var $methods = stdClass();
 
-// File: core/utils/enums.js
 /**
  * $enums namespace
  *
@@ -3535,7 +3490,6 @@ var $enums = stdClass();
 **/
 $enums.ELEMENT_FLOWS = new Enum('none', 'horizontal', 'vertical');
 
-// File: core/utils/elements.js
 /**
  * $elements namespace
  *
@@ -3633,7 +3587,6 @@ $elements.removeType = function(type) {
 	return this;
 };
 
-// File: core/utils/abstracts.js
 /**
  * $abstracts namespace
  *
@@ -3649,7 +3602,6 @@ $methods.createAbstractElement = function(elemID, elementType, elementUse, args)
 	return this;
 };
 
-// File: core/utils/classes.js
 /**
  * $classes namespace
  *
@@ -3695,7 +3647,6 @@ $methods.createClass = function(className, classData) {
 	return this;
 };
 
-// File: core/utils/masks.js
 /**
  * $masks namespace
  *
@@ -3705,7 +3656,6 @@ $methods.createClass = function(className, classData) {
 **/
 var $masks = inherit(Collection);
 
-// File: core/utils/plugins.js
 /**
  * $plugins namespace
  *
@@ -3715,7 +3665,6 @@ var $masks = inherit(Collection);
 **/
 var $plugins = inherit(Collection);
 
-// File: core/utils/assets.js
 /**
  * $assets namespace
  *
@@ -3876,7 +3825,6 @@ $assets.addItem = function(type, item, src, id) {
 $assets.addType(Loader.IMG);
 $assets.addType(Loader.AUDIO);
 
-// File: core/utils/canvas.js
 /**
  * $canvas namespace
  *
@@ -3901,7 +3849,6 @@ $canvas.DOMElement = createElement('canvas');
 **/
 $canvas.ctx = $canvas.DOMElement.getContext('2d');
 
-// File: core/Element.js
 /**
  * Creates a new Element
  *
@@ -5559,7 +5506,6 @@ var elementClass = $classes.fromPrototype(
 $elements.addType(elementProto.elementName, Element, false, true);
 $classes.set(elementProto.elementType, elementClass);
 
-// File: core/Layer.js
 /**
  * Creates a new Layer
  *
@@ -6114,7 +6060,6 @@ layerProto.toString = function() {
 	return 'Chill Layer';
 };
 
-// File: core/Scene.js
 /**
  * Creates a new Scene
  *
@@ -7261,7 +7206,6 @@ sceneProto.toString = function() {
 	return 'Chill Scene';
 };
 
-// File: core/elementTypes/AbstractElement.js
 /**
  * Creates a new AbstractElement
  *
@@ -7343,7 +7287,6 @@ abstractElementProto.instantiate = function() {
 
 $elements.addType(abstractElementProto.elementName, AbstractElement, false, false);
 
-// File: core/elementTypes/ContainerElement.js
 /**
  * Creates a new ContainerElement
  *
@@ -7563,7 +7506,6 @@ containerElementClass.height = 'fit';
 $elements.addType(containerElementProto.elementName, ContainerElement, true, true);
 $classes.set(containerElementProto.elementType, containerElementClass);
 
-// File: core/elementTypes/PolygonElement.js
 /**
  * Creates a new PolygonElement
  *
@@ -7685,7 +7627,6 @@ var polygonElementClass = $classes.fromPrototype(polygonElementProto, ['elementT
 $elements.addType(polygonElementProto.elementName, PolygonElement, false, true);
 $classes.set(polygonElementProto.elementType, polygonElementClass);
 
-// File: core/elementTypes/LineElement.js
 /**
  * Creates a new LineElement
  *
@@ -7728,7 +7669,6 @@ lineElementProto.elementName = 'Line';
 
 $elements.addType(lineElementProto.elementName, LineElement, true, true);
 
-// File: core/elementTypes/TriangleElement.js
 /**
  * Creates a new TriangleElement
  *
@@ -7771,7 +7711,6 @@ triangleElementProto.elementName = 'Triangle';
 
 $elements.addType(triangleElementProto.elementName, TriangleElement, true, true);
 
-// File: core/elementTypes/RectangleElement.js
 /**
  * Creates a new RectangleElement
  *
@@ -7814,7 +7753,6 @@ rectangleElementProto.elementName = 'Rectangle';
 
 $elements.addType(rectangleElementProto.elementName, RectangleElement, true, true);
 
-// File: core/elementTypes/PentagonElement.js
 /**
  * Creates a new PentagonElement
  *
@@ -7857,7 +7795,6 @@ pentagonElementProto.elementName = 'Pentagon';
 
 $elements.addType(pentagonElementProto.elementName, PentagonElement, true, true);
 
-// File: core/elementTypes/HexagonElement.js
 /**
  * Creates a new HexagonElement
  *
@@ -7900,7 +7837,6 @@ hexagonElementProto.elementName = 'Hexagon';
 
 $elements.addType(hexagonElementProto.elementName, HexagonElement, true, true);
 
-// File: core/elementTypes/StarElement.js
 /**
  * Creates a new StarElement
  *
@@ -7943,7 +7879,6 @@ starElementProto.elementName = 'Star';
 
 $elements.addType(starElementProto.elementName, StarElement, true, true);
 
-// File: core/elementTypes/CircleElement.js
 /**
  * Creates a new CircleElement
  *
@@ -8071,7 +8006,6 @@ circleElementClass.height = 'auto';
 $elements.addType(circleElementProto.elementName, CircleElement, true, true);
 $classes.set(circleElementProto.elementType, circleElementClass);
 
-// File: core/elementTypes/EllipseElement.js
 /**
  * Creates a new EllipseElement
  *
@@ -8183,7 +8117,6 @@ var ellipseElementClass = $classes.fromPrototype(ellipseElementProto, ['elementT
 $elements.addType(ellipseElementProto.elementName, EllipseElement, true, true);
 $classes.set(ellipseElementProto.elementType, ellipseElementClass);
 
-// File: core/elementTypes/TextElement.js
 /**
  * Creates a new TextElement
  *
@@ -8473,7 +8406,6 @@ textElementClass.height = 'auto';
 $elements.addType(textElementProto.elementName, TextElement, true, true);
 $classes.set(textElementProto.elementType, textElementClass);
 
-// File: core/elementTypes/ImageElement.js
 /**
  * Creates a new ImageElement
  *
@@ -8636,7 +8568,6 @@ imageElementClass.height = 'auto';
 $elements.addType(imageElementProto.elementName, ImageElement, true, true);
 $classes.set(imageElementProto.elementType, imageElementClass);
 
-// File: core/elementTypes/PatternElement.js
 /**
  * Creates a new PatternElement
  *
@@ -8805,7 +8736,6 @@ patternElementClass.height = 'auto';
 $elements.addType(patternElementProto.elementName, PatternElement, true, true);
 $classes.set(patternElementProto.elementType, patternElementClass);
 
-// File: core/elementTypes/SpriteSheetElement.js
 /**
  * Creates a new SpriteSheetElement
  *
@@ -9234,7 +9164,6 @@ spriteSheetElementClass.frameRate = spriteSheetElementProto.frameRate;
 $elements.addType(spriteSheetElementProto.elementName, SpriteSheetElement, true, true);
 $classes.set(spriteSheetElementProto.elementType, spriteSheetElementClass);
 
-// File: main.js
 /**
  * Chill namespace
  *
@@ -9491,6 +9420,4 @@ Chill.createElementType = function(type, createData) {
 
 window.Chill = Chill;
 
-// File: moduleFooter.js
 }(this));
-
