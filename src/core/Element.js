@@ -78,8 +78,6 @@ var addElementPropertyHandlers = (function() {
 		 * @todo Need to rewrite the property handler methods
 		**/
 		this.addProp = function(propertyKey, primitiveValue, inheritable) {
-			var prop;
-			
 			if (!isBoolean(inheritable)) inheritable = true;
 			
 			if (this.hasProp(propertyKey)) {
@@ -243,14 +241,14 @@ elementProto.id = null;
 **/
 elementProto.uuid = null;
 
-/**
- * The classes of the element
- *
- * @name Element#className
- * @type String
- * @readonly
-**/
 Object.defineProperty(elementProto, 'className', {
+	/**
+	 * The classes of the element
+	 *
+	 * @name Element#className
+	 * @type String
+	 * @readonly
+	 **/
 	get: function() {
 		return this.classList.all().join(' ');
 	}
@@ -291,13 +289,13 @@ elementProto.classList = null;
 **/
 elementProto.velocity = null;
 
-/**
- * The horizontal velocity of the element
- *
- * @name Element#vX
- * @type Number
-**/
 Object.defineProperty(elementProto, 'vX', {
+	/**
+	 * The horizontal velocity of the element
+	 *
+	 * @name Element#vX
+	 * @type Number
+	 **/
 	get: function() {
 		return this.velocity.x;
 	},
@@ -306,13 +304,13 @@ Object.defineProperty(elementProto, 'vX', {
 	}
 });
 
-/**
- * The vertical velocity of the element
- *
- * @name Element#vY
- * @type Number
-**/
 Object.defineProperty(elementProto, 'vY', {
+	/**
+	 * The vertical velocity of the element
+	 *
+	 * @name Element#vY
+	 * @type Number
+	 **/
 	get: function() {
 		return this.velocity.y;
 	},
@@ -439,7 +437,6 @@ elementProto.minHeight = 'none';
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.top = 0;
 
@@ -449,7 +446,6 @@ elementProto.top = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.right = 0;
 
@@ -459,7 +455,6 @@ elementProto.right = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.bottom = 0;
 
@@ -469,7 +464,6 @@ elementProto.bottom = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.left = 0;
 
@@ -479,7 +473,6 @@ elementProto.left = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.screenX = 0;
 
@@ -489,7 +482,6 @@ elementProto.screenX = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.screenY = 0;
 
@@ -499,7 +491,6 @@ elementProto.screenY = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.parentX = 0;
 
@@ -509,7 +500,6 @@ elementProto.parentX = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.parentY = 0;
 
@@ -519,7 +509,6 @@ elementProto.parentY = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.renderWidth = 0;
 
@@ -529,87 +518,94 @@ elementProto.renderWidth = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.renderHeight = 0;
 
-/**
- * The horizontal center position of the element, relative to the scene
- *
- * @name Element#screenXC
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
-/**
- * The vertical center position of the element, relative to the scene
- *
- * @name Element#screenYC
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
-/**
- * The horizontal end position of the element, relative to the scene
- *
- * @name Element#screenXE
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
-/**
- * The vertical end position of the element, relative to the scene
- *
- * @name Element#screenYE
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
-/**
- * The horizontal center position of the element, relative to it's parent
- *
- * @name Element#parentXC
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
-/**
- * The vertical center position of the element, relative to it's parent
- *
- * @name Element#parentYC
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
-/**
- * The horizontal end position of the element, relative to it's parent
- *
- * @name Element#parentXE
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
-/**
- * The vertical end position of the element, relative to it's parent
- *
- * @name Element#parentYE
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
 Object.defineProperties(elementProto, {
-	screenXC: { get: function() { return this.screenX + this.renderWidth / 2 } },
-	screenYC: { get: function() { return this.screenY + this.renderHeight / 2 } },
+	screenXC: {
+		/**
+		 * The horizontal center position of the element, relative to the scene
+		 *
+		 * @name Element#screenXC
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.screenX + this.renderWidth / 2 }
+	},
+	screenYC: {
+		/**
+		 * The vertical center position of the element, relative to the scene
+		 *
+		 * @name Element#screenYC
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.screenY + this.renderHeight / 2 }
+	},
 	
-	screenXE: { get: function() { return this.screenX + this.renderWidth } },
-	screenYE: { get: function() { return this.screenY + this.renderHeight } },
+	screenXE: {
+		/**
+		 * The horizontal end position of the element, relative to the scene
+		 *
+		 * @name Element#screenXE
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.screenX + this.renderWidth }
+	},
+	screenYE: {
+		/**
+		 * The vertical end position of the element, relative to the scene
+		 *
+		 * @name Element#screenYE
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.screenY + this.renderHeight }
+	},
 	
 	
-	parentXC: { get: function() { return this.parentX + this.renderWidth / 2 } },
-	parentYC: { get: function() { return this.parentY + this.renderHeight / 2 } },
+	parentXC: {
+		/**
+		 * The horizontal center position of the element, relative to it's parent
+		 *
+		 * @name Element#parentXC
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.parentX + this.renderWidth / 2 }
+	},
+	parentYC: {
+		/**
+		 * The vertical center position of the element, relative to it's parent
+		 *
+		 * @name Element#parentYC
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.parentY + this.renderHeight / 2 }
+	},
 	
-	parentXE: { get: function() { return this.parentX + this.renderWidth } },
-	parentYE: { get: function() { return this.parentY + this.renderHeight } }
+	parentXE: {
+		/**
+		 * The horizontal end position of the element, relative to it's parent
+		 *
+		 * @name Element#parentXE
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.parentX + this.renderWidth }
+	},
+	parentYE: {
+		/**
+		 * The vertical end position of the element, relative to it's parent
+		 *
+		 * @name Element#parentYE
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.parentY + this.renderHeight }
+	}
 });
 
 /**
@@ -795,13 +791,13 @@ elementProto.marginBottom = 0;
 **/
 elementProto.marginLeft = 0;
 
-/**
- * The margin of the element
- *
- * @name Element#margin
- * @type String
-**/
 Object.defineProperty(elementProto, 'margin', {
+	/**
+	 * The margin of the element
+	 *
+	 * @name Element#margin
+	 * @type String
+	 **/
 	get: function() {
 		return this.marginTop + ' ' + this.marginRight + ' ' + this.marginBottom + ' ' + this.marginLeft;
 	},
@@ -867,13 +863,13 @@ elementProto.paddingBottom = 0;
 **/
 elementProto.paddingLeft = 0;
 
-/**
- * The padding of the element
- *
- * @name Element#padding
- * @type String
-**/
 Object.defineProperty(elementProto, 'padding', {
+	/**
+	 * The padding of the element
+	 *
+	 * @name Element#padding
+	 * @type String
+	 **/
 	get: function() {
 		return this.paddingTop + ' ' + this.paddingRight + ' ' + this.paddingBottom + ' ' + this.paddingLeft;
 	},
@@ -976,9 +972,9 @@ Object.defineProperty(elementProto, 'borderRight', {
 		var pieces = borderRight.split(' ')
 		, len = pieces.length;
 		
-		if (len >= 1) this.borderTopWidth = pieces[0];
-		if (len >= 2) this.borderTopStyle = pieces[1];
-		if (len === 3) this.borderTopColor = pieces[2];
+		if (len >= 1) this.borderRightWidth = pieces[0];
+		if (len >= 2) this.borderRightStyle = pieces[1];
+		if (len === 3) this.borderRightColor = pieces[2];
 		
 		return borderRight;
 	}
@@ -996,9 +992,9 @@ Object.defineProperty(elementProto, 'borderBottom', {
 		var pieces = borderBottom.split(' ')
 		, len = pieces.length;
 		
-		if (len >= 1) this.borderTopWidth = pieces[0];
-		if (len >= 2) this.borderTopStyle = pieces[1];
-		if (len === 3) this.borderTopColor = pieces[2];
+		if (len >= 1) this.borderBottomWidth = pieces[0];
+		if (len >= 2) this.borderBottomStyle = pieces[1];
+		if (len === 3) this.borderBottomColor = pieces[2];
 		
 		return borderBottom;
 	}
@@ -1016,9 +1012,9 @@ Object.defineProperty(elementProto, 'borderLeft', {
 		var pieces = borderLeft.split(' ')
 		, len = pieces.length;
 		
-		if (len >= 1) this.borderTopWidth = pieces[0];
-		if (len >= 2) this.borderTopStyle = pieces[1];
-		if (len === 3) this.borderTopColor = pieces[2];
+		if (len >= 1) this.borderLeftWidth = pieces[0];
+		if (len >= 2) this.borderLeftStyle = pieces[1];
+		if (len === 3) this.borderLeftColor = pieces[2];
 		
 		return borderLeft;
 	}
@@ -1056,13 +1052,13 @@ elementProto.borderBottomWidth = 0;
 **/
 elementProto.borderLeftWidth = 0;
 
-/**
- * The width of the element's border
- *
- * @name Element#borderWidth
- * @type String
-**/
 Object.defineProperty(elementProto, 'borderWidth', {
+	/**
+	 * The width of the element's border
+	 *
+	 * @name Element#borderWidth
+	 * @type String
+	 **/
 	get: function() {
 		return this.borderTopWidth + ' ' + this.borderRightWidth + ' ' + this.borderBottomWidth + ' ' + this.borderLeftWidth;
 	},
@@ -1128,13 +1124,13 @@ elementProto.borderBottomStyle = 'none';
 **/
 elementProto.borderLeftStyle = 'none';
 
-/**
- * The style of the element's border
- *
- * @name Element#borderStyle
- * @type String
-**/
 Object.defineProperty(elementProto, 'borderStyle', {
+	/**
+	 * The style of the element's border
+	 *
+	 * @name Element#borderStyle
+	 * @type String
+	 **/
 	get: function() {
 		return this.borderTopStyle + ' ' + this.borderRightStyle + ' ' + this.borderBottomStyle + ' ' + this.borderLeftStyle;
 	},
@@ -1200,13 +1196,13 @@ elementProto.borderBottomColor = 'none';
 **/
 elementProto.borderLeftColor = 'none';
 
-/**
- * The color of the element's border
- *
- * @name Element#borderColor
- * @type String
-**/
 Object.defineProperty(elementProto, 'borderColor', {
+	/**
+	 * The color of the element's border
+	 *
+	 * @name Element#borderColor
+	 * @type String
+	 **/
 	get: function() {
 		return this.borderTopColor + ' ' + this.borderRightColor + ' ' + this.borderBottomColor + ' ' + this.borderLeftColor;
 	},
@@ -1371,7 +1367,7 @@ elementProto.scale = function(widthRatio, heightRatio) {
  * Adds a class to the element's classList
  *
  * @param {String} item
- * @param {Number} [orderID]
+ * @param {int} [orderID]
  * @returns {Element} this
  * @see ClassList#add
 **/
@@ -1385,7 +1381,7 @@ elementProto.addClass = function(item, orderID) {
  * Toggles a class
  *
  * @param {String} item
- * @param {Number} [orderID]
+ * @param {int} [orderID]
  * @returns {Element} this
  * @see ClassList#toggle
 **/
@@ -1573,10 +1569,10 @@ elementProto.update = function() {
 **/
 elementProto.animation = function(animData, duration, delay) {
 	var initial = getProps(this, keys(animData))
-	, fn = function(tick, elapsed, task) {
+	, fn = function(tick, elapsed) {
 		var percent = range(0, 1, elapsed / (duration || 0));
 		
-		forIn(initial, function(propKey, propVal) {
+		forIn(initial, function(propKey) {
 			this[propKey] = initial[propKey] + (animData[propKey] - initial[propKey]) * percent;
 		}, this);
 		

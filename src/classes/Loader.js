@@ -8,6 +8,10 @@
 **/
 function Loader(basePath) {
 	EventTarget.call(this);
+
+	if (basePath) {
+		this.basePath = basePath;
+	}
 	
 	this.reset();
 }
@@ -37,6 +41,15 @@ Loader.AUDIO = 'Audio';
 /** @lends Loader# **/
 var loaderProto = Loader.prototype = Object.create(EventTarget.prototype);
 loaderProto.constructor = Loader;
+
+/**
+ * The base path of the loader
+ *
+ * @type String
+ * @default ''
+ * @todo implement base path
+ **/
+loaderProto.basePath = '';
 
 /**
  * The status of the loader
@@ -219,8 +232,7 @@ loaderProto.add = function(type, path) {
  * @returns {Image}
 **/
 loaderProto.addImage = function(path) {
-	var scope = this
-	, img = this.loadImage(path, null, false);
+	var img = this.loadImage(path, null, false);
 	
 	this.setPathList.push(function() { img.src = path; });
 	this.loadQueue.push(img);
@@ -235,8 +247,7 @@ loaderProto.addImage = function(path) {
  * @returns {Audio}
 **/
 loaderProto.addAudio = function(path) {
-	var scope = this
-	, audio = this.loadAudio(path, null, false);
+	var audio = this.loadAudio(path, null, false);
 	
 	this.setPathList.push(function() { audio.src = path; });
 	this.loadQueue.push(audio);

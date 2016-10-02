@@ -205,7 +205,7 @@ textElementProto.draw = function(ctx) {
 	
 	ctx.font = this.getFontDescriptor();
 	ctx.textAlign = align;
-	ctx.textBaseline = 'top'; /* this.textBaseline */;
+	ctx.textBaseline = 'top'; /* this.textBaseline */
 	ctx.fillStyle = this.textColor;
 	
 	if (align === 'center') x += this.renderWidth / 2;

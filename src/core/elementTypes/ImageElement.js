@@ -81,14 +81,14 @@ imageElementProto.sourceHeight = '100%';
 **/
 imageElementProto.img = null;
 
-/**
- * The source of the image
- *
- * @name ImageElement#src
- * @type String
- * @default ''
-**/
 Object.defineProperty(imageElementProto, 'src', {
+	/**
+	 * The source of the image
+	 *
+	 * @name ImageElement#src
+	 * @type String
+	 * @default ''
+	 **/
 	get: function() {
 		return this.img.src;
 	},

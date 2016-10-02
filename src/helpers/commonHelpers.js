@@ -143,7 +143,7 @@ function getInt(str) {
  *
  * @function getFloat
  * @param {String} str
- * @returns {float}
+ * @returns {Number}
 **/
 function getFloat(str) {
 	return window.parseFloat(str);
@@ -200,7 +200,7 @@ function range(min, max, n) {
  *
  * @function deg2rad
  * @param {Number} deg
- * @returns {float}
+ * @returns {Number}
 **/
 function deg2rad(deg) {
 	return deg * Math.PI / 180;

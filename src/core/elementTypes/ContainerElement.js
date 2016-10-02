@@ -105,15 +105,15 @@ function privateContainerElement() {
 	 * Returns the number of elements in the ContainerElement
 	 *
 	 * @alias ContainerElement#count
-	 * @param {Boolean} ifRecursive
+	 * @param {Boolean} recursive
 	 * @returns {int}
 	**/
-	this.count = function(ifRecursive) {
+	this.count = function(recursive) {
 		var count = _elements.count;
 		
-		if (ifRecursive === true) {
+		if (recursive === true) {
 			this.each(function(element) {
-				if (is(element, ContainerElement)) count += element.count();
+				if (is(element, ContainerElement)) count += element.count(recursive);
 			});
 		}
 		

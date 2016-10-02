@@ -56,11 +56,15 @@ $assets.getLoader = function() {
  * @returns {Object} $assets
 **/
 $assets.addType = function(type) {
+	var addType;
+
 	if (!this.hasType(type)) {
-		type = this.types[type] = stdClass();
+		addType = stdClass();
 		
-		type.sourceMap = stdClass();
-		type.IDMap = stdClass();
+		addType.sourceMap = stdClass();
+		addType.IDMap = stdClass();
+
+		this.types[type] = addType;
 	}
 	
 	return this;

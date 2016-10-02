@@ -81,14 +81,14 @@ patternElementProto.sourceHeight = '100%';
 **/
 patternElementProto.img = null;
 
-/**
- * The source of the image
- *
- * @name PatternElement#src
- * @type String
- * @default ''
-**/
 Object.defineProperty(patternElementProto, 'src', {
+	/**
+	 * The source of the image
+	 *
+	 * @name PatternElement#src
+	 * @type String
+	 * @default ''
+	 **/
 	get: function() {
 		return this.img.src;
 	},
@@ -143,6 +143,7 @@ patternElementProto.measureHeight = function() {
  *
  * @param {CanvasRenderingContext2D} ctx
  * @returns {PatternElement} this
+ * @todo implement sx, sy
 **/
 patternElementProto.draw = function(ctx) {
 	var img = this.img, sx, sy;

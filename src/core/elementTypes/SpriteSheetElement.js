@@ -84,14 +84,14 @@ spriteSheetElementProto.frameHeight = 0;
 **/
 spriteSheetElementProto.img = null;
 
-/**
- * The source of the spriteSheet
- *
- * @name SpriteSheetElement#src
- * @type String
- * @default ''
-**/
 Object.defineProperty(spriteSheetElementProto, 'src', {
+	/**
+	 * The source of the spriteSheet
+	 *
+	 * @name SpriteSheetElement#src
+	 * @type String
+	 * @default ''
+	 **/
 	get: function() {
 		return this.img.src;
 	},
@@ -266,8 +266,8 @@ spriteSheetElementProto.setFrameSize = function(rows, cols, width, height) {
 		h = this.img.height;
 	}
 	
-	this.frameWidth = this.img.width / cols - 2 * this.frameSpacing;
-	this.frameHeight = this.img.height / rows - 2 * this.frameSpacing;
+	this.frameWidth = w / cols - 2 * this.frameSpacing;
+	this.frameHeight = h / rows - 2 * this.frameSpacing;
 	
 	return this.setFrames();
 };

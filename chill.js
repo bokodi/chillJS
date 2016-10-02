@@ -1,12 +1,12 @@
 /**
  * chillJS - JavaScript 2D library
  * 
- * @version v0.0.1
+ * @version v0.0.1-alpha
  * @link http://bokodi.github.io/chillJS/
  * @license MIT
  * 
  * 
- * Date: Wed Mar 30 2016
+ * Date: Sun Oct 02 2016
  */
 
 
@@ -311,7 +311,7 @@ function getInt(str) {
  *
  * @function getFloat
  * @param {String} str
- * @returns {float}
+ * @returns {Number}
 **/
 function getFloat(str) {
 	return window.parseFloat(str);
@@ -368,7 +368,7 @@ function range(min, max, n) {
  *
  * @function deg2rad
  * @param {Number} deg
- * @returns {float}
+ * @returns {Number}
 **/
 function deg2rad(deg) {
 	return deg * Math.PI / 180;
@@ -1145,25 +1145,25 @@ function createElement(tagName, parentElement, textContent) {
 **/
 var HTTP = Object.create(null);
 
-/**
- * HTTP get
- *
- * @method
- * @name HTTP.get
- * @param {String} url
- * @param {Function} callback
- * @returns {XMLHttpRequest}
- * @todo Error handling
-**/
 HTTP.get = (function() {
 	function onLoad(callback, e) {
-		var xmlhttp = e.target;
+		var xmlHttp = e.target;
 		
-		if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-			callback(xmlhttp.responseText);
+		if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+			callback(xmlHttp.responseText);
 		}
 	}
-	
+
+	/**
+	 * HTTP get
+	 *
+	 * @method
+	 * @name HTTP.get
+	 * @param {String} url
+	 * @param {Function} callback
+	 * @returns {XMLHttpRequest}
+	 * @todo Error handling
+	 **/
 	return function get(url, callback) {
 		var httpRequest = new XMLHttpRequest();
 		
@@ -1824,7 +1824,7 @@ function OrderedList() {
 	};
 	
 	/**
-	 * Returns the first element of the lowset orderID
+	 * Returns the first element of the lowest orderID
 	 *
 	 * @alias OrderedList#first
 	 * @returns {?*}
@@ -2188,7 +2188,7 @@ vector2Proto.add = function(v) {
 };
 
 /**
- * Sets the x and y values of the vector to the summ of the two given vectors
+ * Sets the x and y values of the vector to the sum of the two given vectors
  *
  * @param {Vector2} v1
  * @param {Vector2} v2
@@ -2463,25 +2463,6 @@ vector2Proto.toAngle = function(rad) {
 };
 
 /**
- * Projects the vector to the given 2D line
- *
- * @param {Line2} line
- * @returns {Vector2}
-**/
-vector2Proto.projectTo = function(line) {
-	var bs = line.start;
-	var bd = line.delta();
-	var dir = this.angleTo(bd) > 0 ? new Vector2(bd.y, -bd.x) : new Vector2(-bd.y, bd.x);
-	
-	var u = (this.y * bd.x + bd.y * bs.x - bs.y * bd.x - bd.y * this.x) / (dir.x * bd.y - dir.y * bd.x);
-	var v = (this.x + dir.x * u - bs.x) / bd.x;
-	
-	if (u < 0 || v < 0) return null;
-	
-	return new Vector2(this.x + dir.x * u, this.y + dir.y * u);
-};
-
-/**
  * Returns the distance between this and the given vector
  *
  * @param {Vector2} v
@@ -2656,12 +2637,16 @@ classListProto.constructor = ClassList;
 /**
  * Same as OrderedList's add method, but makes sure that every item can appear only once
  *
- * @param {String} item
- * @param {Number} [orderID]
+ * @param {*} item
+ * @param {int} [orderID]
  * @returns {ClassList} this
 **/
 classListProto.add = function(item, orderID) {
-	return this.reOrder(item, orderID);
+	item = String(item);
+
+	this.reOrder(item, orderID);
+
+	return this;
 };
 
 /**
@@ -2694,6 +2679,10 @@ classListProto.toString = function() {
 **/
 function Loader(basePath) {
 	EventTarget.call(this);
+
+	if (basePath) {
+		this.basePath = basePath;
+	}
 	
 	this.reset();
 }
@@ -2723,6 +2712,15 @@ Loader.AUDIO = 'Audio';
 /** @lends Loader# **/
 var loaderProto = Loader.prototype = Object.create(EventTarget.prototype);
 loaderProto.constructor = Loader;
+
+/**
+ * The base path of the loader
+ *
+ * @type String
+ * @default ''
+ * @todo implement base path
+ **/
+loaderProto.basePath = '';
 
 /**
  * The status of the loader
@@ -2905,8 +2903,7 @@ loaderProto.add = function(type, path) {
  * @returns {Image}
 **/
 loaderProto.addImage = function(path) {
-	var scope = this
-	, img = this.loadImage(path, null, false);
+	var img = this.loadImage(path, null, false);
 	
 	this.setPathList.push(function() { img.src = path; });
 	this.loadQueue.push(img);
@@ -2921,8 +2918,7 @@ loaderProto.addImage = function(path) {
  * @returns {Audio}
 **/
 loaderProto.addAudio = function(path) {
-	var scope = this
-	, audio = this.loadAudio(path, null, false);
+	var audio = this.loadAudio(path, null, false);
 	
 	this.setPathList.push(function() { audio.src = path; });
 	this.loadQueue.push(audio);
@@ -3189,13 +3185,12 @@ collectionProto.get = function(key) {
 };
 
 /**
- * Checks if the items contains a specific item
+ * Checks if items contains a specific item
  *
  * @param {String} key
  * @returns {Boolean}
 **/
 collectionProto.has = function(key) {
-	// return Object.prototype.toString.call(this.items, key);
 	return key in this.items;
 };
 
@@ -3723,11 +3718,15 @@ $assets.getLoader = function() {
  * @returns {Object} $assets
 **/
 $assets.addType = function(type) {
+	var addType;
+
 	if (!this.hasType(type)) {
-		type = this.types[type] = stdClass();
+		addType = stdClass();
 		
-		type.sourceMap = stdClass();
-		type.IDMap = stdClass();
+		addType.sourceMap = stdClass();
+		addType.IDMap = stdClass();
+
+		this.types[type] = addType;
 	}
 	
 	return this;
@@ -3929,8 +3928,6 @@ var addElementPropertyHandlers = (function() {
 		 * @todo Need to rewrite the property handler methods
 		**/
 		this.addProp = function(propertyKey, primitiveValue, inheritable) {
-			var prop;
-			
 			if (!isBoolean(inheritable)) inheritable = true;
 			
 			if (this.hasProp(propertyKey)) {
@@ -4094,14 +4091,14 @@ elementProto.id = null;
 **/
 elementProto.uuid = null;
 
-/**
- * The classes of the element
- *
- * @name Element#className
- * @type String
- * @readonly
-**/
 Object.defineProperty(elementProto, 'className', {
+	/**
+	 * The classes of the element
+	 *
+	 * @name Element#className
+	 * @type String
+	 * @readonly
+	 **/
 	get: function() {
 		return this.classList.all().join(' ');
 	}
@@ -4142,13 +4139,13 @@ elementProto.classList = null;
 **/
 elementProto.velocity = null;
 
-/**
- * The horizontal velocity of the element
- *
- * @name Element#vX
- * @type Number
-**/
 Object.defineProperty(elementProto, 'vX', {
+	/**
+	 * The horizontal velocity of the element
+	 *
+	 * @name Element#vX
+	 * @type Number
+	 **/
 	get: function() {
 		return this.velocity.x;
 	},
@@ -4157,13 +4154,13 @@ Object.defineProperty(elementProto, 'vX', {
 	}
 });
 
-/**
- * The vertical velocity of the element
- *
- * @name Element#vY
- * @type Number
-**/
 Object.defineProperty(elementProto, 'vY', {
+	/**
+	 * The vertical velocity of the element
+	 *
+	 * @name Element#vY
+	 * @type Number
+	 **/
 	get: function() {
 		return this.velocity.y;
 	},
@@ -4290,7 +4287,6 @@ elementProto.minHeight = 'none';
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.top = 0;
 
@@ -4300,7 +4296,6 @@ elementProto.top = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.right = 0;
 
@@ -4310,7 +4305,6 @@ elementProto.right = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.bottom = 0;
 
@@ -4320,7 +4314,6 @@ elementProto.bottom = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.left = 0;
 
@@ -4330,7 +4323,6 @@ elementProto.left = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.screenX = 0;
 
@@ -4340,7 +4332,6 @@ elementProto.screenX = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.screenY = 0;
 
@@ -4350,7 +4341,6 @@ elementProto.screenY = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.parentX = 0;
 
@@ -4360,7 +4350,6 @@ elementProto.parentX = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.parentY = 0;
 
@@ -4370,7 +4359,6 @@ elementProto.parentY = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.renderWidth = 0;
 
@@ -4380,87 +4368,94 @@ elementProto.renderWidth = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.renderHeight = 0;
 
-/**
- * The horizontal center position of the element, relative to the scene
- *
- * @name Element#screenXC
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
-/**
- * The vertical center position of the element, relative to the scene
- *
- * @name Element#screenYC
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
-/**
- * The horizontal end position of the element, relative to the scene
- *
- * @name Element#screenXE
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
-/**
- * The vertical end position of the element, relative to the scene
- *
- * @name Element#screenYE
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
-/**
- * The horizontal center position of the element, relative to it's parent
- *
- * @name Element#parentXC
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
-/**
- * The vertical center position of the element, relative to it's parent
- *
- * @name Element#parentYC
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
-/**
- * The horizontal end position of the element, relative to it's parent
- *
- * @name Element#parentXE
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
-/**
- * The vertical end position of the element, relative to it's parent
- *
- * @name Element#parentYE
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
 Object.defineProperties(elementProto, {
-	screenXC: { get: function() { return this.screenX + this.renderWidth / 2 } },
-	screenYC: { get: function() { return this.screenY + this.renderHeight / 2 } },
+	screenXC: {
+		/**
+		 * The horizontal center position of the element, relative to the scene
+		 *
+		 * @name Element#screenXC
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.screenX + this.renderWidth / 2 }
+	},
+	screenYC: {
+		/**
+		 * The vertical center position of the element, relative to the scene
+		 *
+		 * @name Element#screenYC
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.screenY + this.renderHeight / 2 }
+	},
 	
-	screenXE: { get: function() { return this.screenX + this.renderWidth } },
-	screenYE: { get: function() { return this.screenY + this.renderHeight } },
+	screenXE: {
+		/**
+		 * The horizontal end position of the element, relative to the scene
+		 *
+		 * @name Element#screenXE
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.screenX + this.renderWidth }
+	},
+	screenYE: {
+		/**
+		 * The vertical end position of the element, relative to the scene
+		 *
+		 * @name Element#screenYE
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.screenY + this.renderHeight }
+	},
 	
 	
-	parentXC: { get: function() { return this.parentX + this.renderWidth / 2 } },
-	parentYC: { get: function() { return this.parentY + this.renderHeight / 2 } },
+	parentXC: {
+		/**
+		 * The horizontal center position of the element, relative to it's parent
+		 *
+		 * @name Element#parentXC
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.parentX + this.renderWidth / 2 }
+	},
+	parentYC: {
+		/**
+		 * The vertical center position of the element, relative to it's parent
+		 *
+		 * @name Element#parentYC
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.parentY + this.renderHeight / 2 }
+	},
 	
-	parentXE: { get: function() { return this.parentX + this.renderWidth } },
-	parentYE: { get: function() { return this.parentY + this.renderHeight } }
+	parentXE: {
+		/**
+		 * The horizontal end position of the element, relative to it's parent
+		 *
+		 * @name Element#parentXE
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.parentX + this.renderWidth }
+	},
+	parentYE: {
+		/**
+		 * The vertical end position of the element, relative to it's parent
+		 *
+		 * @name Element#parentYE
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.parentY + this.renderHeight }
+	}
 });
 
 /**
@@ -4646,13 +4641,13 @@ elementProto.marginBottom = 0;
 **/
 elementProto.marginLeft = 0;
 
-/**
- * The margin of the element
- *
- * @name Element#margin
- * @type String
-**/
 Object.defineProperty(elementProto, 'margin', {
+	/**
+	 * The margin of the element
+	 *
+	 * @name Element#margin
+	 * @type String
+	 **/
 	get: function() {
 		return this.marginTop + ' ' + this.marginRight + ' ' + this.marginBottom + ' ' + this.marginLeft;
 	},
@@ -4718,13 +4713,13 @@ elementProto.paddingBottom = 0;
 **/
 elementProto.paddingLeft = 0;
 
-/**
- * The padding of the element
- *
- * @name Element#padding
- * @type String
-**/
 Object.defineProperty(elementProto, 'padding', {
+	/**
+	 * The padding of the element
+	 *
+	 * @name Element#padding
+	 * @type String
+	 **/
 	get: function() {
 		return this.paddingTop + ' ' + this.paddingRight + ' ' + this.paddingBottom + ' ' + this.paddingLeft;
 	},
@@ -4827,9 +4822,9 @@ Object.defineProperty(elementProto, 'borderRight', {
 		var pieces = borderRight.split(' ')
 		, len = pieces.length;
 		
-		if (len >= 1) this.borderTopWidth = pieces[0];
-		if (len >= 2) this.borderTopStyle = pieces[1];
-		if (len === 3) this.borderTopColor = pieces[2];
+		if (len >= 1) this.borderRightWidth = pieces[0];
+		if (len >= 2) this.borderRightStyle = pieces[1];
+		if (len === 3) this.borderRightColor = pieces[2];
 		
 		return borderRight;
 	}
@@ -4847,9 +4842,9 @@ Object.defineProperty(elementProto, 'borderBottom', {
 		var pieces = borderBottom.split(' ')
 		, len = pieces.length;
 		
-		if (len >= 1) this.borderTopWidth = pieces[0];
-		if (len >= 2) this.borderTopStyle = pieces[1];
-		if (len === 3) this.borderTopColor = pieces[2];
+		if (len >= 1) this.borderBottomWidth = pieces[0];
+		if (len >= 2) this.borderBottomStyle = pieces[1];
+		if (len === 3) this.borderBottomColor = pieces[2];
 		
 		return borderBottom;
 	}
@@ -4867,9 +4862,9 @@ Object.defineProperty(elementProto, 'borderLeft', {
 		var pieces = borderLeft.split(' ')
 		, len = pieces.length;
 		
-		if (len >= 1) this.borderTopWidth = pieces[0];
-		if (len >= 2) this.borderTopStyle = pieces[1];
-		if (len === 3) this.borderTopColor = pieces[2];
+		if (len >= 1) this.borderLeftWidth = pieces[0];
+		if (len >= 2) this.borderLeftStyle = pieces[1];
+		if (len === 3) this.borderLeftColor = pieces[2];
 		
 		return borderLeft;
 	}
@@ -4907,13 +4902,13 @@ elementProto.borderBottomWidth = 0;
 **/
 elementProto.borderLeftWidth = 0;
 
-/**
- * The width of the element's border
- *
- * @name Element#borderWidth
- * @type String
-**/
 Object.defineProperty(elementProto, 'borderWidth', {
+	/**
+	 * The width of the element's border
+	 *
+	 * @name Element#borderWidth
+	 * @type String
+	 **/
 	get: function() {
 		return this.borderTopWidth + ' ' + this.borderRightWidth + ' ' + this.borderBottomWidth + ' ' + this.borderLeftWidth;
 	},
@@ -4979,13 +4974,13 @@ elementProto.borderBottomStyle = 'none';
 **/
 elementProto.borderLeftStyle = 'none';
 
-/**
- * The style of the element's border
- *
- * @name Element#borderStyle
- * @type String
-**/
 Object.defineProperty(elementProto, 'borderStyle', {
+	/**
+	 * The style of the element's border
+	 *
+	 * @name Element#borderStyle
+	 * @type String
+	 **/
 	get: function() {
 		return this.borderTopStyle + ' ' + this.borderRightStyle + ' ' + this.borderBottomStyle + ' ' + this.borderLeftStyle;
 	},
@@ -5051,13 +5046,13 @@ elementProto.borderBottomColor = 'none';
 **/
 elementProto.borderLeftColor = 'none';
 
-/**
- * The color of the element's border
- *
- * @name Element#borderColor
- * @type String
-**/
 Object.defineProperty(elementProto, 'borderColor', {
+	/**
+	 * The color of the element's border
+	 *
+	 * @name Element#borderColor
+	 * @type String
+	 **/
 	get: function() {
 		return this.borderTopColor + ' ' + this.borderRightColor + ' ' + this.borderBottomColor + ' ' + this.borderLeftColor;
 	},
@@ -5222,7 +5217,7 @@ elementProto.scale = function(widthRatio, heightRatio) {
  * Adds a class to the element's classList
  *
  * @param {String} item
- * @param {Number} [orderID]
+ * @param {int} [orderID]
  * @returns {Element} this
  * @see ClassList#add
 **/
@@ -5236,7 +5231,7 @@ elementProto.addClass = function(item, orderID) {
  * Toggles a class
  *
  * @param {String} item
- * @param {Number} [orderID]
+ * @param {int} [orderID]
  * @returns {Element} this
  * @see ClassList#toggle
 **/
@@ -5424,10 +5419,10 @@ elementProto.update = function() {
 **/
 elementProto.animation = function(animData, duration, delay) {
 	var initial = getProps(this, keys(animData))
-	, fn = function(tick, elapsed, task) {
+	, fn = function(tick, elapsed) {
 		var percent = range(0, 1, elapsed / (duration || 0));
 		
-		forIn(initial, function(propKey, propVal) {
+		forIn(initial, function(propKey) {
 			this[propKey] = initial[propKey] + (animData[propKey] - initial[propKey]) * percent;
 		}, this);
 		
@@ -5589,7 +5584,7 @@ function addLayerElementHandlers() {
 	 * @alias Layer#getElementByID
 	 * @param {String} id
 	 * @returns {?Element}
-	 * @todo Break forEach if find element
+	 * @todo Break forEach when find element
 	**/
 	this.getElementByID = function(id) {
 		var returnElement = null;
@@ -5686,7 +5681,7 @@ function addLayerElementHandlers() {
 				
 				element = new (Function.prototype.bind.apply(constructor, args));
 			} else {
-				warning('Unable to instantiate Element. "' + abstractElement.type + '" is not instantiatable or does not exists');
+				warning('Unable to instantiate Element. "' + type + '" is not instantiatable or does not exists');
 			}
 		}
 		
@@ -5840,14 +5835,14 @@ layerProto.canvas = null;
 **/
 layerProto.ctx = null;
 
-/**
- * The x position of the canvas
- *
- * @name Layer#x
- * @type Number
- * @default 0
-**/
 Object.defineProperty(layerProto, 'x', {
+	/**
+	 * The x position of the canvas
+	 *
+	 * @name Layer#x
+	 * @type Number
+	 * @default 0
+	 **/
 	get: function() {
 		return getInt(this.canvas.style.left) || 0;
 	},
@@ -5856,14 +5851,14 @@ Object.defineProperty(layerProto, 'x', {
 	}
 });
 
-/**
- * The y position of the canvas
- *
- * @name Layer#y
- * @type Number
- * @default 0
-**/
 Object.defineProperty(layerProto, 'y', {
+	/**
+	 * The y position of the canvas
+	 *
+	 * @name Layer#y
+	 * @type Number
+	 * @default 0
+	 **/
 	get: function() {
 		return getInt(this.canvas.style.top) || 0;
 	},
@@ -5872,13 +5867,13 @@ Object.defineProperty(layerProto, 'y', {
 	}
 });
 
-/**
- * The width of the layer
- *
- * @name Layer#width
- * @type Number
-**/
 Object.defineProperty(layerProto, 'width', {
+	/**
+	 * The width of the layer
+	 *
+	 * @name Layer#width
+	 * @type Number
+	 **/
 	get: function() {
 		return this.canvas.width;
 	},
@@ -5887,13 +5882,13 @@ Object.defineProperty(layerProto, 'width', {
 	}
 });
 
-/**
- * The height of the layer
- *
- * @name Layer#height
- * @type Number
-**/
 Object.defineProperty(layerProto, 'height', {
+	/**
+	 * The height of the layer
+	 *
+	 * @name Layer#height
+	 * @type Number
+	 **/
 	get: function() {
 		return this.canvas.height;
 	},
@@ -5902,14 +5897,14 @@ Object.defineProperty(layerProto, 'height', {
 	}
 });
 
-/**
- * The z-index of the layer's canvas
- *
- * @name Layer#zIndex
- * @type Number
- * @default 0
-**/
 Object.defineProperty(layerProto, 'zIndex', {
+	/**
+	 * The z-index of the layer's canvas
+	 *
+	 * @name Layer#zIndex
+	 * @type Number
+	 * @default 0
+	 **/
     get: function() {
 		return +this.canvas.style.zIndex;
 	},
@@ -5918,14 +5913,14 @@ Object.defineProperty(layerProto, 'zIndex', {
 	}
 });
 
-/**
- * The background of the layer's canvas
- *
- * @name Layer#background
- * @type String
- * @default 'rgba(0, 0, 0, 0)'
-**/
 Object.defineProperty(layerProto, 'background', {
+	/**
+	 * The background of the layer's canvas
+	 *
+	 * @name Layer#background
+	 * @type String
+	 * @default 'rgba(0, 0, 0, 0)'
+	 **/
 	get: function() {
 		return this.canvas.style.background;
 	},
@@ -5934,14 +5929,14 @@ Object.defineProperty(layerProto, 'background', {
 	}
 });
 
-/**
- * The alpha level (globalAlpha) of the layer's canvas element
- *
- * @name Layer#opacity
- * @type float
- * @default 1
-**/
 Object.defineProperty(layerProto, 'opacity', {
+	/**
+	 * The alpha level (globalAlpha) of the layer's canvas element
+	 *
+	 * @name Layer#opacity
+	 * @type Number
+	 * @default 1
+	 **/
 	get: function() {
 		return this.ctx.globalAlpha;
 	},
@@ -6848,7 +6843,9 @@ sceneProto.addTask = function(listener, delay, thisArg) {
  * @returns {Scene} this
 **/
 sceneProto.removeTask = function(task) {
-	return this.queue.remove(task);
+	this.queue.remove(task);
+
+	return this;
 };
 
 /**
@@ -6860,11 +6857,13 @@ sceneProto.removeTask = function(task) {
  * @returns {Scene} this
 **/
 sceneProto.later = function(listener, delay, thisArg) {
-	return this.queue.add(new Task(function() {
+	this.queue.add(new Task(function() {
 		listener.apply(this, getArgs(arguments));
 		
 		return true;
 	}, delay, thisArg));
+
+	return this;
 };
 
 /**
@@ -6879,11 +6878,13 @@ sceneProto.later = function(listener, delay, thisArg) {
 sceneProto.repeat = function(listener, times, delay, thisArg) {
 	var n = 0; // memory leak
 	
-	return this.queue.add(new Task(function() {
+	this.queue.add(new Task(function() {
 		listener.apply(this, getArgs(arguments));
 		
 		return ++n >= times;
 	}, delay, thisArg));
+
+	return this;
 };
 
 /**
@@ -7394,15 +7395,15 @@ function privateContainerElement() {
 	 * Returns the number of elements in the ContainerElement
 	 *
 	 * @alias ContainerElement#count
-	 * @param {Boolean} ifRecursive
+	 * @param {Boolean} recursive
 	 * @returns {int}
 	**/
-	this.count = function(ifRecursive) {
+	this.count = function(recursive) {
 		var count = _elements.count;
 		
-		if (ifRecursive === true) {
+		if (recursive === true) {
 			this.each(function(element) {
-				if (is(element, ContainerElement)) count += element.count();
+				if (is(element, ContainerElement)) count += element.count(recursive);
 			});
 		}
 		
@@ -8324,7 +8325,7 @@ textElementProto.draw = function(ctx) {
 	
 	ctx.font = this.getFontDescriptor();
 	ctx.textAlign = align;
-	ctx.textBaseline = 'top'; /* this.textBaseline */;
+	ctx.textBaseline = 'top'; /* this.textBaseline */
 	ctx.fillStyle = this.textColor;
 	
 	if (align === 'center') x += this.renderWidth / 2;
@@ -8489,14 +8490,14 @@ imageElementProto.sourceHeight = '100%';
 **/
 imageElementProto.img = null;
 
-/**
- * The source of the image
- *
- * @name ImageElement#src
- * @type String
- * @default ''
-**/
 Object.defineProperty(imageElementProto, 'src', {
+	/**
+	 * The source of the image
+	 *
+	 * @name ImageElement#src
+	 * @type String
+	 * @default ''
+	 **/
 	get: function() {
 		return this.img.src;
 	},
@@ -8651,14 +8652,14 @@ patternElementProto.sourceHeight = '100%';
 **/
 patternElementProto.img = null;
 
-/**
- * The source of the image
- *
- * @name PatternElement#src
- * @type String
- * @default ''
-**/
 Object.defineProperty(patternElementProto, 'src', {
+	/**
+	 * The source of the image
+	 *
+	 * @name PatternElement#src
+	 * @type String
+	 * @default ''
+	 **/
 	get: function() {
 		return this.img.src;
 	},
@@ -8713,6 +8714,7 @@ patternElementProto.measureHeight = function() {
  *
  * @param {CanvasRenderingContext2D} ctx
  * @returns {PatternElement} this
+ * @todo implement sx, sy
 **/
 patternElementProto.draw = function(ctx) {
 	var img = this.img, sx, sy;
@@ -8822,14 +8824,14 @@ spriteSheetElementProto.frameHeight = 0;
 **/
 spriteSheetElementProto.img = null;
 
-/**
- * The source of the spriteSheet
- *
- * @name SpriteSheetElement#src
- * @type String
- * @default ''
-**/
 Object.defineProperty(spriteSheetElementProto, 'src', {
+	/**
+	 * The source of the spriteSheet
+	 *
+	 * @name SpriteSheetElement#src
+	 * @type String
+	 * @default ''
+	 **/
 	get: function() {
 		return this.img.src;
 	},
@@ -9004,8 +9006,8 @@ spriteSheetElementProto.setFrameSize = function(rows, cols, width, height) {
 		h = this.img.height;
 	}
 	
-	this.frameWidth = this.img.width / cols - 2 * this.frameSpacing;
-	this.frameHeight = this.img.height / rows - 2 * this.frameSpacing;
+	this.frameWidth = w / cols - 2 * this.frameSpacing;
+	this.frameHeight = h / rows - 2 * this.frameSpacing;
 	
 	return this.setFrames();
 };
@@ -9176,7 +9178,6 @@ var Chill = stdClass();
  * Creates a new Chill application
  *
  * @class Chill.App
- * @extends EventTarget
  * @memberof Chill
  * @param {Object|String} settings
  * @description todoc

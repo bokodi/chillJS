@@ -83,7 +83,7 @@ vector2Proto.add = function(v) {
 };
 
 /**
- * Sets the x and y values of the vector to the summ of the two given vectors
+ * Sets the x and y values of the vector to the sum of the two given vectors
  *
  * @param {Vector2} v1
  * @param {Vector2} v2
@@ -355,25 +355,6 @@ vector2Proto.toAngle = function(rad) {
 	this.rotate(2 * Math.PI - Math.atan2(this.y, this.x) + rad);
 	
 	return this;
-};
-
-/**
- * Projects the vector to the given 2D line
- *
- * @param {Line2} line
- * @returns {Vector2}
-**/
-vector2Proto.projectTo = function(line) {
-	var bs = line.start;
-	var bd = line.delta();
-	var dir = this.angleTo(bd) > 0 ? new Vector2(bd.y, -bd.x) : new Vector2(-bd.y, bd.x);
-	
-	var u = (this.y * bd.x + bd.y * bs.x - bs.y * bd.x - bd.y * this.x) / (dir.x * bd.y - dir.y * bd.x);
-	var v = (this.x + dir.x * u - bs.x) / bd.x;
-	
-	if (u < 0 || v < 0) return null;
-	
-	return new Vector2(this.x + dir.x * u, this.y + dir.y * u);
 };
 
 /**

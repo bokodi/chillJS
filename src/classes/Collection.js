@@ -67,13 +67,12 @@ collectionProto.get = function(key) {
 };
 
 /**
- * Checks if the items contains a specific item
+ * Checks if items contains a specific item
  *
  * @param {String} key
  * @returns {Boolean}
 **/
 collectionProto.has = function(key) {
-	// return Object.prototype.toString.call(this.items, key);
 	return key in this.items;
 };
 

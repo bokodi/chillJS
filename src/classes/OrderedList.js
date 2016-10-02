@@ -228,7 +228,7 @@ function OrderedList() {
 	};
 	
 	/**
-	 * Returns the first element of the lowset orderID
+	 * Returns the first element of the lowest orderID
 	 *
 	 * @alias OrderedList#first
 	 * @returns {?*}

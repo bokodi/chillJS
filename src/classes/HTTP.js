@@ -6,25 +6,25 @@
 **/
 var HTTP = Object.create(null);
 
-/**
- * HTTP get
- *
- * @method
- * @name HTTP.get
- * @param {String} url
- * @param {Function} callback
- * @returns {XMLHttpRequest}
- * @todo Error handling
-**/
 HTTP.get = (function() {
 	function onLoad(callback, e) {
-		var xmlhttp = e.target;
+		var xmlHttp = e.target;
 		
-		if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-			callback(xmlhttp.responseText);
+		if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+			callback(xmlHttp.responseText);
 		}
 	}
-	
+
+	/**
+	 * HTTP get
+	 *
+	 * @method
+	 * @name HTTP.get
+	 * @param {String} url
+	 * @param {Function} callback
+	 * @returns {XMLHttpRequest}
+	 * @todo Error handling
+	 **/
 	return function get(url, callback) {
 		var httpRequest = new XMLHttpRequest();
 		

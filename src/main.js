@@ -10,7 +10,6 @@ var Chill = stdClass();
  * Creates a new Chill application
  *
  * @class Chill.App
- * @extends EventTarget
  * @memberof Chill
  * @param {Object|String} settings
  * @description todoc

@@ -786,7 +786,9 @@ sceneProto.addTask = function(listener, delay, thisArg) {
  * @returns {Scene} this
 **/
 sceneProto.removeTask = function(task) {
-	return this.queue.remove(task);
+	this.queue.remove(task);
+
+	return this;
 };
 
 /**
@@ -798,11 +800,13 @@ sceneProto.removeTask = function(task) {
  * @returns {Scene} this
 **/
 sceneProto.later = function(listener, delay, thisArg) {
-	return this.queue.add(new Task(function() {
+	this.queue.add(new Task(function() {
 		listener.apply(this, getArgs(arguments));
 		
 		return true;
 	}, delay, thisArg));
+
+	return this;
 };
 
 /**
@@ -817,11 +821,13 @@ sceneProto.later = function(listener, delay, thisArg) {
 sceneProto.repeat = function(listener, times, delay, thisArg) {
 	var n = 0; // memory leak
 	
-	return this.queue.add(new Task(function() {
+	this.queue.add(new Task(function() {
 		listener.apply(this, getArgs(arguments));
 		
 		return ++n >= times;
 	}, delay, thisArg));
+
+	return this;
 };
 
 /**

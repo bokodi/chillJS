@@ -81,7 +81,7 @@ function addLayerElementHandlers() {
 	 * @alias Layer#getElementByID
 	 * @param {String} id
 	 * @returns {?Element}
-	 * @todo Break forEach if find element
+	 * @todo Break forEach when find element
 	**/
 	this.getElementByID = function(id) {
 		var returnElement = null;
@@ -178,7 +178,7 @@ function addLayerElementHandlers() {
 				
 				element = new (Function.prototype.bind.apply(constructor, args));
 			} else {
-				warning('Unable to instantiate Element. "' + abstractElement.type + '" is not instantiatable or does not exists');
+				warning('Unable to instantiate Element. "' + type + '" is not instantiatable or does not exists');
 			}
 		}
 		
@@ -332,14 +332,14 @@ layerProto.canvas = null;
 **/
 layerProto.ctx = null;
 
-/**
- * The x position of the canvas
- *
- * @name Layer#x
- * @type Number
- * @default 0
-**/
 Object.defineProperty(layerProto, 'x', {
+	/**
+	 * The x position of the canvas
+	 *
+	 * @name Layer#x
+	 * @type Number
+	 * @default 0
+	 **/
 	get: function() {
 		return getInt(this.canvas.style.left) || 0;
 	},
@@ -348,14 +348,14 @@ Object.defineProperty(layerProto, 'x', {
 	}
 });
 
-/**
- * The y position of the canvas
- *
- * @name Layer#y
- * @type Number
- * @default 0
-**/
 Object.defineProperty(layerProto, 'y', {
+	/**
+	 * The y position of the canvas
+	 *
+	 * @name Layer#y
+	 * @type Number
+	 * @default 0
+	 **/
 	get: function() {
 		return getInt(this.canvas.style.top) || 0;
 	},
@@ -364,13 +364,13 @@ Object.defineProperty(layerProto, 'y', {
 	}
 });
 
-/**
- * The width of the layer
- *
- * @name Layer#width
- * @type Number
-**/
 Object.defineProperty(layerProto, 'width', {
+	/**
+	 * The width of the layer
+	 *
+	 * @name Layer#width
+	 * @type Number
+	 **/
 	get: function() {
 		return this.canvas.width;
 	},
@@ -379,13 +379,13 @@ Object.defineProperty(layerProto, 'width', {
 	}
 });
 
-/**
- * The height of the layer
- *
- * @name Layer#height
- * @type Number
-**/
 Object.defineProperty(layerProto, 'height', {
+	/**
+	 * The height of the layer
+	 *
+	 * @name Layer#height
+	 * @type Number
+	 **/
 	get: function() {
 		return this.canvas.height;
 	},
@@ -394,14 +394,14 @@ Object.defineProperty(layerProto, 'height', {
 	}
 });
 
-/**
- * The z-index of the layer's canvas
- *
- * @name Layer#zIndex
- * @type Number
- * @default 0
-**/
 Object.defineProperty(layerProto, 'zIndex', {
+	/**
+	 * The z-index of the layer's canvas
+	 *
+	 * @name Layer#zIndex
+	 * @type Number
+	 * @default 0
+	 **/
     get: function() {
 		return +this.canvas.style.zIndex;
 	},
@@ -410,14 +410,14 @@ Object.defineProperty(layerProto, 'zIndex', {
 	}
 });
 
-/**
- * The background of the layer's canvas
- *
- * @name Layer#background
- * @type String
- * @default 'rgba(0, 0, 0, 0)'
-**/
 Object.defineProperty(layerProto, 'background', {
+	/**
+	 * The background of the layer's canvas
+	 *
+	 * @name Layer#background
+	 * @type String
+	 * @default 'rgba(0, 0, 0, 0)'
+	 **/
 	get: function() {
 		return this.canvas.style.background;
 	},
@@ -426,14 +426,14 @@ Object.defineProperty(layerProto, 'background', {
 	}
 });
 
-/**
- * The alpha level (globalAlpha) of the layer's canvas element
- *
- * @name Layer#opacity
- * @type float
- * @default 1
-**/
 Object.defineProperty(layerProto, 'opacity', {
+	/**
+	 * The alpha level (globalAlpha) of the layer's canvas element
+	 *
+	 * @name Layer#opacity
+	 * @type Number
+	 * @default 1
+	 **/
 	get: function() {
 		return this.ctx.globalAlpha;
 	},

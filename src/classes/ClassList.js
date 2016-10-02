@@ -16,12 +16,16 @@ classListProto.constructor = ClassList;
 /**
  * Same as OrderedList's add method, but makes sure that every item can appear only once
  *
- * @param {String} item
- * @param {Number} [orderID]
+ * @param {*} item
+ * @param {int} [orderID]
  * @returns {ClassList} this
 **/
 classListProto.add = function(item, orderID) {
-	return this.reOrder(item, orderID);
+	item = String(item);
+
+	this.reOrder(item, orderID);
+
+	return this;
 };
 
 /**
