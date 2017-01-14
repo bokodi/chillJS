@@ -1,35 +1,18 @@
-// chillJS[0.1.0]
-// Sat Aug 01 2015
+/**
+ * chillJS - JavaScript 2D library
+ * 
+ * @version v0.0.1-alpha
+ * @link http://bokodi.github.io/chillJS/
+ * @license MIT
+ * 
+ * 
+ * Date: Sat Jan 14 2017
+ */
 
-/*
-The MIT License (MIT)
 
-Copyright (c) 2015 Gábor Bokodi
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/
-
-// File: moduleHeader.js
 (function(window) {
 'use strict';
 
-// File: helpers/polyfills.js
 window.requestAnimationFrame =
 	window.requestAnimationFrame ||
 	window.webkitRequestAnimationFrame ||
@@ -44,7 +27,6 @@ window.cancelAnimationFrame =
 	window.msCancelAnimationFrame ||
 	window.oCancelAnimationFrame;
 
-// File: helpers/regexHelpers.js
 var numRegX = /[+-]?(?:\d*\.|)\d+/;
 var lineBreakRegX = /\n/;
 
@@ -62,7 +44,6 @@ function findFirstRegX(regX, str) {
 	return val === null ? null : val[0];
 }
 
-// File: helpers/typeHelpers.js
 /**
  * Determines whether a value is Array or not
  *
@@ -185,7 +166,6 @@ function is(o1, o2) {
 	return o1 instanceof o2;
 }
 
-// File: helpers/commonHelpers.js
 /**
  * Creates a new empty object, and returns it
  *
@@ -331,7 +311,7 @@ function getInt(str) {
  *
  * @function getFloat
  * @param {String} str
- * @returns {float}
+ * @returns {Number}
 **/
 function getFloat(str) {
 	return window.parseFloat(str);
@@ -388,7 +368,7 @@ function range(min, max, n) {
  *
  * @function deg2rad
  * @param {Number} deg
- * @returns {float}
+ * @returns {Number}
 **/
 function deg2rad(deg) {
 	return deg * Math.PI / 180;
@@ -509,7 +489,8 @@ function repeat(n, callback, thisArg) {
 **/
 var use = (function() {
 	var types = ['string', 'number', 'boolean', 'undefined', 'function'],
-		toString = Object.prototype.toString;
+		toString = Object.prototype.toString,
+		hasOwn = Object.prototype.hasOwnProperty;
 	
 	function inArray(arr, testValue) {
 		var i = 0, il = arr.length;
@@ -532,16 +513,13 @@ var use = (function() {
 	}
 	
 	return function use(target, data) {
-		var hasOwn = Object.prototype.hasOwnProperty,
-			key, targetVal, dataVal, dataValType, i, il;
+		var key, targetVal, dataVal, dataValType, i, il;
 		
 		for (key in data) {
 			if (hasOwn.call(data, key)) {
 				targetVal = target[key];
 				dataVal = data[key];
 				dataValType = smartType(dataVal);
-				
-				if (targetVal === undefined) continue;
 				
 				switch (smartType(targetVal)) {
 					case 'function':
@@ -568,7 +546,6 @@ var use = (function() {
 					case 'string':
 					case 'boolean':
 					case 'number':
-					case 'date':
 					case 'undefined':
 					case 'null':
 						target[key] = dataVal;
@@ -600,7 +577,6 @@ var use = (function() {
 	};
 }());
 
-// File: helpers/stringHelpers.js
 /**
  * Determines whether a string begins with the characters of another string
  *
@@ -646,7 +622,6 @@ var capitalize = (function() {
 	};
 }());
 
-// File: helpers/arrayHelpers.js
 /**
  * Removes item(s) from an array
  *
@@ -878,7 +853,6 @@ function createArray(length, fillValue) {
 	return fillArray(new Array(length), fillValue);
 }
 
-// File: helpers/objectHelpers.js
 /**
  * Copies the values of all enumerable own properties from one or more source objects to a target object
  *
@@ -1027,7 +1001,6 @@ function getProps(obj, properties) {
 	return returnValue;
 }
 
-// File: helpers/DOMHelpers.js
 /**
  * window.document
  *
@@ -1164,7 +1137,6 @@ function createElement(tagName, parentElement, textContent) {
 	return elem;
 }
 
-// File: classes/HTTP.js
 /**
  * HTTP namespace
  *
@@ -1173,25 +1145,25 @@ function createElement(tagName, parentElement, textContent) {
 **/
 var HTTP = Object.create(null);
 
-/**
- * HTTP get
- *
- * @method
- * @name HTTP.get
- * @param {String} url
- * @param {Function} callback
- * @returns {XMLHttpRequest}
- * @todo Error handling
-**/
 HTTP.get = (function() {
 	function onLoad(callback, e) {
-		var xmlhttp = e.target;
+		var xmlHttp = e.target;
 		
-		if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-			callback(xmlhttp.responseText);
+		if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+			callback(xmlHttp.responseText);
 		}
 	}
-	
+
+	/**
+	 * HTTP get
+	 *
+	 * @method
+	 * @name HTTP.get
+	 * @param {String} url
+	 * @param {Function} callback
+	 * @returns {XMLHttpRequest}
+	 * @todo Error handling
+	 **/
 	return function get(url, callback) {
 		var httpRequest = new XMLHttpRequest();
 		
@@ -1239,7 +1211,6 @@ HTTP.post = function(url, data, callback) {
 	return httpRequest;
 };
 
-// File: classes/Enum.js
 /**
  * Creates a new Enum
  *
@@ -1302,7 +1273,6 @@ function enumAssign() {
 	}
 }
 
-// File: classes/Event.js
 /**
  * Creates a new Event
  *
@@ -1430,7 +1400,6 @@ eventProto.toString = function() {
 	return this.type + ' Event';
 };
 
-// File: classes/EventTarget.js
 /**
  * Creates a new EventTarget
  * 
@@ -1625,7 +1594,6 @@ eventTargetProto.toString = function() {
 	return '[object EventTarget]';
 };
 
-// File: classes/OrderedList.js
 /**
  * Creates a new OrderedList
  *
@@ -1856,7 +1824,7 @@ function OrderedList() {
 	};
 	
 	/**
-	 * Returns the first element of the lowset orderID
+	 * Returns the first element of the lowest orderID
 	 *
 	 * @alias OrderedList#first
 	 * @returns {?*}
@@ -1958,7 +1926,6 @@ orderedListProto.toString = function() {
 	return '[object OrderedList]';
 };
 
-// File: classes/Storage.js
 /**
  * Creates a new PublicStorage
  *
@@ -2136,7 +2103,6 @@ function Storage() {
 var storageProto = Storage.prototype = Object.create(null);
 storageProto.constructor = Storage;
 
-// File: classes/Vector2.js
 /**
  * Creates a Vector2
  *
@@ -2222,7 +2188,7 @@ vector2Proto.add = function(v) {
 };
 
 /**
- * Sets the x and y values of the vector to the summ of the two given vectors
+ * Sets the x and y values of the vector to the sum of the two given vectors
  *
  * @param {Vector2} v1
  * @param {Vector2} v2
@@ -2497,25 +2463,6 @@ vector2Proto.toAngle = function(rad) {
 };
 
 /**
- * Projects the vector to the given 2D line
- *
- * @param {Line2} line
- * @returns {Vector2}
-**/
-vector2Proto.projectTo = function(line) {
-	var bs = line.start;
-	var bd = line.delta();
-	var dir = this.angleTo(bd) > 0 ? new Vector2(bd.y, -bd.x) : new Vector2(-bd.y, bd.x);
-	
-	var u = (this.y * bd.x + bd.y * bs.x - bs.y * bd.x - bd.y * this.x) / (dir.x * bd.y - dir.y * bd.x);
-	var v = (this.x + dir.x * u - bs.x) / bd.x;
-	
-	if (u < 0 || v < 0) return null;
-	
-	return new Vector2(this.x + dir.x * u, this.y + dir.y * u);
-};
-
-/**
  * Returns the distance between this and the given vector
  *
  * @param {Vector2} v
@@ -2579,7 +2526,6 @@ vector2Proto.toString = function() {
 	return 'Vector2 at ' + this.x + ' ' + this.y;
 };
 
-// File: classes/Screen.js
 /**
  * Creates a new Screen
  *
@@ -2628,7 +2574,6 @@ screenProto.toString = function() {
 	return 'Screen[' + this.width + ', ' + this.height + '] at ' + this.pos.x + ', ' + this.pos.y;
 };
 
-// File: classes/Cursor.js
 /**
  * Creates a new Cursor
  *
@@ -2674,7 +2619,6 @@ cursorProto.toString = function() {
 	return 'Cursor at ' + this.x + ', ' + this.y;
 };
 
-// File: classes/ClassList.js
 /**
  * Creates a new ClassList
  *
@@ -2693,12 +2637,16 @@ classListProto.constructor = ClassList;
 /**
  * Same as OrderedList's add method, but makes sure that every item can appear only once
  *
- * @param {String} item
- * @param {Number} [orderID]
+ * @param {*} item
+ * @param {int} [orderID]
  * @returns {ClassList} this
 **/
 classListProto.add = function(item, orderID) {
-	return this.reOrder(item, orderID);
+	item = String(item);
+
+	this.reOrder(item, orderID);
+
+	return this;
 };
 
 /**
@@ -2721,7 +2669,6 @@ classListProto.toString = function() {
 	return '[object ClassList]';
 };
 
-// File: classes/Loader.js
 /**
  * Creates a new Loader
  *
@@ -2732,6 +2679,10 @@ classListProto.toString = function() {
 **/
 function Loader(basePath) {
 	EventTarget.call(this);
+
+	if (basePath) {
+		this.basePath = basePath;
+	}
 	
 	this.reset();
 }
@@ -2761,6 +2712,15 @@ Loader.AUDIO = 'Audio';
 /** @lends Loader# **/
 var loaderProto = Loader.prototype = Object.create(EventTarget.prototype);
 loaderProto.constructor = Loader;
+
+/**
+ * The base path of the loader
+ *
+ * @type String
+ * @default ''
+ * @todo implement base path
+ **/
+loaderProto.basePath = '';
 
 /**
  * The status of the loader
@@ -2943,8 +2903,7 @@ loaderProto.add = function(type, path) {
  * @returns {Image}
 **/
 loaderProto.addImage = function(path) {
-	var scope = this
-	, img = this.loadImage(path, null, false);
+	var img = this.loadImage(path, null, false);
 	
 	this.setPathList.push(function() { img.src = path; });
 	this.loadQueue.push(img);
@@ -2959,8 +2918,7 @@ loaderProto.addImage = function(path) {
  * @returns {Audio}
 **/
 loaderProto.addAudio = function(path) {
-	var scope = this
-	, audio = this.loadAudio(path, null, false);
+	var audio = this.loadAudio(path, null, false);
 	
 	this.setPathList.push(function() { audio.src = path; });
 	this.loadQueue.push(audio);
@@ -2990,7 +2948,6 @@ loaderProto.remove = function(item) {
 	return null;
 };
 
-// File: classes/Queue.js
 /**
  * Creates a new Queue
  *
@@ -3076,13 +3033,17 @@ queueProto.each = function(callback) {
  *
  * @returns {Queue} this
 **/
-queueProto.perform = function() {
-	this.each(function(task) {
+queueProto.perform = (function() {
+	function execute(task) {
 		if (task.execute() === true) this.remove(task);
-	});
+	}
 	
-	return this;
-};
+	return function perform() {
+		this.each(execute);
+		
+		return this;
+	};
+}());
 
 /**
  * Returns the string value of the queue
@@ -3093,7 +3054,6 @@ queueProto.toString = function() {
 	return '[object Queue]';
 };
 
-// File: classes/Task.js
 /**
  * Creates a new Task
  *
@@ -3156,7 +3116,6 @@ taskProto.toString = function() {
 	return '[object Task]';
 };
 
-// File: classes/Collection.js
 /**
  * Creates a new Collection
  *
@@ -3226,13 +3185,12 @@ collectionProto.get = function(key) {
 };
 
 /**
- * Checks if the items contains a specific item
+ * Checks if items contains a specific item
  *
  * @param {String} key
  * @returns {Boolean}
 **/
 collectionProto.has = function(key) {
-	// return Object.prototype.toString.call(this.items, key);
 	return key in this.items;
 };
 
@@ -3315,7 +3273,6 @@ collectionProto.all = function() {
 	return all;
 };
 
-// File: classes/eventTypes/MouseEvent.js
 /**
  * Creates a new MouseEvent
  *
@@ -3366,7 +3323,6 @@ mouseEventProto.y = 0;
 **/
 mouseEventProto.button = null;
 
-// File: classes/eventTypes/KeyboardEvent.js
 /**
  * Creates a new KeyboardEvent
  *
@@ -3405,7 +3361,6 @@ keyboardEventProto.keyCode = null;
 **/
 keyboardEventProto.character = null;
 
-// File: classes/eventTypes/DragEvent.js
 /**
  * Creates a new DragEvent
  *
@@ -3457,7 +3412,6 @@ dragEventProto.dragStartY = null;
 **/
 dragEventProto.dragged = null;
 
-// File: classes/eventTypes/LoadEvent.js
 /**
  * Creates a new LoadEvent
  *
@@ -3477,7 +3431,6 @@ function LoadEvent(eventType, target) {
 var loadEventProto = LoadEvent.prototype = Object.create(Event.prototype);
 loadEventProto.constructor = LoadEvent;
 
-// File: classes/eventTypes/CollisionEvent.js
 /**
  * Creates a new CollisionEvent
  *
@@ -3506,7 +3459,14 @@ collisionEventProto.constructor = CollisionEvent;
 **/
 collisionEventProto.objectives = null;
 
-// File: core/utils/enums.js
+/**
+ * $methods namespace
+ *
+ * @namespace $methods
+ * @description todoc
+**/
+var $methods = stdClass();
+
 /**
  * $enums namespace
  *
@@ -3525,7 +3485,6 @@ var $enums = stdClass();
 **/
 $enums.ELEMENT_FLOWS = new Enum('none', 'horizontal', 'vertical');
 
-// File: core/utils/elements.js
 /**
  * $elements namespace
  *
@@ -3623,7 +3582,6 @@ $elements.removeType = function(type) {
 	return this;
 };
 
-// File: core/utils/abstracts.js
 /**
  * $abstracts namespace
  *
@@ -3633,7 +3591,12 @@ $elements.removeType = function(type) {
 **/
 var $abstracts = inherit(Collection);
 
-// File: core/utils/classes.js
+$methods.createAbstractElement = function(elemID, elementType, elementUse, args) {
+	$abstracts.set(elemID, new AbstractElement(elementType, elementUse, args));
+	
+	return this;
+};
+
 /**
  * $classes namespace
  *
@@ -3673,7 +3636,12 @@ $classes.fromPrototype = function(proto, ignore) {
 	return returnValue;
 };
 
-// File: core/utils/masks.js
+$methods.createClass = function(className, classData) {
+	$classes.set(className, classData);
+	
+	return this;
+};
+
 /**
  * $masks namespace
  *
@@ -3683,7 +3651,6 @@ $classes.fromPrototype = function(proto, ignore) {
 **/
 var $masks = inherit(Collection);
 
-// File: core/utils/plugins.js
 /**
  * $plugins namespace
  *
@@ -3693,7 +3660,6 @@ var $masks = inherit(Collection);
 **/
 var $plugins = inherit(Collection);
 
-// File: core/utils/assets.js
 /**
  * $assets namespace
  *
@@ -3752,11 +3718,15 @@ $assets.getLoader = function() {
  * @returns {Object} $assets
 **/
 $assets.addType = function(type) {
+	var addType;
+
 	if (!this.hasType(type)) {
-		type = this.types[type] = stdClass();
+		addType = stdClass();
 		
-		type.sourceMap = stdClass();
-		type.IDMap = stdClass();
+		addType.sourceMap = stdClass();
+		addType.IDMap = stdClass();
+
+		this.types[type] = addType;
 	}
 	
 	return this;
@@ -3854,7 +3824,6 @@ $assets.addItem = function(type, item, src, id) {
 $assets.addType(Loader.IMG);
 $assets.addType(Loader.AUDIO);
 
-// File: core/utils/canvas.js
 /**
  * $canvas namespace
  *
@@ -3879,13 +3848,14 @@ $canvas.DOMElement = createElement('canvas');
 **/
 $canvas.ctx = $canvas.DOMElement.getContext('2d');
 
-// File: core/Element.js
 /**
  * Creates a new Element
  *
  * @class Element
  * @extends EventTarget
  * @description todoc
+ * @property {ClassList} classList
+ * @property {Vector2} velocity
 **/
 function Element() {
 	EventTarget.call(this);
@@ -3960,8 +3930,6 @@ var addElementPropertyHandlers = (function() {
 		 * @todo Need to rewrite the property handler methods
 		**/
 		this.addProp = function(propertyKey, primitiveValue, inheritable) {
-			var prop;
-			
 			if (!isBoolean(inheritable)) inheritable = true;
 			
 			if (this.hasProp(propertyKey)) {
@@ -4125,14 +4093,14 @@ elementProto.id = null;
 **/
 elementProto.uuid = null;
 
-/**
- * The classes of the element
- *
- * @name Element#className
- * @type String
- * @readonly
-**/
 Object.defineProperty(elementProto, 'className', {
+	/**
+	 * The classes of the element
+	 *
+	 * @name Element#className
+	 * @type String
+	 * @readonly
+	 **/
 	get: function() {
 		return this.classList.all().join(' ');
 	}
@@ -4156,30 +4124,13 @@ elementProto.parentLayer = null;
 **/
 elementProto.parentElement = null;
 
-/**
- * The classes of the element
- *
- * @type ClassList
- * @default null
- * @readonly
-**/
-elementProto.classList = null;
-
-/**
- * The velocity of the element
- *
- * @type Vector2
- * @default null
-**/
-elementProto.velocity = null;
-
-/**
- * The horizontal velocity of the element
- *
- * @name Element#vX
- * @type Number
-**/
 Object.defineProperty(elementProto, 'vX', {
+	/**
+	 * The horizontal velocity of the element
+	 *
+	 * @name Element#vX
+	 * @type Number
+	 **/
 	get: function() {
 		return this.velocity.x;
 	},
@@ -4188,13 +4139,13 @@ Object.defineProperty(elementProto, 'vX', {
 	}
 });
 
-/**
- * The vertical velocity of the element
- *
- * @name Element#vY
- * @type Number
-**/
 Object.defineProperty(elementProto, 'vY', {
+	/**
+	 * The vertical velocity of the element
+	 *
+	 * @name Element#vY
+	 * @type Number
+	 **/
 	get: function() {
 		return this.velocity.y;
 	},
@@ -4321,7 +4272,6 @@ elementProto.minHeight = 'none';
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.top = 0;
 
@@ -4331,7 +4281,6 @@ elementProto.top = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.right = 0;
 
@@ -4341,7 +4290,6 @@ elementProto.right = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.bottom = 0;
 
@@ -4351,7 +4299,6 @@ elementProto.bottom = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.left = 0;
 
@@ -4361,7 +4308,6 @@ elementProto.left = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.screenX = 0;
 
@@ -4371,7 +4317,6 @@ elementProto.screenX = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.screenY = 0;
 
@@ -4381,7 +4326,6 @@ elementProto.screenY = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.parentX = 0;
 
@@ -4391,7 +4335,6 @@ elementProto.parentX = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.parentY = 0;
 
@@ -4401,7 +4344,6 @@ elementProto.parentY = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.renderWidth = 0;
 
@@ -4411,87 +4353,94 @@ elementProto.renderWidth = 0;
  * @type Number
  * @default 0
  * @readonly
- * @todo Force reflow (if necessary)
 **/
 elementProto.renderHeight = 0;
 
-/**
- * The horizontal center position of the element, relative to the scene
- *
- * @name Element#screenXC
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
-/**
- * The vertical center position of the element, relative to the scene
- *
- * @name Element#screenYC
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
-/**
- * The horizontal end position of the element, relative to the scene
- *
- * @name Element#screenXE
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
-/**
- * The vertical end position of the element, relative to the scene
- *
- * @name Element#screenYE
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
-/**
- * The horizontal center position of the element, relative to it's parent
- *
- * @name Element#parentXC
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
-/**
- * The vertical center position of the element, relative to it's parent
- *
- * @name Element#parentYC
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
-/**
- * The horizontal end position of the element, relative to it's parent
- *
- * @name Element#parentXE
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
-/**
- * The vertical end position of the element, relative to it's parent
- *
- * @name Element#parentYE
- * @type Number
- * @readonly
- * @todo Force reflow (if necessary)
-**/
 Object.defineProperties(elementProto, {
-	screenXC: { get: function() { return this.screenX + this.renderWidth / 2 } },
-	screenYC: { get: function() { return this.screenY + this.renderHeight / 2 } },
+	screenXC: {
+		/**
+		 * The horizontal center position of the element, relative to the scene
+		 *
+		 * @name Element#screenXC
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.screenX + this.renderWidth / 2 }
+	},
+	screenYC: {
+		/**
+		 * The vertical center position of the element, relative to the scene
+		 *
+		 * @name Element#screenYC
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.screenY + this.renderHeight / 2 }
+	},
 	
-	screenXE: { get: function() { return this.screenX + this.renderWidth } },
-	screenYE: { get: function() { return this.screenY + this.renderHeight } },
+	screenXE: {
+		/**
+		 * The horizontal end position of the element, relative to the scene
+		 *
+		 * @name Element#screenXE
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.screenX + this.renderWidth }
+	},
+	screenYE: {
+		/**
+		 * The vertical end position of the element, relative to the scene
+		 *
+		 * @name Element#screenYE
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.screenY + this.renderHeight }
+	},
 	
 	
-	parentXC: { get: function() { return this.parentX + this.renderWidth / 2 } },
-	parentYC: { get: function() { return this.parentY + this.renderHeight / 2 } },
+	parentXC: {
+		/**
+		 * The horizontal center position of the element, relative to it's parent
+		 *
+		 * @name Element#parentXC
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.parentX + this.renderWidth / 2 }
+	},
+	parentYC: {
+		/**
+		 * The vertical center position of the element, relative to it's parent
+		 *
+		 * @name Element#parentYC
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.parentY + this.renderHeight / 2 }
+	},
 	
-	parentXE: { get: function() { return this.parentX + this.renderWidth } },
-	parentYE: { get: function() { return this.parentY + this.renderHeight } }
+	parentXE: {
+		/**
+		 * The horizontal end position of the element, relative to it's parent
+		 *
+		 * @name Element#parentXE
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.parentX + this.renderWidth }
+	},
+	parentYE: {
+		/**
+		 * The vertical end position of the element, relative to it's parent
+		 *
+		 * @name Element#parentYE
+		 * @type Number
+		 * @readonly
+		 **/
+		get: function() { return this.parentY + this.renderHeight }
+	}
 });
 
 /**
@@ -4677,13 +4626,13 @@ elementProto.marginBottom = 0;
 **/
 elementProto.marginLeft = 0;
 
-/**
- * The margin of the element
- *
- * @name Element#margin
- * @type String
-**/
 Object.defineProperty(elementProto, 'margin', {
+	/**
+	 * The margin of the element
+	 *
+	 * @name Element#margin
+	 * @type String
+	 **/
 	get: function() {
 		return this.marginTop + ' ' + this.marginRight + ' ' + this.marginBottom + ' ' + this.marginLeft;
 	},
@@ -4749,13 +4698,13 @@ elementProto.paddingBottom = 0;
 **/
 elementProto.paddingLeft = 0;
 
-/**
- * The padding of the element
- *
- * @name Element#padding
- * @type String
-**/
 Object.defineProperty(elementProto, 'padding', {
+	/**
+	 * The padding of the element
+	 *
+	 * @name Element#padding
+	 * @type String
+	 **/
 	get: function() {
 		return this.paddingTop + ' ' + this.paddingRight + ' ' + this.paddingBottom + ' ' + this.paddingLeft;
 	},
@@ -4858,9 +4807,9 @@ Object.defineProperty(elementProto, 'borderRight', {
 		var pieces = borderRight.split(' ')
 		, len = pieces.length;
 		
-		if (len >= 1) this.borderTopWidth = pieces[0];
-		if (len >= 2) this.borderTopStyle = pieces[1];
-		if (len === 3) this.borderTopColor = pieces[2];
+		if (len >= 1) this.borderRightWidth = pieces[0];
+		if (len >= 2) this.borderRightStyle = pieces[1];
+		if (len === 3) this.borderRightColor = pieces[2];
 		
 		return borderRight;
 	}
@@ -4878,9 +4827,9 @@ Object.defineProperty(elementProto, 'borderBottom', {
 		var pieces = borderBottom.split(' ')
 		, len = pieces.length;
 		
-		if (len >= 1) this.borderTopWidth = pieces[0];
-		if (len >= 2) this.borderTopStyle = pieces[1];
-		if (len === 3) this.borderTopColor = pieces[2];
+		if (len >= 1) this.borderBottomWidth = pieces[0];
+		if (len >= 2) this.borderBottomStyle = pieces[1];
+		if (len === 3) this.borderBottomColor = pieces[2];
 		
 		return borderBottom;
 	}
@@ -4898,9 +4847,9 @@ Object.defineProperty(elementProto, 'borderLeft', {
 		var pieces = borderLeft.split(' ')
 		, len = pieces.length;
 		
-		if (len >= 1) this.borderTopWidth = pieces[0];
-		if (len >= 2) this.borderTopStyle = pieces[1];
-		if (len === 3) this.borderTopColor = pieces[2];
+		if (len >= 1) this.borderLeftWidth = pieces[0];
+		if (len >= 2) this.borderLeftStyle = pieces[1];
+		if (len === 3) this.borderLeftColor = pieces[2];
 		
 		return borderLeft;
 	}
@@ -4938,13 +4887,13 @@ elementProto.borderBottomWidth = 0;
 **/
 elementProto.borderLeftWidth = 0;
 
-/**
- * The width of the element's border
- *
- * @name Element#borderWidth
- * @type String
-**/
 Object.defineProperty(elementProto, 'borderWidth', {
+	/**
+	 * The width of the element's border
+	 *
+	 * @name Element#borderWidth
+	 * @type String
+	 **/
 	get: function() {
 		return this.borderTopWidth + ' ' + this.borderRightWidth + ' ' + this.borderBottomWidth + ' ' + this.borderLeftWidth;
 	},
@@ -5010,13 +4959,13 @@ elementProto.borderBottomStyle = 'none';
 **/
 elementProto.borderLeftStyle = 'none';
 
-/**
- * The style of the element's border
- *
- * @name Element#borderStyle
- * @type String
-**/
 Object.defineProperty(elementProto, 'borderStyle', {
+	/**
+	 * The style of the element's border
+	 *
+	 * @name Element#borderStyle
+	 * @type String
+	 **/
 	get: function() {
 		return this.borderTopStyle + ' ' + this.borderRightStyle + ' ' + this.borderBottomStyle + ' ' + this.borderLeftStyle;
 	},
@@ -5082,13 +5031,13 @@ elementProto.borderBottomColor = 'none';
 **/
 elementProto.borderLeftColor = 'none';
 
-/**
- * The color of the element's border
- *
- * @name Element#borderColor
- * @type String
-**/
 Object.defineProperty(elementProto, 'borderColor', {
+	/**
+	 * The color of the element's border
+	 *
+	 * @name Element#borderColor
+	 * @type String
+	 **/
 	get: function() {
 		return this.borderTopColor + ' ' + this.borderRightColor + ' ' + this.borderBottomColor + ' ' + this.borderLeftColor;
 	},
@@ -5253,7 +5202,7 @@ elementProto.scale = function(widthRatio, heightRatio) {
  * Adds a class to the element's classList
  *
  * @param {String} item
- * @param {Number} [orderID]
+ * @param {int} [orderID]
  * @returns {Element} this
  * @see ClassList#add
 **/
@@ -5267,7 +5216,7 @@ elementProto.addClass = function(item, orderID) {
  * Toggles a class
  *
  * @param {String} item
- * @param {Number} [orderID]
+ * @param {int} [orderID]
  * @returns {Element} this
  * @see ClassList#toggle
 **/
@@ -5423,24 +5372,18 @@ elementProto.drawBox = function(ctx) {
 elementProto.update = function() {
 	if (isNumber(this.x) && isNumber(this.vX)) {
 		this.x += this.vX;
-		
-		if (isNumber(this.minX) && isNumber(this.maxX)) {
-			if (this.x <= this.minX) this.x = this.maxX;
-			else
-			if (this.x >= this.maxX) this.x = this.minX;
-		}
+
+		if (isNumber(this.minX) && this.x < this.minX) this.x = this.minX;
+		if (isNumber(this.maxX) && this.x > this.maxX) this.x = this.maxX;
 	}
-	
+
 	if (isNumber(this.y) && isNumber(this.vY)) {
 		this.y += this.vY;
-		
-		if (isNumber(this.minY) && isNumber(this.maxY)) {
-			if (this.y <= this.minY) this.y = this.maxY;
-			else
-			if (this.y >= this.maxY) this.y = this.minY;
-		}
+
+		if (isNumber(this.minY) && this.y < this.minY) this.y = this.minY;
+		if (isNumber(this.maxY) && this.y > this.maxY) this.y = this.maxY;
 	}
-	
+
 	return this;
 };
 
@@ -5455,10 +5398,10 @@ elementProto.update = function() {
 **/
 elementProto.animation = function(animData, duration, delay) {
 	var initial = getProps(this, keys(animData))
-	, fn = function(tick, elapsed, task) {
+	, fn = function(tick, elapsed) {
 		var percent = range(0, 1, elapsed / (duration || 0));
 		
-		forIn(initial, function(propKey, propVal) {
+		forIn(initial, function(propKey) {
 			this[propKey] = initial[propKey] + (animData[propKey] - initial[propKey]) * percent;
 		}, this);
 		
@@ -5537,7 +5480,6 @@ var elementClass = $classes.fromPrototype(
 $elements.addType(elementProto.elementName, Element, false, true);
 $classes.set(elementProto.elementType, elementClass);
 
-// File: core/Layer.js
 /**
  * Creates a new Layer
  *
@@ -5545,6 +5487,8 @@ $classes.set(elementProto.elementType, elementClass);
  * @extends EventTarget
  * @param {Object} [layerUse]
  * @description todoc
+ * @property {HTMLCanvasElement|HTMLElement} canvas
+ * @property {CanvasRenderingContext2D} ctx
 **/
 function Layer(layerUse) {
 	EventTarget.call(this);
@@ -5621,7 +5565,7 @@ function addLayerElementHandlers() {
 	 * @alias Layer#getElementByID
 	 * @param {String} id
 	 * @returns {?Element}
-	 * @todo Break forEach if find element
+	 * @todo Break forEach when find element
 	**/
 	this.getElementByID = function(id) {
 		var returnElement = null;
@@ -5718,7 +5662,7 @@ function addLayerElementHandlers() {
 				
 				element = new (Function.prototype.bind.apply(constructor, args));
 			} else {
-				warning('Unable to instantiate Element. "' + abstractElement.type + '" is not instantiatable or does not exists');
+				warning('Unable to instantiate Element. "' + type + '" is not instantiatable or does not exists');
 			}
 		}
 		
@@ -5854,32 +5798,14 @@ layerProto.id = null;
 **/
 layerProto.uuid = null;
 
-/**
- * The canvas of the layer
- *
- * @type HTMLCanvasElement
- * @default null
- * @readonly
-**/
-layerProto.canvas = null;
-
-/**
- * The 2d rendering context of the layer
- * 
- * @type CanvasRenderingContext2D
- * @default null
- * @readonly
-**/
-layerProto.ctx = null;
-
-/**
- * The x position of the canvas
- *
- * @name Layer#x
- * @type Number
- * @default 0
-**/
 Object.defineProperty(layerProto, 'x', {
+	/**
+	 * The x position of the canvas
+	 *
+	 * @name Layer#x
+	 * @type Number
+	 * @default 0
+	 **/
 	get: function() {
 		return getInt(this.canvas.style.left) || 0;
 	},
@@ -5888,14 +5814,14 @@ Object.defineProperty(layerProto, 'x', {
 	}
 });
 
-/**
- * The y position of the canvas
- *
- * @name Layer#y
- * @type Number
- * @default 0
-**/
 Object.defineProperty(layerProto, 'y', {
+	/**
+	 * The y position of the canvas
+	 *
+	 * @name Layer#y
+	 * @type Number
+	 * @default 0
+	 **/
 	get: function() {
 		return getInt(this.canvas.style.top) || 0;
 	},
@@ -5904,13 +5830,13 @@ Object.defineProperty(layerProto, 'y', {
 	}
 });
 
-/**
- * The width of the layer
- *
- * @name Layer#width
- * @type Number
-**/
 Object.defineProperty(layerProto, 'width', {
+	/**
+	 * The width of the layer
+	 *
+	 * @name Layer#width
+	 * @type Number
+	 **/
 	get: function() {
 		return this.canvas.width;
 	},
@@ -5919,13 +5845,13 @@ Object.defineProperty(layerProto, 'width', {
 	}
 });
 
-/**
- * The height of the layer
- *
- * @name Layer#height
- * @type Number
-**/
 Object.defineProperty(layerProto, 'height', {
+	/**
+	 * The height of the layer
+	 *
+	 * @name Layer#height
+	 * @type Number
+	 **/
 	get: function() {
 		return this.canvas.height;
 	},
@@ -5934,14 +5860,14 @@ Object.defineProperty(layerProto, 'height', {
 	}
 });
 
-/**
- * The z-index of the layer's canvas
- *
- * @name Layer#zIndex
- * @type Number
- * @default 0
-**/
 Object.defineProperty(layerProto, 'zIndex', {
+	/**
+	 * The z-index of the layer's canvas
+	 *
+	 * @name Layer#zIndex
+	 * @type Number
+	 * @default 0
+	 **/
     get: function() {
 		return +this.canvas.style.zIndex;
 	},
@@ -5950,14 +5876,14 @@ Object.defineProperty(layerProto, 'zIndex', {
 	}
 });
 
-/**
- * The background of the layer's canvas
- *
- * @name Layer#background
- * @type String
- * @default 'rgba(0, 0, 0, 0)'
-**/
 Object.defineProperty(layerProto, 'background', {
+	/**
+	 * The background of the layer's canvas
+	 *
+	 * @name Layer#background
+	 * @type String
+	 * @default 'rgba(0, 0, 0, 0)'
+	 **/
 	get: function() {
 		return this.canvas.style.background;
 	},
@@ -5966,14 +5892,14 @@ Object.defineProperty(layerProto, 'background', {
 	}
 });
 
-/**
- * The alpha level (globalAlpha) of the layer's canvas element
- *
- * @name Layer#opacity
- * @type float
- * @default 1
-**/
 Object.defineProperty(layerProto, 'opacity', {
+	/**
+	 * The alpha level (globalAlpha) of the layer's canvas element
+	 *
+	 * @name Layer#opacity
+	 * @type Number
+	 * @default 1
+	 **/
 	get: function() {
 		return this.ctx.globalAlpha;
 	},
@@ -6009,14 +5935,18 @@ layerProto.render = (function() {
 	function draw(element) {
 		var ctx = this.ctx;
 		
-		ctx.save();
-		
-		element.applyTransform(ctx);
-		element.applyMask(ctx);
-		element.drawBox(ctx);
-		element.draw(ctx);
-		
-		ctx.restore();
+		if (element.opacity > 0) {
+			ctx.save();
+			
+			ctx.globalAlpha = element.opacity;
+			
+			element.applyTransform(ctx);
+			element.applyMask(ctx);
+			element.drawBox(ctx);
+			element.draw(ctx);
+			
+			ctx.restore();
+		}
 	}
 	
 	return function render() {
@@ -6088,7 +6018,6 @@ layerProto.toString = function() {
 	return 'Chill Layer';
 };
 
-// File: core/Scene.js
 /**
  * Creates a new Scene
  *
@@ -6096,6 +6025,12 @@ layerProto.toString = function() {
  * @extends EventTarget
  * @param {HTMLElement} wrapper
  * @description todoc
+ * @property {HTMLElement} wrapper
+ * @property {Screen} screen
+ * @property {Cursor} cursor
+ * @property {PublicStorage} settings
+ * @property {Loader} loader
+ * @property {Queue} queue
 **/
 function Scene(wrapper) {
 	EventTarget.call(this);
@@ -6510,7 +6445,7 @@ function addSceneCollisionDetectionHandlers() {
 	/** @lends CollisionDetector# **/
 	var collisionDetectorProto = CollisionDetector.prototype = stdClass();
 	collisionDetectorProto.constructor = CollisionDetector;
-	
+
 	/**
 	 * Adds one or more targets to check
 	 *
@@ -6632,33 +6567,6 @@ function initScene() {
 sceneProto.uuid = null;
 
 /**
- * The wrapper of the scene
- *
- * @type HTMLElement
- * @default null
- * @readonly
-**/
-sceneProto.wrapper = null;
-
-/**
- * The screen of the scene
- *
- * @type Screen
- * @default null
- * @readonly
-**/
-sceneProto.screen = null;
-
-/**
- * The cursor of the scene
- *
- * @type Cursor
- * @default null
- * @readonly
-**/
-sceneProto.cursor = null;
-
-/**
  * The loading state of the scene
  *
  * @type String
@@ -6666,33 +6574,6 @@ sceneProto.cursor = null;
  * @readonly
 **/
 sceneProto.readyState = null;
-
-/**
- * The settings of the scene
- *
- * @type PublicStorage
- * @default null
- * @readonly
-**/
-sceneProto.settings = null;
-
-/**
- * The loader of the scene
- *
- * @type Loader
- * @default null
- * @readonly
-**/
-sceneProto.loader = null;
-
-/**
- * The queue of the scene
- *
- * @type Queue
- * @default null
- * @readonly
-**/
-sceneProto.queue = null;
 
 /**
  * The running status of the scene
@@ -6877,7 +6758,9 @@ sceneProto.addTask = function(listener, delay, thisArg) {
  * @returns {Scene} this
 **/
 sceneProto.removeTask = function(task) {
-	return this.queue.remove(task);
+	this.queue.remove(task);
+
+	return this;
 };
 
 /**
@@ -6889,11 +6772,13 @@ sceneProto.removeTask = function(task) {
  * @returns {Scene} this
 **/
 sceneProto.later = function(listener, delay, thisArg) {
-	return this.queue.add(new Task(function() {
+	this.queue.add(new Task(function() {
 		listener.apply(this, getArgs(arguments));
 		
 		return true;
 	}, delay, thisArg));
+
+	return this;
 };
 
 /**
@@ -6906,13 +6791,15 @@ sceneProto.later = function(listener, delay, thisArg) {
  * @returns {Scene} this
 **/
 sceneProto.repeat = function(listener, times, delay, thisArg) {
-	var n = 0;
+	var n = 0; // memory leak
 	
-	return this.queue.add(new Task(function() {
+	this.queue.add(new Task(function() {
 		listener.apply(this, getArgs(arguments));
 		
 		return ++n >= times;
 	}, delay, thisArg));
+
+	return this;
 };
 
 /**
@@ -6975,17 +6862,26 @@ sceneProto.addPlugin = function(pluginID, pluginConfig) {
 /**
  * Creates an AbstractElement
  *
- * @param {String} elementID
+ * @method
+ * @name Scene#createAbstractElement
+ * @param {String} elemID
  * @param {String} elementType
  * @param {Object} [elementUse]
  * @param {Array} [args]
  * @returns {Scene} this
 **/
-sceneProto.createAbstractElement = function(elemID, elementType, elementUse, args) {
-	$abstracts.set(elemID, new AbstractElement(elementType, elementUse, args));
-	
-	return this;
-};
+sceneProto.createAbstractElement = $methods.createAbstractElement;
+
+/**
+ * Creates a new class
+ *
+ * @method
+ * @name Scene#createClass
+ * @param {String} className
+ * @param {Object} classData
+ * @returns {Scene} this
+**/
+sceneProto.createClass = $methods.createClass;
 
 /**
  * Updates each element
@@ -7046,8 +6942,8 @@ sceneProto.reflow = (function() {
 			x = l;
 			y = b;
 		} else {
-			x = parseValue(element.x, parentWidth);
-			y = parseValue(element.y, parentHeight);
+			x = parseValue(element.x, parentWidth) + parentX;
+			y = parseValue(element.y, parentHeight) + parentY;
 		}
 		
 		x += marginLeft;
@@ -7226,7 +7122,6 @@ sceneProto.toString = function() {
 	return 'Chill Scene';
 };
 
-// File: core/elementTypes/AbstractElement.js
 /**
  * Creates a new AbstractElement
  *
@@ -7308,7 +7203,6 @@ abstractElementProto.instantiate = function() {
 
 $elements.addType(abstractElementProto.elementName, AbstractElement, false, false);
 
-// File: core/elementTypes/ContainerElement.js
 /**
  * Creates a new ContainerElement
  *
@@ -7401,18 +7295,30 @@ function privateContainerElement() {
 	};
 	
 	/**
+	 * Removes all elements from the ContainerElement
+	 *
+	 * @alias ContainerElement#clear
+	 * @returns {ContainerElement} this
+	**/
+	this.clear = function() {
+		_elements.clear();
+		
+		return this;
+	};
+	
+	/**
 	 * Returns the number of elements in the ContainerElement
 	 *
 	 * @alias ContainerElement#count
-	 * @param {Boolean} ifRecursive
+	 * @param {Boolean} recursive
 	 * @returns {int}
 	**/
-	this.count = function(ifRecursive) {
+	this.count = function(recursive) {
 		var count = _elements.count;
 		
-		if (ifRecursive === true) {
+		if (recursive === true) {
 			this.each(function(element) {
-				if (is(element, ContainerElement)) count += element.count;
+				if (is(element, ContainerElement)) count += element.count(recursive);
 			});
 		}
 		
@@ -7516,7 +7422,6 @@ containerElementClass.height = 'fit';
 $elements.addType(containerElementProto.elementName, ContainerElement, true, true);
 $classes.set(containerElementProto.elementType, containerElementClass);
 
-// File: core/elementTypes/PolygonElement.js
 /**
  * Creates a new PolygonElement
  *
@@ -7638,7 +7543,6 @@ var polygonElementClass = $classes.fromPrototype(polygonElementProto, ['elementT
 $elements.addType(polygonElementProto.elementName, PolygonElement, false, true);
 $classes.set(polygonElementProto.elementType, polygonElementClass);
 
-// File: core/elementTypes/LineElement.js
 /**
  * Creates a new LineElement
  *
@@ -7681,7 +7585,6 @@ lineElementProto.elementName = 'Line';
 
 $elements.addType(lineElementProto.elementName, LineElement, true, true);
 
-// File: core/elementTypes/TriangleElement.js
 /**
  * Creates a new TriangleElement
  *
@@ -7724,7 +7627,6 @@ triangleElementProto.elementName = 'Triangle';
 
 $elements.addType(triangleElementProto.elementName, TriangleElement, true, true);
 
-// File: core/elementTypes/RectangleElement.js
 /**
  * Creates a new RectangleElement
  *
@@ -7767,7 +7669,6 @@ rectangleElementProto.elementName = 'Rectangle';
 
 $elements.addType(rectangleElementProto.elementName, RectangleElement, true, true);
 
-// File: core/elementTypes/PentagonElement.js
 /**
  * Creates a new PentagonElement
  *
@@ -7810,7 +7711,6 @@ pentagonElementProto.elementName = 'Pentagon';
 
 $elements.addType(pentagonElementProto.elementName, PentagonElement, true, true);
 
-// File: core/elementTypes/HexagonElement.js
 /**
  * Creates a new HexagonElement
  *
@@ -7853,7 +7753,6 @@ hexagonElementProto.elementName = 'Hexagon';
 
 $elements.addType(hexagonElementProto.elementName, HexagonElement, true, true);
 
-// File: core/elementTypes/StarElement.js
 /**
  * Creates a new StarElement
  *
@@ -7896,7 +7795,6 @@ starElementProto.elementName = 'Star';
 
 $elements.addType(starElementProto.elementName, StarElement, true, true);
 
-// File: core/elementTypes/CircleElement.js
 /**
  * Creates a new CircleElement
  *
@@ -8024,7 +7922,6 @@ circleElementClass.height = 'auto';
 $elements.addType(circleElementProto.elementName, CircleElement, true, true);
 $classes.set(circleElementProto.elementType, circleElementClass);
 
-// File: core/elementTypes/EllipseElement.js
 /**
  * Creates a new EllipseElement
  *
@@ -8136,7 +8033,6 @@ var ellipseElementClass = $classes.fromPrototype(ellipseElementProto, ['elementT
 $elements.addType(ellipseElementProto.elementName, EllipseElement, true, true);
 $classes.set(ellipseElementProto.elementType, ellipseElementClass);
 
-// File: core/elementTypes/TextElement.js
 /**
  * Creates a new TextElement
  *
@@ -8344,7 +8240,7 @@ textElementProto.draw = function(ctx) {
 	
 	ctx.font = this.getFontDescriptor();
 	ctx.textAlign = align;
-	ctx.textBaseline = 'top'; /* this.textBaseline */;
+	ctx.textBaseline = 'top'; /* this.textBaseline */
 	ctx.fillStyle = this.textColor;
 	
 	if (align === 'center') x += this.renderWidth / 2;
@@ -8426,7 +8322,6 @@ textElementClass.height = 'auto';
 $elements.addType(textElementProto.elementName, TextElement, true, true);
 $classes.set(textElementProto.elementType, textElementClass);
 
-// File: core/elementTypes/ImageElement.js
 /**
  * Creates a new ImageElement
  *
@@ -8510,14 +8405,14 @@ imageElementProto.sourceHeight = '100%';
 **/
 imageElementProto.img = null;
 
-/**
- * The source of the image
- *
- * @name ImageElement#src
- * @type String
- * @default ''
-**/
 Object.defineProperty(imageElementProto, 'src', {
+	/**
+	 * The source of the image
+	 *
+	 * @name ImageElement#src
+	 * @type String
+	 * @default ''
+	 **/
 	get: function() {
 		return this.img.src;
 	},
@@ -8539,7 +8434,7 @@ imageElementProto.measureWidth = function() {
 	var sourceWidth = this.sourceWidth;
 	
 	if (isNumber(sourceWidth)) return sourceWidth;
-	if (isPercent(sourceWidth)) return parsePercent(sourceWidth, img.width);
+	if (isPercent(sourceWidth)) return parsePercent(sourceWidth, this.img.width);
 	
 	return this.img.width;
 };
@@ -8553,7 +8448,7 @@ imageElementProto.measureHeight = function() {
 	var sourceHeight = this.sourceHeight;
 	
 	if (isNumber(sourceHeight)) return sourceHeight;
-	if (isPercent(sourceHeight)) return parsePercent(sourceHeight, img.height);
+	if (isPercent(sourceHeight)) return parsePercent(sourceHeight, this.img.height);
 	
 	return this.img.height;
 };
@@ -8589,7 +8484,175 @@ imageElementClass.height = 'auto';
 $elements.addType(imageElementProto.elementName, ImageElement, true, true);
 $classes.set(imageElementProto.elementType, imageElementClass);
 
-// File: core/elementTypes/SpriteSheetElement.js
+/**
+ * Creates a new PatternElement
+ *
+ * @class PatternElement
+ * @extends Element
+ * @param {Object} [elementUse]
+ * @description todoc
+**/
+function PatternElement(elementUse) {
+	Element.call(this);
+	
+	this.classList.add(patternElementProto.elementType, 1);
+	
+	forIn(patternElementClass, this.addPropSafe, this);
+	
+	this.img = new Image();
+	
+	this.edit(elementUse);
+}
+
+/** @lends PatternElement# **/
+var patternElementProto = PatternElement.prototype = Object.create(Element.prototype);
+patternElementProto.constructor = PatternElement;
+
+/**
+ * The type of the element
+ *
+ * @type String
+ * @default 'PatternElement'
+ * @readonly
+**/
+patternElementProto.elementType = 'PatternElement';
+
+/**
+ * The name of the element
+ *
+ * @type String
+ * @default 'Pattern'
+ * @readonly
+**/
+patternElementProto.elementName = 'Pattern';
+
+/**
+ * The x position of the source image to draw into the destination context
+ *
+ * @type Number|String
+ * @default 0
+**/
+patternElementProto.sourceX = 0;
+
+/**
+ * The y position of the source image to draw into the destination context
+ *
+ * @type Number|String
+ * @default 0
+**/
+patternElementProto.sourceY = 0;
+
+/**
+ * The width of the source image to draw into the destination context
+ *
+ * @type Number|String
+ * @default '100%'
+**/
+patternElementProto.sourceWidth = '100%';
+
+/**
+ * The height of the source image to draw into the destination context
+ *
+ * @type Number|String
+ * @default '100%'
+**/
+patternElementProto.sourceHeight = '100%';
+
+/**
+ * The image of the element
+ *
+ * @type Image
+ * @default null
+ * @readonly
+**/
+patternElementProto.img = null;
+
+Object.defineProperty(patternElementProto, 'src', {
+	/**
+	 * The source of the image
+	 *
+	 * @name PatternElement#src
+	 * @type String
+	 * @default ''
+	 **/
+	get: function() {
+		return this.img.src;
+	},
+	set: function(newVal) {
+		if (startsWith(newVal, '#')) {
+			newVal = $assets.getByID(Loader.IMG, newVal.slice(1)).src;
+		}
+		
+		return this.img.src = newVal;
+	}
+});
+
+/**
+ * A String indicating how to repeat the image (repeat|repeat-x|repeat-y|no-repeat)
+ *
+ * @name PatternElement#repeat
+ * @type String
+ * @default 'repeat'
+**/
+patternElementProto.repeat = 'repeat';
+
+/**
+ * Gets the auto width of the element
+ *
+ * @returns {Number}
+**/
+patternElementProto.measureWidth = function() {
+	var sourceWidth = this.sourceWidth;
+	
+	if (isNumber(sourceWidth)) return sourceWidth;
+	if (isPercent(sourceWidth)) return parsePercent(sourceWidth, this.img.width);
+	
+	return this.img.width;
+};
+
+/**
+ * Gets the auto height of the element
+ *
+ * @returns {Number}
+**/
+patternElementProto.measureHeight = function() {
+	var sourceHeight = this.sourceHeight;
+	
+	if (isNumber(sourceHeight)) return sourceHeight;
+	if (isPercent(sourceHeight)) return parsePercent(sourceHeight, this.img.height);
+	
+	return this.img.height;
+};
+
+/**
+ * Draws the element to the given context
+ *
+ * @param {CanvasRenderingContext2D} ctx
+ * @returns {PatternElement} this
+ * @todo implement sx, sy
+**/
+patternElementProto.draw = function(ctx) {
+	var img = this.img, sx, sy;
+	
+	if (img.complete === true) {
+		if (isPercent(sx = this.sourceX)) sx = parsePercent(sx, img.width);
+		if (isPercent(sy = this.sourceY)) sy = parsePercent(sy, img.height);
+		
+		ctx.rect(this.screenX, this.screenY, this.renderWidth, this.renderHeight);
+		ctx.fillStyle = ctx.createPattern(img, this.repeat);
+		ctx.fill();
+	}
+	
+	return this;
+};
+
+var patternElementClass = $classes.fromPrototype(patternElementProto, ['elementType', 'elementName']);
+patternElementClass.width = 'auto';
+patternElementClass.height = 'auto';
+
+$elements.addType(patternElementProto.elementName, PatternElement, true, true);
+$classes.set(patternElementProto.elementType, patternElementClass);
+
 /**
  * Creates a new SpriteSheetElement
  *
@@ -8676,14 +8739,14 @@ spriteSheetElementProto.frameHeight = 0;
 **/
 spriteSheetElementProto.img = null;
 
-/**
- * The source of the spriteSheet
- *
- * @name SpriteSheetElement#src
- * @type String
- * @default ''
-**/
 Object.defineProperty(spriteSheetElementProto, 'src', {
+	/**
+	 * The source of the spriteSheet
+	 *
+	 * @name SpriteSheetElement#src
+	 * @type String
+	 * @default ''
+	 **/
 	get: function() {
 		return this.img.src;
 	},
@@ -8858,8 +8921,8 @@ spriteSheetElementProto.setFrameSize = function(rows, cols, width, height) {
 		h = this.img.height;
 	}
 	
-	this.frameWidth = this.img.width / cols - 2 * this.frameSpacing;
-	this.frameHeight = this.img.height / rows - 2 * this.frameSpacing;
+	this.frameWidth = w / cols - 2 * this.frameSpacing;
+	this.frameHeight = h / rows - 2 * this.frameSpacing;
 	
 	return this.setFrames();
 };
@@ -9018,7 +9081,6 @@ spriteSheetElementClass.frameRate = spriteSheetElementProto.frameRate;
 $elements.addType(spriteSheetElementProto.elementName, SpriteSheetElement, true, true);
 $classes.set(spriteSheetElementProto.elementType, spriteSheetElementClass);
 
-// File: main.js
 /**
  * Chill namespace
  *
@@ -9031,7 +9093,6 @@ var Chill = stdClass();
  * Creates a new Chill application
  *
  * @class Chill.App
- * @extends EventTarget
  * @memberof Chill
  * @param {Object|String} settings
  * @description todoc
@@ -9097,6 +9158,8 @@ chillDebuggerProto.scene = null;
  * @returns {Scene}
 **/
 chillDebuggerProto.addElements = function(layer, count, elementType, callback) {
+	var callbackIsFunction = isFunction(callback);
+	
 	elementType = isUndefined(elementType) ? 'Text' : elementType;
 	
 	repeat(count, function(i) {
@@ -9104,7 +9167,7 @@ chillDebuggerProto.addElements = function(layer, count, elementType, callback) {
 		
 		layer.add(element);
 		
-		if (isFunction(callback)) callback(element, i);
+		if (callbackIsFunction) callback(element, i);
 	});
 	
 	return this.scene;
@@ -9143,16 +9206,13 @@ Chill.out = function(app, wrapper, callback) {
 /**
  * Creates a new class
  *
- * @memberof Chill
+ * @method
+ * @name Chill.createClass
  * @param {String} className
  * @param {Object} classData
  * @returns {Object} Chill
 **/
-Chill.createClass = function(className, classData) {
-	$classes.set(className, classData);
-	
-	return this;
-};
+Chill.createClass = $methods.createClass;
 
 /**
  * Creates a new mask
@@ -9182,7 +9242,7 @@ Chill.createMask = function(maskID, mask) {
  * @returns {Chill} this
  * @see Scene#createAbstractElement
 **/
-Chill.createAbstractElement = sceneProto.createAbstractElement;
+Chill.createAbstractElement = $methods.createAbstractElement;
 
 /**
  * Creates a new plugin
@@ -9235,38 +9295,40 @@ Chill.createPlugin = function(pluginID, pluginConstructor, pluginConfig, force) 
 Chill.createElementType = function(type, createData) {
 	var parent, prototype, constructor;
 	
-	if (!isFunction(createData.constructor)) {
-		warning('Constructor is required to create a new element type');
-	} else if ($elements.hasType(type)) {
-		warning('Cannot create "' + type + '", type already exists');
-	} else {
-		parent = $elements.getExtendable(createData.extends);
-		
-		if (isNull(parent)) {
-			if (!isUndefined(createData.extends)) warning('Cannot extend "' + createData.extends + '", type does not exists, fall back to default: Element');
+	if (isObject(createData)) {
+		if (!isFunction(createData.constructor)) {
+			warning('Constructor is required to create a new element type');
+		} else if ($elements.hasType(type)) {
+			warning('Cannot create "' + type + '", type already exists');
+		} else {
+			parent = $elements.getExtendable(createData.extends);
 			
-			parent = Element;
-		}
-		
-		prototype = Object.create(parent.prototype);
-		
-		constructor = function CustomElement() {
-			var args = getArgs(arguments);
+			if (isNull(parent)) {
+				if (!isUndefined(createData.extends)) warning('Cannot extend "' + createData.extends + '", type does not exists, fall back to default: Element');
+				
+				parent = Element;
+			}
 			
-			parent.call(this, args);
-			createData.constructor.apply(this, args);
-		};
-		
-		if (isFunction(createData.prototype)) {
-			createData.prototype.call(prototype);
-		} else if (isObject(createData.prototype)) {
-			assign(prototype, createData.prototype);
+			prototype = Object.create(parent.prototype);
+			
+			constructor = function CustomElement() {
+				var args = getArgs(arguments);
+				
+				parent.apply(this, args);
+				createData.constructor.apply(this, args);
+			};
+			
+			if (isFunction(createData.prototype)) {
+				createData.prototype.call(prototype);
+			} else if (isObject(createData.prototype)) {
+				assign(prototype, createData.prototype);
+			}
+			
+			constructor.prototype = prototype;
+			constructor.prototype.constructor = constructor;
+			
+			$elements.addType(type, constructor, createData.instantiatable, createData.extendable);
 		}
-		
-		constructor.prototype = prototype;
-		constructor.prototype.constructor = constructor;
-		
-		$elements.addType(type, constructor, createData.instantiatable, createData.extendable);
 	}
 	
 	return this;
@@ -9274,6 +9336,4 @@ Chill.createElementType = function(type, createData) {
 
 window.Chill = Chill;
 
-// File: moduleFooter.js
 }(this));
-
