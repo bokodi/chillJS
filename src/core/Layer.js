@@ -5,6 +5,8 @@
  * @extends EventTarget
  * @param {Object} [layerUse]
  * @description todoc
+ * @property {HTMLCanvasElement|HTMLElement} canvas
+ * @property {CanvasRenderingContext2D} ctx
 **/
 function Layer(layerUse) {
 	EventTarget.call(this);
@@ -313,24 +315,6 @@ layerProto.id = null;
  * @readonly
 **/
 layerProto.uuid = null;
-
-/**
- * The canvas of the layer
- *
- * @type HTMLCanvasElement
- * @default null
- * @readonly
-**/
-layerProto.canvas = null;
-
-/**
- * The 2d rendering context of the layer
- * 
- * @type CanvasRenderingContext2D
- * @default null
- * @readonly
-**/
-layerProto.ctx = null;
 
 Object.defineProperty(layerProto, 'x', {
 	/**

@@ -6,7 +6,7 @@
  * @license MIT
  * 
  * 
- * Date: Sun Oct 02 2016
+ * Date: Sat Jan 14 2017
  */
 
 
@@ -3854,6 +3854,8 @@ $canvas.ctx = $canvas.DOMElement.getContext('2d');
  * @class Element
  * @extends EventTarget
  * @description todoc
+ * @property {ClassList} classList
+ * @property {Vector2} velocity
 **/
 function Element() {
 	EventTarget.call(this);
@@ -4121,23 +4123,6 @@ elementProto.parentLayer = null;
  * @readonly
 **/
 elementProto.parentElement = null;
-
-/**
- * The classes of the element
- *
- * @type ClassList
- * @default null
- * @readonly
-**/
-elementProto.classList = null;
-
-/**
- * The velocity of the element
- *
- * @type Vector2
- * @default null
-**/
-elementProto.velocity = null;
 
 Object.defineProperty(elementProto, 'vX', {
 	/**
@@ -5387,24 +5372,18 @@ elementProto.drawBox = function(ctx) {
 elementProto.update = function() {
 	if (isNumber(this.x) && isNumber(this.vX)) {
 		this.x += this.vX;
-		
-		if (isNumber(this.minX) && isNumber(this.maxX)) {
-			if (this.x <= this.minX) this.x = this.maxX;
-			else
-			if (this.x >= this.maxX) this.x = this.minX;
-		}
+
+		if (isNumber(this.minX) && this.x < this.minX) this.x = this.minX;
+		if (isNumber(this.maxX) && this.x > this.maxX) this.x = this.maxX;
 	}
-	
+
 	if (isNumber(this.y) && isNumber(this.vY)) {
 		this.y += this.vY;
-		
-		if (isNumber(this.minY) && isNumber(this.maxY)) {
-			if (this.y <= this.minY) this.y = this.maxY;
-			else
-			if (this.y >= this.maxY) this.y = this.minY;
-		}
+
+		if (isNumber(this.minY) && this.y < this.minY) this.y = this.minY;
+		if (isNumber(this.maxY) && this.y > this.maxY) this.y = this.maxY;
 	}
-	
+
 	return this;
 };
 
@@ -5508,6 +5487,8 @@ $classes.set(elementProto.elementType, elementClass);
  * @extends EventTarget
  * @param {Object} [layerUse]
  * @description todoc
+ * @property {HTMLCanvasElement|HTMLElement} canvas
+ * @property {CanvasRenderingContext2D} ctx
 **/
 function Layer(layerUse) {
 	EventTarget.call(this);
@@ -5817,24 +5798,6 @@ layerProto.id = null;
 **/
 layerProto.uuid = null;
 
-/**
- * The canvas of the layer
- *
- * @type HTMLCanvasElement
- * @default null
- * @readonly
-**/
-layerProto.canvas = null;
-
-/**
- * The 2d rendering context of the layer
- * 
- * @type CanvasRenderingContext2D
- * @default null
- * @readonly
-**/
-layerProto.ctx = null;
-
 Object.defineProperty(layerProto, 'x', {
 	/**
 	 * The x position of the canvas
@@ -6062,6 +6025,12 @@ layerProto.toString = function() {
  * @extends EventTarget
  * @param {HTMLElement} wrapper
  * @description todoc
+ * @property {HTMLElement} wrapper
+ * @property {Screen} screen
+ * @property {Cursor} cursor
+ * @property {PublicStorage} settings
+ * @property {Loader} loader
+ * @property {Queue} queue
 **/
 function Scene(wrapper) {
 	EventTarget.call(this);
@@ -6476,7 +6445,7 @@ function addSceneCollisionDetectionHandlers() {
 	/** @lends CollisionDetector# **/
 	var collisionDetectorProto = CollisionDetector.prototype = stdClass();
 	collisionDetectorProto.constructor = CollisionDetector;
-	
+
 	/**
 	 * Adds one or more targets to check
 	 *
@@ -6598,33 +6567,6 @@ function initScene() {
 sceneProto.uuid = null;
 
 /**
- * The wrapper of the scene
- *
- * @type HTMLElement
- * @default null
- * @readonly
-**/
-sceneProto.wrapper = null;
-
-/**
- * The screen of the scene
- *
- * @type Screen
- * @default null
- * @readonly
-**/
-sceneProto.screen = null;
-
-/**
- * The cursor of the scene
- *
- * @type Cursor
- * @default null
- * @readonly
-**/
-sceneProto.cursor = null;
-
-/**
  * The loading state of the scene
  *
  * @type String
@@ -6632,33 +6574,6 @@ sceneProto.cursor = null;
  * @readonly
 **/
 sceneProto.readyState = null;
-
-/**
- * The settings of the scene
- *
- * @type PublicStorage
- * @default null
- * @readonly
-**/
-sceneProto.settings = null;
-
-/**
- * The loader of the scene
- *
- * @type Loader
- * @default null
- * @readonly
-**/
-sceneProto.loader = null;
-
-/**
- * The queue of the scene
- *
- * @type Queue
- * @default null
- * @readonly
-**/
-sceneProto.queue = null;
 
 /**
  * The running status of the scene

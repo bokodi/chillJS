@@ -4,6 +4,8 @@
  * @class Element
  * @extends EventTarget
  * @description todoc
+ * @property {ClassList} classList
+ * @property {Vector2} velocity
 **/
 function Element() {
 	EventTarget.call(this);
@@ -271,23 +273,6 @@ elementProto.parentLayer = null;
  * @readonly
 **/
 elementProto.parentElement = null;
-
-/**
- * The classes of the element
- *
- * @type ClassList
- * @default null
- * @readonly
-**/
-elementProto.classList = null;
-
-/**
- * The velocity of the element
- *
- * @type Vector2
- * @default null
-**/
-elementProto.velocity = null;
 
 Object.defineProperty(elementProto, 'vX', {
 	/**
@@ -1537,24 +1522,18 @@ elementProto.drawBox = function(ctx) {
 elementProto.update = function() {
 	if (isNumber(this.x) && isNumber(this.vX)) {
 		this.x += this.vX;
-		
-		if (isNumber(this.minX) && isNumber(this.maxX)) {
-			if (this.x <= this.minX) this.x = this.maxX;
-			else
-			if (this.x >= this.maxX) this.x = this.minX;
-		}
+
+		if (isNumber(this.minX) && this.x < this.minX) this.x = this.minX;
+		if (isNumber(this.maxX) && this.x > this.maxX) this.x = this.maxX;
 	}
-	
+
 	if (isNumber(this.y) && isNumber(this.vY)) {
 		this.y += this.vY;
-		
-		if (isNumber(this.minY) && isNumber(this.maxY)) {
-			if (this.y <= this.minY) this.y = this.maxY;
-			else
-			if (this.y >= this.maxY) this.y = this.minY;
-		}
+
+		if (isNumber(this.minY) && this.y < this.minY) this.y = this.minY;
+		if (isNumber(this.maxY) && this.y > this.maxY) this.y = this.maxY;
 	}
-	
+
 	return this;
 };
 

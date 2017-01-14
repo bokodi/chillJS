@@ -5,6 +5,12 @@
  * @extends EventTarget
  * @param {HTMLElement} wrapper
  * @description todoc
+ * @property {HTMLElement} wrapper
+ * @property {Screen} screen
+ * @property {Cursor} cursor
+ * @property {PublicStorage} settings
+ * @property {Loader} loader
+ * @property {Queue} queue
 **/
 function Scene(wrapper) {
 	EventTarget.call(this);
@@ -419,7 +425,7 @@ function addSceneCollisionDetectionHandlers() {
 	/** @lends CollisionDetector# **/
 	var collisionDetectorProto = CollisionDetector.prototype = stdClass();
 	collisionDetectorProto.constructor = CollisionDetector;
-	
+
 	/**
 	 * Adds one or more targets to check
 	 *
@@ -541,33 +547,6 @@ function initScene() {
 sceneProto.uuid = null;
 
 /**
- * The wrapper of the scene
- *
- * @type HTMLElement
- * @default null
- * @readonly
-**/
-sceneProto.wrapper = null;
-
-/**
- * The screen of the scene
- *
- * @type Screen
- * @default null
- * @readonly
-**/
-sceneProto.screen = null;
-
-/**
- * The cursor of the scene
- *
- * @type Cursor
- * @default null
- * @readonly
-**/
-sceneProto.cursor = null;
-
-/**
  * The loading state of the scene
  *
  * @type String
@@ -575,33 +554,6 @@ sceneProto.cursor = null;
  * @readonly
 **/
 sceneProto.readyState = null;
-
-/**
- * The settings of the scene
- *
- * @type PublicStorage
- * @default null
- * @readonly
-**/
-sceneProto.settings = null;
-
-/**
- * The loader of the scene
- *
- * @type Loader
- * @default null
- * @readonly
-**/
-sceneProto.loader = null;
-
-/**
- * The queue of the scene
- *
- * @type Queue
- * @default null
- * @readonly
-**/
-sceneProto.queue = null;
 
 /**
  * The running status of the scene
